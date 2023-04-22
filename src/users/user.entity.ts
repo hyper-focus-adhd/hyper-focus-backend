@@ -9,7 +9,7 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { v4 as uuid } from 'uuid';
+import { ulid } from 'ulid';
 
 @Entity()
 export class User {
@@ -17,7 +17,7 @@ export class User {
   id: string;
 
   @Column()
-  userName: string;
+  username: string;
 
   // TODO implement role
   // @Column()
@@ -26,6 +26,7 @@ export class User {
   @Column()
   email: string;
 
+  // TODO: Implant password verification
   @Column()
   password: string;
 
@@ -40,7 +41,7 @@ export class User {
 
   constructor() {
     if (!this.id) {
-      this.id = uuid();
+      this.id = ulid();
     }
   }
 
