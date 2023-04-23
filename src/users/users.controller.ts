@@ -12,7 +12,7 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get('/:id')
+  @Get(':id')
   async findUser(@Param('id') id: string) {
     return await this.usersService.findOneOrFail({ where: { id } });
   }
@@ -22,17 +22,17 @@ export class UsersController {
     return await this.usersService.findAll();
   }
 
-  @Patch('/:id')
+  @Patch(':id')
   async updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
     return await this.usersService.update(id, body);
   }
 
-  @Delete('/:id')
+  @Delete(':id')
   async removeUser(@Param('id') id: string) {
     return await this.usersService.remove(id);
   }
 
-  @Patch('/restore/:id')
+  @Patch('restore/:id')
   async restoreUser(@Param('id') id: string) {
     return await this.usersService.restore(id);
   }
