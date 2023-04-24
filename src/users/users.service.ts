@@ -1,9 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
-import { FindOptionsWhere } from 'typeorm/find-options/FindOptionsWhere';
 
 import { User } from './user.entity';
 
@@ -14,9 +13,13 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async create(username: string, email: string, password: string) {
+  async create(
+    username: string,
+    email: string,
+    password: string,
+  ): Promise<User> {
     const user = await this.userRepository.create({
-      username: username,
+      username,
       email,
       password,
     });
@@ -24,15 +27,15 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
-  async findAll() {
+  async findAll(): Promise<User[]> {
     return await this.userRepository.find();
   }
 
-  async findOneBy(where: FindOptionsWhere<User> | FindOptionsWhere<User>[]) {
-    return await this.userRepository.findOneBy(where);
+  async findOne(options: FindOneOptions<User>): Promise<User> {
+    return await this.userRepository.findOne(options);
   }
 
-  async findOneOrFail(options: FindOneOptions<User>) {
+  async findOneOrFail(options: FindOneOptions<User>): Promise<User> {
     try {
       return await this.userRepository.findOneOrFail(options);
     } catch (error: any) {
@@ -40,7 +43,7 @@ export class UsersService {
     }
   }
 
-  async update(id: string, attrs: Partial<User>) {
+  async update(id: string, attrs: Partial<User>): Promise<User> {
     const user = await this.findOneOrFail({ where: { id } });
 
     if (attrs.password) {
@@ -53,13 +56,13 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
-  async remove(id: string) {
+  async delete(id: string): Promise<UpdateResult> {
     const user = await this.findOneOrFail({ where: { id } });
 
     return this.userRepository.softDelete(user.id);
   }
 
-  async restore(id: string) {
+  async restore(id: string): Promise<UpdateResult> {
     const user = await this.findOneOrFail({ where: { id }, withDeleted: true });
 
     return this.userRepository.restore(user.id);

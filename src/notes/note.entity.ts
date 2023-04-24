@@ -6,37 +6,29 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  OneToMany,
+  JoinColumn,
+  ManyToOne,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { ulid } from 'ulid';
 
-import { Note } from '../notes/note.entity';
+import { User } from '../users/user.entity';
 
 @Entity()
-export class User {
+export class Note {
   @PrimaryColumn()
   id: string;
 
   @Column()
-  username: string;
-
-  // TODO implement role
-  // @Column()
-  // role?: string;
+  text: string;
 
   @Column()
-  email: string;
+  color: string;
 
-  @Column()
-  password: string;
-
-  @OneToMany(() => Note, (note) => note.user, { cascade: true })
-  notes: Note[];
-
-  @Column({ nullable: true })
-  hashedRefreshToken?: string;
+  @JoinColumn({ name: 'user_id' })
+  @ManyToOne(() => User, (user) => user.notes)
+  user: User;
 
   @CreateDateColumn()
   created_at: Date;

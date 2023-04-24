@@ -8,11 +8,11 @@ import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
 import * as bcrypt from 'bcryptjs';
 
+import { jwtConfig } from '../config/jwt.config';
 import { MessagesHelper } from '../helpers/messages.helper';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 
-import { jwtConstants } from './constants';
 import { JwtPayload, Tokens } from './types';
 
 @Injectable()
@@ -28,10 +28,9 @@ export class AuthService {
     password: string,
   ): Promise<Tokens> {
     // Check if username and email are in use is in use
-    const existingUser = await this.usersService.findOneBy([
-      { username },
-      { email },
-    ]);
+    const existingUser = await this.usersService.findOne({
+      where: [{ username }, { email }],
+    });
     if (existingUser) {
       if (existingUser.username === username) {
         throw new ConflictException(MessagesHelper.USER_EXISTS);
@@ -65,7 +64,7 @@ export class AuthService {
   }
 
   async logout(id: string): Promise<boolean> {
-    const user = await this.usersService.findOneBy({ id });
+    const user = await this.usersService.findOne({ where: { id } });
     if (!user || !user.hashedRefreshToken) {
       return false;
     }
@@ -74,7 +73,7 @@ export class AuthService {
   }
 
   async validateUser(username: string, password: string): Promise<User> {
-    const user = await this.usersService.findOneBy({ username });
+    const user = await this.usersService.findOne({ where: { username } });
     if (!user) {
       throw new UnauthorizedException(MessagesHelper.INVALID_CREDENTIALS);
     }
@@ -93,12 +92,12 @@ export class AuthService {
     };
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(jwtPayload, {
-        secret: jwtConstants.accessTokenSecret,
-        expiresIn: jwtConstants.accessExpiresIn,
+        secret: jwtConfig.accessTokenSecret,
+        expiresIn: jwtConfig.accessExpiresIn,
       }),
       this.jwtService.signAsync(jwtPayload, {
-        secret: jwtConstants.refreshTokenSecret,
-        expiresIn: jwtConstants.refreshExpiresIn,
+        secret: jwtConfig.refreshTokenSecret,
+        expiresIn: jwtConfig.refreshExpiresIn,
       }),
     ]);
 
@@ -109,7 +108,7 @@ export class AuthService {
   }
 
   async refreshTokens(id: string, refreshToken: string) {
-    const user = await this.usersService.findOneBy({ id });
+    const user = await this.usersService.findOne({ where: { id } });
     if (!user || !user.hashedRefreshToken) {
       throw new ForbiddenException(MessagesHelper.ACCESS_DENIED);
     }
