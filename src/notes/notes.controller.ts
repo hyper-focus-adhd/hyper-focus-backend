@@ -1,7 +1,15 @@
-import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { UpdateResult } from 'typeorm';
 
-import { CurrentUser } from '../common/decorators/current-user.decorator';
+import { CurrentUserId } from '../common/decorators/current-user-id.decorator';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { User } from '../users/user.entity';
 
@@ -11,40 +19,46 @@ import { UpdateNoteDto } from './dtos/update-note.dto';
 import { Note } from './note.entity';
 import { NotesService } from './notes.service';
 
-@Controller('api/v1/notes')
+@Controller('api/v1/note')
+@Serialize(NoteDto)
 export class NotesController {
   constructor(private readonly noteService: NotesService) {}
 
   @Post()
-  @Serialize(NoteDto)
   async createNote(
-    @CurrentUser() user: User,
     @Body() body: CreateNoteDto,
+    @CurrentUserId() userId: User,
   ): Promise<Note> {
-    return await this.noteService.create(body, user);
+    return await this.noteService.create(body, userId);
   }
 
-  // @Get(':userId')
-  // async getNotesByUserId(@Param('userId') userId: string): Promise<Note[]> {
-  //   return this.noteService.findAll({ where: { userId } });
-  // }
+  @Get()
+  async getNotesByUserId(@CurrentUserId() userId: string): Promise<Note[]> {
+    return this.noteService.findAllByUser({ where: { user: { id: userId } } });
+  }
 
-  @Patch(':userId/:noteId')
+  @Patch(':noteId')
   async updateNote(
-    @Param('noteId') noteId: string,
     @Body() body: UpdateNoteDto,
+    @CurrentUserId() userId: string,
+    @Param('noteId') noteId: string,
   ): Promise<Note> {
-    return await this.noteService.update(noteId, body);
+    return await this.noteService.update(noteId, body, userId);
   }
 
-  @Delete(':userId/:noteId')
-  async deleteNote(@Param('noteId') noteId: string): Promise<UpdateResult> {
-    return await this.noteService.delete(noteId);
+  @Delete(':noteId')
+  async deleteNote(
+    @CurrentUserId() userId: string,
+    @Param('noteId') noteId: string,
+  ): Promise<UpdateResult> {
+    return await this.noteService.delete(noteId, userId);
   }
 
-  // TODO: finish
-  // @Patch('restore/:id')
-  // async restoreUser(@Param('id') id: string): Promise<UpdateResult> {
-  //   return await this.usersService.restore(id);
-  // }
+  @Patch('restore/:noteId')
+  async restoreNote(
+    @CurrentUserId() userId: string,
+    @Param('noteId') noteId: string,
+  ): Promise<UpdateResult> {
+    return await this.noteService.restore(noteId, userId);
+  }
 }

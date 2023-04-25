@@ -4,6 +4,8 @@ import * as bcrypt from 'bcryptjs';
 import { Repository, UpdateResult } from 'typeorm';
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
+import { messagesHelper } from '../helpers/messages-helper';
+
 import { User } from './user.entity';
 
 @Injectable()
@@ -39,7 +41,7 @@ export class UsersService {
     try {
       return await this.userRepository.findOneOrFail(options);
     } catch (error: any) {
-      throw new NotFoundException(error.message);
+      throw new NotFoundException(messagesHelper.USER_NOT_FOUND);
     }
   }
 

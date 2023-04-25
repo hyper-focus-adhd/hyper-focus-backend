@@ -21,7 +21,6 @@ import { Tokens } from './types';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @HttpCode(HttpStatus.CREATED)
   @Post('signup')
   @PublicRoute()
   async createUser(@Body() body: CreateUserDto): Promise<Tokens> {

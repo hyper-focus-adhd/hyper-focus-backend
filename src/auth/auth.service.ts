@@ -9,7 +9,7 @@ import * as argon2 from 'argon2';
 import * as bcrypt from 'bcryptjs';
 
 import { jwtConfig } from '../config/jwt.config';
-import { MessagesHelper } from '../helpers/messages.helper';
+import { messagesHelper } from '../helpers/messages-helper';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 
@@ -33,10 +33,10 @@ export class AuthService {
     });
     if (existingUser) {
       if (existingUser.username === username) {
-        throw new ConflictException(MessagesHelper.USER_EXISTS);
+        throw new ConflictException(messagesHelper.USER_EXISTS);
       }
       if (existingUser.email === email) {
-        throw new ConflictException(MessagesHelper.EMAIL_EXISTS);
+        throw new ConflictException(messagesHelper.EMAIL_EXISTS);
       }
     }
 
@@ -75,12 +75,12 @@ export class AuthService {
   async validateUser(username: string, password: string): Promise<User> {
     const user = await this.usersService.findOne({ where: { username } });
     if (!user) {
-      throw new UnauthorizedException(MessagesHelper.INVALID_CREDENTIALS);
+      throw new UnauthorizedException(messagesHelper.INVALID_CREDENTIALS);
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      throw new UnauthorizedException(MessagesHelper.INVALID_CREDENTIALS);
+      throw new UnauthorizedException(messagesHelper.INVALID_CREDENTIALS);
     }
     return user;
   }
@@ -110,7 +110,7 @@ export class AuthService {
   async refreshTokens(id: string, refreshToken: string) {
     const user = await this.usersService.findOne({ where: { id } });
     if (!user || !user.hashedRefreshToken) {
-      throw new ForbiddenException(MessagesHelper.ACCESS_DENIED);
+      throw new ForbiddenException(messagesHelper.ACCESS_DENIED);
     }
 
     const refreshTokenMatches = await argon2.verify(
@@ -118,7 +118,7 @@ export class AuthService {
       refreshToken,
     );
     if (!refreshTokenMatches)
-      throw new ForbiddenException(MessagesHelper.ACCESS_DENIED);
+      throw new ForbiddenException(messagesHelper.ACCESS_DENIED);
 
     const tokens = await this.generateToken(user);
     await this.updateRefreshTokenHash(user.id, tokens.refreshToken);
