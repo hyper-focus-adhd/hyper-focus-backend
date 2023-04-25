@@ -7,10 +7,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { GetCurrentUser } from '../common/decorators/getCurrentUser.decorator';
-import { GetCurrentUserId } from '../common/decorators/getCurrentUserId.decorator';
+import { CurrentUserId } from '../common/decorators/current-user-id.decorator';
+import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { PublicRoute } from '../common/decorators/public.decorator';
-import { RefreshTokenGuard } from '../common/guards/refreshToken.guard';
+import { RefreshTokenGuard } from '../common/guards/refresh-token.guard';
 
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dtos/create-user.dto';
@@ -21,7 +21,6 @@ import { Tokens } from './types';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @HttpCode(HttpStatus.CREATED)
   @Post('signup')
   @PublicRoute()
   async createUser(@Body() body: CreateUserDto): Promise<Tokens> {
@@ -41,7 +40,7 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('logout')
-  async logout(@GetCurrentUserId() id: string): Promise<boolean> {
+  async logout(@CurrentUserId() id: string): Promise<boolean> {
     return this.authService.logout(id);
   }
 
@@ -50,8 +49,8 @@ export class AuthController {
   @PublicRoute()
   @UseGuards(RefreshTokenGuard)
   async refreshTokens(
-    @GetCurrentUserId() id: string,
-    @GetCurrentUser('refreshToken') refreshToken: string,
+    @CurrentUserId() id: string,
+    @CurrentUser('refreshToken') refreshToken: string,
   ) {
     return this.authService.refreshTokens(id, refreshToken);
   }
