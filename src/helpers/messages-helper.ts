@@ -7,4 +7,6 @@ export const messagesHelper = {
   EMAIL_EXISTS: 'Email already exists',
   NOTE_NOT_FOUND: 'Note not found',
   USER_NOT_FOUND: 'User not found',
+  SUBJECT_USERNAME_RECOVERY: 'Username recovery',
+  SUBJECT_PASSWORD_RECOVERY: 'Password recovery',
 };
