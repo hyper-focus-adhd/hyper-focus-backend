@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
 import { Repository, UpdateResult } from 'typeorm';
@@ -48,6 +52,8 @@ export class UsersService {
   async update(id: string, attrs: Partial<User>): Promise<User> {
     const user = await this.findOneOrFail({ where: { id } });
 
+    await this.verifyExistingUser(attrs.username, attrs.email);
+
     if (attrs.password) {
       const salt = await bcrypt.genSalt(10);
       attrs.password = await bcrypt.hash(attrs.password, salt);
@@ -68,5 +74,20 @@ export class UsersService {
     const user = await this.findOneOrFail({ where: { id }, withDeleted: true });
 
     return this.userRepository.restore(user.id);
+  }
+
+  async verifyExistingUser(username: string, email: string): Promise<void> {
+    const existingUser = await this.userRepository.findOne({
+      where: [{ username }, { email }],
+    });
+
+    if (existingUser) {
+      if (existingUser.username === username) {
+        throw new ConflictException(messagesHelper.USER_EXISTS);
+      }
+      if (existingUser.email === email) {
+        throw new ConflictException(messagesHelper.EMAIL_EXISTS);
+      }
+    }
   }
 }

@@ -1,5 +1,4 @@
 import {
-  ConflictException,
   ForbiddenException,
   Injectable,
   UnauthorizedException,
@@ -27,25 +26,13 @@ export class AuthService {
     email: string,
     password: string,
   ): Promise<Tokens> {
-    // Check if username and email are in use is in use
-    const existingUser = await this.usersService.findOne({
-      where: [{ username }, { email }],
-    });
-    if (existingUser) {
-      if (existingUser.username === username) {
-        throw new ConflictException(messagesHelper.USER_EXISTS);
-      }
-      if (existingUser.email === email) {
-        throw new ConflictException(messagesHelper.EMAIL_EXISTS);
-      }
-    }
+    await this.usersService.verifyExistingUser(username, email);
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     await this.usersService.create(username, email, hashedPassword);
 
-    // TODO: verify if this validation is necessary
     const user = await this.validateUser(username, password);
 
     const tokens = await this.generateToken(user);
@@ -63,6 +50,7 @@ export class AuthService {
     return tokens;
   }
 
+  // TODO: Verify log out
   async logout(id: string): Promise<boolean> {
     const user = await this.usersService.findOne({ where: { id } });
     if (!user || !user.hashedRefreshToken) {
