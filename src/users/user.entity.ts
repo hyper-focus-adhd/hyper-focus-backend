@@ -19,14 +19,14 @@ export class User {
   @PrimaryColumn()
   id: string;
 
-  @Column()
+  @Column({ unique: true })
   username: string;
 
   // TODO implement role
   // @Column()
   // role?: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()

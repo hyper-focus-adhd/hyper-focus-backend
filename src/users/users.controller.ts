@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch } from '@nestjs/common';
 import { UpdateResult } from 'typeorm';
 
+import { CurrentUserId } from '../common/decorators/current-user-id.decorator';
 import { Serialize } from '../interceptors/serialize.interceptor';
 
 import { UpdateUserDto } from './dtos/update-user.dto';
@@ -23,21 +24,38 @@ export class UsersController {
     return await this.usersService.findAll();
   }
 
-  @Patch(':id')
+  @Patch()
   async updateUser(
-    @Param('id') id: string,
     @Body() body: UpdateUserDto,
+    @CurrentUserId() userId: string,
   ): Promise<User> {
-    return await this.usersService.update(id, body);
+    return await this.usersService.update(userId, body);
   }
 
-  @Delete(':id')
-  async deleteUser(@Param('id') id: string): Promise<UpdateResult> {
-    return await this.usersService.delete(id);
+  // @Patch(':id')
+  // async updateUser(
+  //   @Param('id') id: string,
+  //   @Body() body: UpdateUserDto,
+  // ): Promise<User> {
+  //   return await this.usersService.update(id, body);
+  // }
+
+  @Delete()
+  async deleteUser(@CurrentUserId() userId: string): Promise<UpdateResult> {
+    return await this.usersService.delete(userId);
   }
 
-  @Patch('restore/:id')
-  async restoreUser(@Param('id') id: string): Promise<UpdateResult> {
-    return await this.usersService.restore(id);
+  // @Delete(':id')
+  // async deleteUser(@Param('id') id: string): Promise<UpdateResult> {
+  //   return await this.usersService.delete(id);
+
+  @Patch('restore')
+  async restoreUser(@CurrentUserId() userId: string): Promise<UpdateResult> {
+    return await this.usersService.restore(userId);
   }
+
+  // @Patch('restore/:id')
+  // async restoreUser(@Param('id') id: string): Promise<UpdateResult> {
+  //   return await this.usersService.restore(id);
+  // }
 }
