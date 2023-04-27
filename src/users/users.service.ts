@@ -52,7 +52,9 @@ export class UsersService {
   async update(id: string, attrs: Partial<User>): Promise<User> {
     const user = await this.findOneOrFail({ where: { id } });
 
-    await this.verifyExistingUser(attrs.username, attrs.email);
+    if (attrs.username || attrs.email) {
+      await this.verifyExistingUser(attrs.username, attrs.email);
+    }
 
     if (attrs.password) {
       const salt = await bcrypt.genSalt(10);
@@ -77,7 +79,7 @@ export class UsersService {
   }
 
   async verifyExistingUser(username: string, email: string): Promise<void> {
-    const existingUser = await this.userRepository.findOne({
+    const existingUser = await this.findOne({
       where: [{ username }, { email }],
     });
 
