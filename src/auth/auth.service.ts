@@ -13,6 +13,7 @@ import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 
 import { JwtPayload, Tokens } from './types';
+import { CreateUserType } from './types/create-user.type';
 
 @Injectable()
 export class AuthService {
@@ -21,7 +22,11 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signUp(username: string, email: string, password: string) {
+  async signUp(
+    username: string,
+    email: string,
+    password: string,
+  ): Promise<CreateUserType> {
     await this.usersService.verifyExistingUser(username, email);
 
     const salt = await bcrypt.genSalt(10);
@@ -91,7 +96,7 @@ export class AuthService {
     };
   }
 
-  async refreshTokens(id: string, refreshToken: string) {
+  async refreshTokens(id: string, refreshToken: string): Promise<Tokens> {
     const user = await this.usersService.findOne({ where: { id } });
     if (!user || !user.hashedRefreshToken) {
       throw new ForbiddenException(messagesHelper.ACCESS_DENIED);

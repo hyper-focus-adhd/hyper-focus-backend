@@ -29,7 +29,7 @@ export class NotesController {
     @Body() body: CreateNoteDto,
     @CurrentUserId() userId: User,
   ): Promise<Note> {
-    return await this.noteService.create(body, userId);
+    return await this.noteService.create(body.text, body.color, userId);
   }
 
   @Get()

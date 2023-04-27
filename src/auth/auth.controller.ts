@@ -16,6 +16,7 @@ import { AuthService } from './auth.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { LoginDto } from './dtos/login.dto';
 import { Tokens } from './types';
+import { CreateUserType } from './types/create-user.type';
 
 @Controller('api/v1/auth')
 export class AuthController {
@@ -23,7 +24,7 @@ export class AuthController {
 
   @Post('signup')
   @PublicRoute()
-  async createUser(@Body() body: CreateUserDto): Promise<Tokens> {
+  async createUser(@Body() body: CreateUserDto): Promise<CreateUserType> {
     return await this.authService.signUp(
       body.username,
       body.email,
@@ -51,7 +52,7 @@ export class AuthController {
   async refreshTokens(
     @CurrentUserId() id: string,
     @CurrentUser('refreshToken') refreshToken: string,
-  ) {
+  ): Promise<Tokens> {
     return this.authService.refreshTokens(id, refreshToken);
   }
 }

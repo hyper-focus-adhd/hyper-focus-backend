@@ -7,7 +7,6 @@ import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 import { messagesHelper } from '../helpers/messages-helper';
 import { User } from '../users/user.entity';
 
-import { CreateNoteDto } from './dtos/create-note.dto';
 import { Note } from './note.entity';
 
 @Injectable()
@@ -16,8 +15,8 @@ export class NotesService {
     @InjectRepository(Note) private readonly notesRepository: Repository<Note>,
   ) {}
 
-  async create(noteDto: CreateNoteDto, user: User): Promise<Note> {
-    const note = await this.notesRepository.create(noteDto);
+  async create(text: string, color: string, user: User): Promise<Note> {
+    const note = await this.notesRepository.create({ text, color });
 
     note.user = user;
 
