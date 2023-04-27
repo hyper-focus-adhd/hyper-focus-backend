@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 
 import { PublicRoute } from '../common/decorators/public.decorator';
 
@@ -8,7 +8,7 @@ import { MailerService } from './mailer.service';
 export class MailerController {
   constructor(private readonly mailerService: MailerService) {}
 
-  @Get('username-recovery')
+  @Post('username-recovery')
   @PublicRoute()
   async usernameRecovery(@Body('email') email: string) {
     return await this.mailerService.mailUsername(email);
