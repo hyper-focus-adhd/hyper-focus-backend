@@ -122,6 +122,7 @@ export class UsersService {
     password = await bcrypt.hash(password, salt);
 
     user.password = password;
+    user.passwordRecoveryToken = null;
 
     return this.userRepository.save(user);
   }
