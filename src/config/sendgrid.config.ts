@@ -5,5 +5,5 @@ export const sendgridConfig = {
   sendgridFrom: process.env.SENDGRID_FROM,
   sendgridUsernameTemplateId: process.env.SENDGRID_USERNAME_TEMPLATE_ID,
   sendgridPasswordTemplateId: process.env.SENDGRID_PASSWORD_TEMPLATE_ID,
-  sendgridPasswordRecoveryPage: process.env.SENDGRID_PASSWORD_RECOVERY_PAGE,
+  sendgridPasswordRecoveryPage: `${process.env.FRONTEND_URL}/${process.env.SENDGRID_PASSWORD_RECOVERY_PAGE}`,
 };
