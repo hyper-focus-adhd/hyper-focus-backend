@@ -21,11 +21,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signUp(
-    username: string,
-    email: string,
-    password: string,
-  ): Promise<Tokens> {
+  async signUp(username: string, email: string, password: string) {
     await this.usersService.verifyExistingUser(username, email);
 
     const salt = await bcrypt.genSalt(10);
@@ -38,7 +34,7 @@ export class AuthService {
     const tokens = await this.generateToken(user);
     await this.updateRefreshTokenHash(user.id, tokens.refreshToken);
 
-    return tokens;
+    return { username, email, ...tokens };
   }
 
   async login(username: string, password: string): Promise<Tokens> {
