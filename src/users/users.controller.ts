@@ -1,10 +1,20 @@
-import { Body, Controller, Delete, Get, Param, Patch } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Put,
+} from '@nestjs/common';
 import { UpdateResult } from 'typeorm';
 
 import { CurrentUserId } from '../common/decorators/current-user-id.decorator';
+import { PublicRoute } from '../common/decorators/public.decorator';
 import { Serialize } from '../interceptors/serialize.interceptor';
 
 import { UpdateUserDto } from './dtos/update-user.dto';
+import { UserPasswordRecoveryDto } from './dtos/user-password-recovery.dto';
 import { UserDto } from './dtos/user.dto';
 import { User } from './user.entity';
 import { UsersService } from './users.service';
@@ -58,4 +68,13 @@ export class UsersController {
   // async restoreUser(@Param('id') id: string): Promise<UpdateResult> {
   //   return await this.usersService.restore(id);
   // }
+
+  @PublicRoute()
+  @Put('password-recovery')
+  async passwordRecovery(@Body() body: UserPasswordRecoveryDto) {
+    return await this.usersService.passwordRecovery(
+      body.password,
+      body.passwordRecoveryToken,
+    );
+  }
 }
