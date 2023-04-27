@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as sendgridMail from '@sendgrid/mail';
-import * as argon2 from 'argon2';
 
 import { JwtPayload } from '../auth/types';
 import { jwtConfig } from '../config/jwt.config';
@@ -42,10 +41,9 @@ export class MailerService {
 
     const token = await this.generatePasswordRecoveryToken(user);
 
-    const passwordRecoveryToken = await this.updatePasswordRecoveryTokenHash(
-      user,
-      token,
-    );
+    await this.usersService.update(user.id, {
+      passwordRecoveryToken: token,
+    });
 
     await sendgridMail.send({
       from: sendgridConfig.sendgridFrom,
@@ -53,7 +51,7 @@ export class MailerService {
       templateId: sendgridConfig.sendgridPasswordTemplateId,
       dynamicTemplateData: {
         subject: messagesHelper.SUBJECT_PASSWORD_RECOVERY,
-        link: `${sendgridConfig.sendgridPasswordRecoveryPage}/?token=${passwordRecoveryToken}`,
+        link: `${sendgridConfig.sendgridPasswordRecoveryPage}?token=${token}`,
       },
     });
   }
@@ -67,20 +65,5 @@ export class MailerService {
       secret: jwtConfig.passwordRecoverySecret,
       expiresIn: jwtConfig.passwordRecoveryExpiresIn,
     });
-  }
-
-  async updatePasswordRecoveryTokenHash(
-    user: User,
-    passwordRecoveryToken: string,
-  ): Promise<string> {
-    const hashedPasswordRecoveryToken = await argon2.hash(
-      passwordRecoveryToken,
-    );
-
-    await this.usersService.update(user.id, {
-      hashedPasswordRecoveryToken: hashedPasswordRecoveryToken,
-    });
-
-    return hashedPasswordRecoveryToken;
   }
 }

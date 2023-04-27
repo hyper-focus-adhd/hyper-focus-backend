@@ -9,4 +9,5 @@ export const messagesHelper = {
   USER_NOT_FOUND: 'User not found',
   SUBJECT_USERNAME_RECOVERY: 'Username recovery',
   SUBJECT_PASSWORD_RECOVERY: 'Password recovery',
+  INVALID_TOKEN: 'Invalid token',
 };

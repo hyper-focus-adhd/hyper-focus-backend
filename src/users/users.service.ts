@@ -2,12 +2,15 @@ import {
   ConflictException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
 import { Repository, UpdateResult } from 'typeorm';
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
+import { jwtConfig } from '../config/jwt.config';
 import { messagesHelper } from '../helpers/messages-helper';
 
 import { User } from './user.entity';
@@ -17,6 +20,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly jwtService: JwtService,
   ) {}
 
   async create(
@@ -56,6 +60,10 @@ export class UsersService {
       await this.verifyExistingUser(attrs.username, attrs.email);
     }
 
+    if (attrs.passwordRecoveryToken) {
+      this.validateAndCheckToken(attrs.passwordRecoveryToken);
+    }
+
     if (attrs.password) {
       const salt = await bcrypt.genSalt(10);
       attrs.password = await bcrypt.hash(attrs.password, salt);
@@ -90,6 +98,51 @@ export class UsersService {
       if (existingUser.email === email) {
         throw new ConflictException(messagesHelper.EMAIL_EXISTS);
       }
+    }
+  }
+
+  async passwordRecovery(
+    password: string,
+    passwordRecoveryToken: string,
+  ): Promise<User> {
+    const isValidToken = this.validateAndCheckToken(passwordRecoveryToken);
+
+    if (isValidToken === false) {
+      throw new UnauthorizedException(messagesHelper.INVALID_TOKEN);
+    }
+
+    const decodedToken = this.jwtService.decode(passwordRecoveryToken);
+    const userId = decodedToken.sub;
+
+    const user = await this.findOneOrFail({
+      where: { id: userId },
+    });
+
+    const salt = await bcrypt.genSalt(10);
+    password = await bcrypt.hash(password, salt);
+
+    user.password = password;
+
+    return this.userRepository.save(user);
+  }
+
+  validateAndCheckToken(token: string): boolean {
+    try {
+      const options = { secret: jwtConfig.passwordRecoverySecret };
+      const decodedToken = this.jwtService.verify(token, options);
+
+      // Check the expiration time
+      const currentTimestamp = Math.floor(Date.now() / 1000);
+      if (decodedToken.exp && currentTimestamp >= decodedToken.exp) {
+        // Token has expired
+        return false;
+      }
+
+      // Token is valid and not expired
+      return true;
+    } catch (error) {
+      // Token verification failed
+      return false;
     }
   }
 }
