@@ -38,6 +38,9 @@ export class User {
   @Column({ nullable: true })
   hashedRefreshToken?: string;
 
+  @Column({ nullable: true })
+  hashedPasswordRecoveryToken?: string;
+
   @CreateDateColumn()
   created_at: Date;
 
