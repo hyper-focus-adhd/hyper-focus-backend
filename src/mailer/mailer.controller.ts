@@ -8,7 +8,7 @@ import { MailerService } from './mailer.service';
 export class MailerController {
   constructor(private readonly mailerService: MailerService) {}
 
-  @Get('username')
+  @Get('username-recovery')
   @PublicRoute()
   async usernameRecovery(@Body('email') email: string) {
     return await this.mailerService.mailUsername(email);
