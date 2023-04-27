@@ -8,6 +8,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { AccessTokenGuard } from './common/guards/access-token.guard';
 import { databaseConfig } from './config/database.config';
+import { MailerModule } from './mailer/mailer.module';
 import { Note } from './notes/note.entity';
 import { NotesModule } from './notes/notes.module';
 import { User } from './users/user.entity';
@@ -29,6 +30,7 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     UsersModule,
     NotesModule,
+    MailerModule,
   ],
   controllers: [AppController],
   providers: [
