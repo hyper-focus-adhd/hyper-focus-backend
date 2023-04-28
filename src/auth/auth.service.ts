@@ -39,16 +39,26 @@ export class AuthService {
     const tokens = await this.generateToken(user);
     await this.updateRefreshTokenHash(user.id, tokens.refreshToken);
 
-    return { username, email, ...tokens };
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      ...tokens,
+    };
   }
 
-  async login(username: string, password: string): Promise<Tokens> {
+  async login(username: string, password: string): Promise<CreateUserType> {
     const user = await this.validateUser(username, password);
 
     const tokens = await this.generateToken(user);
     await this.updateRefreshTokenHash(user.id, tokens.refreshToken);
 
-    return tokens;
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      ...tokens,
+    };
   }
 
   // TODO: Verify log out

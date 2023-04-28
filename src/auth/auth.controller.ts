@@ -35,7 +35,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   @PublicRoute()
-  async login(@Body() body: LoginDto): Promise<Tokens> {
+  async login(@Body() body: LoginDto): Promise<CreateUserType> {
     return await this.authService.login(body.username, body.password);
   }
 
