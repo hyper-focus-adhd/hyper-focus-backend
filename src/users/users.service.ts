@@ -60,10 +60,6 @@ export class UsersService {
       await this.verifyExistingUser(attrs.username, attrs.email);
     }
 
-    if (attrs.passwordRecoveryToken) {
-      this.validateAndCheckToken(attrs.passwordRecoveryToken);
-    }
-
     if (attrs.password) {
       const salt = await bcrypt.genSalt(10);
       attrs.password = await bcrypt.hash(attrs.password, salt);
@@ -122,7 +118,6 @@ export class UsersService {
     password = await bcrypt.hash(password, salt);
 
     user.password = password;
-    user.passwordRecoveryToken = null;
 
     return this.userRepository.save(user);
   }
