@@ -41,10 +41,6 @@ export class MailerService {
 
     const token = await this.generatePasswordRecoveryToken(user);
 
-    await this.usersService.update(user.id, {
-      passwordRecoveryToken: token,
-    });
-
     await sendgridMail.send({
       from: sendgridConfig.sendgridFrom,
       to: user.email,
