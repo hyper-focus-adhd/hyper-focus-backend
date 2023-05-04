@@ -61,7 +61,6 @@ export class AuthService {
     };
   }
 
-  // TODO: Verify log out
   async logout(id: string): Promise<boolean> {
     const user = await this.usersService.findOne({ where: { id } });
     if (!user || !user.hashedRefreshToken) {
@@ -106,7 +105,10 @@ export class AuthService {
     };
   }
 
-  async refreshTokens(id: string, refreshToken: string): Promise<Tokens> {
+  async refreshTokens(
+    id: string,
+    refreshToken: string,
+  ): Promise<{ accessToken: string }> {
     const user = await this.usersService.findOne({ where: { id } });
     if (!user || !user.hashedRefreshToken) {
       throw new ForbiddenException(messagesHelper.ACCESS_DENIED);
@@ -120,9 +122,8 @@ export class AuthService {
       throw new ForbiddenException(messagesHelper.ACCESS_DENIED);
 
     const tokens = await this.generateToken(user);
-    await this.updateRefreshTokenHash(user.id, tokens.refreshToken);
 
-    return tokens;
+    return { accessToken: tokens.accessToken };
   }
 
   async updateRefreshTokenHash(
