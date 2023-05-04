@@ -15,7 +15,6 @@ import { RefreshTokenGuard } from '../common/guards/refresh-token.guard';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { LoginDto } from './dtos/login.dto';
-import { Tokens } from './types';
 import { CreateUserType } from './types/create-user.type';
 
 @Controller('api/v1/auth')
@@ -52,7 +51,7 @@ export class AuthController {
   async refreshTokens(
     @CurrentUserId() id: string,
     @CurrentUser('refreshToken') refreshToken: string,
-  ): Promise<Tokens> {
+  ): Promise<{ accessToken: string }> {
     return this.authService.refreshTokens(id, refreshToken);
   }
 }
