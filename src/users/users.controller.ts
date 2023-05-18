@@ -71,7 +71,7 @@ export class UsersController {
 
   @PublicRoute()
   @Put('password-recovery')
-  async passwordRecovery(@Body() body: UserPasswordRecoveryDto) {
+  async passwordRecovery(@Body() body: UserPasswordRecoveryDto): Promise<User> {
     return await this.usersService.passwordRecovery(
       body.password,
       body.passwordRecoveryToken,
