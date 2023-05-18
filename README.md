@@ -33,3 +33,16 @@ $ yarn run test:e2e
 # test coverage
 $ yarn run test:cov
 ```
+
+## Migrations
+
+```bash
+# generate a migration
+$ yarn migration:generate "src/database/migrations/MigrationName"
+
+# run a migration
+$ yarn migration:run
+
+# revert a migration
+$ yarn migration:revert
+```
