@@ -11,5 +11,8 @@ export class NoteDto {
   color: string;
 
   @Expose()
+  placement: object;
+
+  @Expose()
   user: string;
 }

@@ -15,8 +15,13 @@ export class NotesService {
     @InjectRepository(Note) private readonly notesRepository: Repository<Note>,
   ) {}
 
-  async create(text: string, color: string, user: User): Promise<Note> {
-    const note = await this.notesRepository.create({ text, color });
+  async create(
+    text: string,
+    color: string,
+    placement: object,
+    user: User,
+  ): Promise<Note> {
+    const note = await this.notesRepository.create({ text, color, placement });
 
     note.user = user;
 

@@ -26,6 +26,9 @@ export class Note {
   @Column()
   color: string;
 
+  @Column('json')
+  placement: { x: number; y: number };
+
   @JoinColumn({ name: 'user_id' })
   @ManyToOne(() => User, (user) => user.notes)
   user: User;
@@ -46,17 +49,17 @@ export class Note {
   }
 
   @AfterInsert()
-  logInsert() {
+  logInsert(): void {
     console.log('Inserted User with id', this.id);
   }
 
   @AfterUpdate()
-  logUpdate() {
+  logUpdate(): void {
     console.log('Updated User with id', this.id);
   }
 
   @AfterRemove()
-  logRemove() {
+  logRemove(): void {
     console.log('Removed User with id', this.id);
   }
 }

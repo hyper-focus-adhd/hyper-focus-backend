@@ -11,6 +11,7 @@ import { Repository, UpdateResult } from 'typeorm';
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
 import { jwtConfig } from '../config/jwt.config';
+import { Gender, Language } from '../enums/user.enum';
 import { messagesHelper } from '../helpers/messages-helper';
 
 import { User } from './user.entity';
@@ -27,11 +28,19 @@ export class UsersService {
     username: string,
     email: string,
     password: string,
+    birthdate: Date,
+    gender: Gender,
+    nationality: string,
+    language: Language,
   ): Promise<User> {
     const user = await this.userRepository.create({
       username,
       email,
       password,
+      birthdate,
+      gender,
+      nationality,
+      language,
     });
 
     return this.userRepository.save(user);

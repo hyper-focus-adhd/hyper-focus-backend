@@ -1,12 +1,12 @@
 import { IsNotEmpty, IsString, Matches } from 'class-validator';
 
 import { messagesHelper } from '../../helpers/messages-helper';
-import { regExHelper } from '../../helpers/regExHelper';
+import { regexHelper } from '../../helpers/regex-helper';
 
 export class UserPasswordRecoveryDto {
   @IsNotEmpty()
   @IsString()
-  @Matches(regExHelper.password, {
+  @Matches(regexHelper.password, {
     message: messagesHelper.PASSWORD_VALID,
   })
   password: string;

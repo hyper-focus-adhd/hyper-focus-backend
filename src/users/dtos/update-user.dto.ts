@@ -1,30 +1,58 @@
 import {
+  IsDateString,
   IsEmail,
+  IsEnum,
   IsNotEmpty,
   IsOptional,
   IsString,
   Matches,
 } from 'class-validator';
 
+import { Gender, Language, Role } from '../../enums/user.enum';
 import { messagesHelper } from '../../helpers/messages-helper';
-import { regExHelper } from '../../helpers/regExHelper';
+import { regexHelper } from '../../helpers/regex-helper';
 
 export class UpdateUserDto {
-  @IsNotEmpty()
   @IsOptional()
+  @IsNotEmpty()
   @IsString()
   username: string;
 
-  @IsEmail()
-  @IsNotEmpty()
   @IsOptional()
+  @IsNotEmpty()
+  @IsEnum(Role)
+  role: Role;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsEmail()
   email: string;
 
-  @IsNotEmpty()
   @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  @Matches(regExHelper.password, {
+  @Matches(regexHelper.password, {
     message: messagesHelper.PASSWORD_VALID,
   })
   password: string;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsDateString()
+  birthdate: Date;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsEnum(Gender)
+  gender: Gender;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsString()
+  nationality: string;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsEnum(Language)
+  language: Language;
 }
