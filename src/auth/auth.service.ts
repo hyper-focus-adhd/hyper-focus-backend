@@ -8,6 +8,7 @@ import * as argon2 from 'argon2';
 import * as bcrypt from 'bcryptjs';
 
 import { jwtConfig } from '../config/jwt.config';
+import { Gender, Language } from '../enums/user.enum';
 import { messagesHelper } from '../helpers/messages-helper';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
@@ -26,24 +27,37 @@ export class AuthService {
     username: string,
     email: string,
     password: string,
+    birthdate: Date,
+    gender: Gender,
+    nationality: string,
+    language: Language,
   ): Promise<CreateUserType> {
     await this.usersService.verifyExistingUser(username, email);
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    await this.usersService.create(username, email, hashedPassword);
+    await this.usersService.create(
+      username,
+      email,
+      hashedPassword,
+      birthdate,
+      gender,
+      nationality,
+      language,
+    );
 
     const user = await this.validateUser(username, password);
-
-    const tokens = await this.generateToken(user);
-    await this.updateRefreshTokenHash(user.id, tokens.refreshToken);
 
     return {
       id: user.id,
       username: user.username,
+      role: user.role,
       email: user.email,
-      ...tokens,
+      birthdate: user.birthdate,
+      gender: user.gender,
+      nationality: user.nationality,
+      language: user.language,
     };
   }
 
@@ -56,7 +70,12 @@ export class AuthService {
     return {
       id: user.id,
       username: user.username,
+      role: user.role,
       email: user.email,
+      birthdate: user.birthdate,
+      gender: user.gender,
+      nationality: user.nationality,
+      language: user.language,
       ...tokens,
     };
   }

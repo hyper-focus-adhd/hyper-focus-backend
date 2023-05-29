@@ -12,6 +12,7 @@ import {
 } from 'typeorm';
 import { ulid } from 'ulid';
 
+import { Gender, Language, Role } from '../enums/user.enum';
 import { Note } from '../notes/note.entity';
 
 @Entity()
@@ -22,9 +23,8 @@ export class User {
   @Column({ unique: true })
   username: string;
 
-  // TODO implement role
-  // @Column()
-  // role?: string;
+  @Column({ default: Role.USER })
+  role: Role;
 
   @Column({ unique: true })
   email: string;
@@ -32,11 +32,24 @@ export class User {
   @Column()
   password: string;
 
+  // TODO: improve date format validation
+  @Column({ nullable: true })
+  birthdate: Date;
+
+  @Column({ nullable: true })
+  gender: Gender;
+
+  @Column({ nullable: true })
+  nationality: string;
+
+  @Column({ default: Language.ENGLISH })
+  language: Language;
+
   @OneToMany(() => Note, (note) => note.user, { cascade: true })
   notes: Note[];
 
   @Column({ nullable: true })
-  hashedRefreshToken?: string;
+  hashedRefreshToken: string;
 
   @CreateDateColumn()
   created_at: Date;
@@ -54,17 +67,17 @@ export class User {
   }
 
   @AfterInsert()
-  logInsert() {
+  logInsert(): void {
     console.log('Inserted User with id', this.id);
   }
 
   @AfterUpdate()
-  logUpdate() {
+  logUpdate(): void {
     console.log('Updated User with id', this.id);
   }
 
   @AfterRemove()
-  logRemove() {
+  logRemove(): void {
     console.log('Removed User with id', this.id);
   }
 }

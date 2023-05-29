@@ -1,21 +1,50 @@
-import { IsEmail, IsNotEmpty, IsString, Matches } from 'class-validator';
+import {
+  IsDateString,
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Matches,
+} from 'class-validator';
 
+import { Gender, Language } from '../../enums/user.enum';
 import { messagesHelper } from '../../helpers/messages-helper';
-import { regExHelper } from '../../helpers/regExHelper';
+import { regexHelper } from '../../helpers/regex-helper';
 
 export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   username: string;
 
-  @IsEmail()
   @IsNotEmpty()
+  @IsEmail()
   email: string;
 
   @IsNotEmpty()
   @IsString()
-  @Matches(regExHelper.password, {
+  @Matches(regexHelper.password, {
     message: messagesHelper.PASSWORD_VALID,
   })
   password: string;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsDateString()
+  birthdate: Date;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsEnum(Gender)
+  gender: Gender;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsString()
+  nationality: string;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsEnum(Language)
+  language: Language;
 }

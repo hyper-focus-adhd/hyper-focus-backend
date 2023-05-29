@@ -42,32 +42,15 @@ export class UsersController {
     return await this.usersService.update(userId, body);
   }
 
-  // @Patch(':id')
-  // async updateUser(
-  //   @Param('id') id: string,
-  //   @Body() body: UpdateUserDto,
-  // ): Promise<User> {
-  //   return await this.usersService.update(id, body);
-  // }
-
   @Delete()
   async deleteUser(@CurrentUserId() userId: string): Promise<UpdateResult> {
     return await this.usersService.delete(userId);
   }
 
-  // @Delete(':id')
-  // async deleteUser(@Param('id') id: string): Promise<UpdateResult> {
-  //   return await this.usersService.delete(id);
-
   @Patch('restore')
   async restoreUser(@CurrentUserId() userId: string): Promise<UpdateResult> {
     return await this.usersService.restore(userId);
   }
-
-  // @Patch('restore/:id')
-  // async restoreUser(@Param('id') id: string): Promise<UpdateResult> {
-  //   return await this.usersService.restore(id);
-  // }
 
   @PublicRoute()
   @Put('password-recovery')

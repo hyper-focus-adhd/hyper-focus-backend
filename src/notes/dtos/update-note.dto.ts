@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsObject, IsOptional, IsString } from 'class-validator';
 
 export class UpdateNoteDto {
   @IsNotEmpty()
@@ -10,4 +10,9 @@ export class UpdateNoteDto {
   @IsOptional()
   @IsString()
   color: string;
+
+  @IsNotEmpty()
+  @IsOptional()
+  @IsObject()
+  placement: { x: number; y: number };
 }

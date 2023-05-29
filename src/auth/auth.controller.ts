@@ -28,6 +28,10 @@ export class AuthController {
       body.username,
       body.email,
       body.password,
+      body.birthdate,
+      body.gender,
+      body.nationality,
+      body.language,
     );
   }
 
