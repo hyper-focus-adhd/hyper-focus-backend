@@ -9,6 +9,7 @@ import { AccessTokenGuard } from './common/guards/access-token.guard';
 import { dataSourceOptions } from './database/data-source';
 import { MailerModule } from './mailer/mailer.module';
 import { NotesModule } from './notes/notes.module';
+import { TasksModule } from './tasks/tasks.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -18,6 +19,7 @@ import { UsersModule } from './users/users.module';
     UsersModule,
     NotesModule,
     MailerModule,
+    TasksModule,
   ],
   controllers: [AppController],
   providers: [

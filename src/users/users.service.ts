@@ -11,10 +11,11 @@ import { Repository, UpdateResult } from 'typeorm';
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
 import { jwtConfig } from '../config/jwt.config';
-import { Gender, Language } from '../enums/user.enum';
 import { messagesHelper } from '../helpers/messages-helper';
 
-import { User } from './user.entity';
+import { CreateUserDto } from './dtos/create-user.dto';
+import { UpdateUserDto } from './dtos/update-user.dto';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -25,22 +26,17 @@ export class UsersService {
   ) {}
 
   async create(
-    username: string,
-    email: string,
-    password: string,
-    birthdate: Date,
-    gender: Gender,
-    nationality: string,
-    language: Language,
+    createUserDto: CreateUserDto,
+    hashedPassword?: string,
   ): Promise<User> {
     const user = await this.userRepository.create({
-      username,
-      email,
-      password,
-      birthdate,
-      gender,
-      nationality,
-      language,
+      username: createUserDto.username,
+      email: createUserDto.email,
+      password: hashedPassword,
+      birthdate: createUserDto.birthdate,
+      gender: createUserDto.gender,
+      nationality: createUserDto.nationality,
+      language: createUserDto.language,
     });
 
     return this.userRepository.save(user);
@@ -62,19 +58,22 @@ export class UsersService {
     }
   }
 
-  async update(id: string, attrs: Partial<User>): Promise<User> {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.findOneOrFail({ where: { id } });
 
-    if (attrs.username || attrs.email) {
-      await this.verifyExistingUser(attrs.username, attrs.email);
+    if (updateUserDto.username || updateUserDto.email) {
+      await this.verifyExistingUser(
+        updateUserDto.username,
+        updateUserDto.email,
+      );
     }
 
-    if (attrs.password) {
+    if (updateUserDto.password) {
       const salt = await bcrypt.genSalt(10);
-      attrs.password = await bcrypt.hash(attrs.password, salt);
+      updateUserDto.password = await bcrypt.hash(updateUserDto.password, salt);
     }
 
-    this.userRepository.merge(user, attrs);
+    this.userRepository.merge(user, updateUserDto);
 
     return this.userRepository.save(user);
   }

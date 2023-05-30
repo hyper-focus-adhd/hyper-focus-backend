@@ -11,9 +11,9 @@ import { CurrentUserId } from '../common/decorators/current-user-id.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { PublicRoute } from '../common/decorators/public.decorator';
 import { RefreshTokenGuard } from '../common/guards/refresh-token.guard';
+import { CreateUserDto } from '../users/dtos/create-user.dto';
 
 import { AuthService } from './auth.service';
-import { CreateUserDto } from './dtos/create-user.dto';
 import { LoginDto } from './dtos/login.dto';
 import { CreateUserType } from './types/create-user.type';
 
@@ -24,22 +24,14 @@ export class AuthController {
   @Post('signup')
   @PublicRoute()
   async createUser(@Body() body: CreateUserDto): Promise<CreateUserType> {
-    return await this.authService.signUp(
-      body.username,
-      body.email,
-      body.password,
-      body.birthdate,
-      body.gender,
-      body.nationality,
-      body.language,
-    );
+    return await this.authService.signUp(body);
   }
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
   @PublicRoute()
   async login(@Body() body: LoginDto): Promise<CreateUserType> {
-    return await this.authService.login(body.username, body.password);
+    return await this.authService.login(body);
   }
 
   @HttpCode(HttpStatus.OK)

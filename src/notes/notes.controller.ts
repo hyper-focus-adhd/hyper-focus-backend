@@ -11,12 +11,12 @@ import { UpdateResult } from 'typeorm';
 
 import { CurrentUserId } from '../common/decorators/current-user-id.decorator';
 import { Serialize } from '../interceptors/serialize.interceptor';
-import { User } from '../users/user.entity';
+import { User } from '../users/entities/user.entity';
 
 import { CreateNoteDto } from './dtos/create-note.dto';
 import { NoteDto } from './dtos/note.dto';
 import { UpdateNoteDto } from './dtos/update-note.dto';
-import { Note } from './note.entity';
+import { Note } from './entities/note.entity';
 import { NotesService } from './notes.service';
 
 @Controller('api/v1/note')
@@ -29,12 +29,7 @@ export class NotesController {
     @Body() body: CreateNoteDto,
     @CurrentUserId() userId: User,
   ): Promise<Note> {
-    return await this.noteService.create(
-      body.text,
-      body.color,
-      body.placement,
-      userId,
-    );
+    return await this.noteService.create(body, userId);
   }
 
   @Get()

@@ -5,9 +5,11 @@ import { FindManyOptions } from 'typeorm/find-options/FindManyOptions';
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
 import { messagesHelper } from '../helpers/messages-helper';
-import { User } from '../users/user.entity';
+import { User } from '../users/entities/user.entity';
 
-import { Note } from './note.entity';
+import { CreateNoteDto } from './dtos/create-note.dto';
+import { UpdateNoteDto } from './dtos/update-note.dto';
+import { Note } from './entities/note.entity';
 
 @Injectable()
 export class NotesService {
@@ -15,13 +17,12 @@ export class NotesService {
     @InjectRepository(Note) private readonly notesRepository: Repository<Note>,
   ) {}
 
-  async create(
-    text: string,
-    color: string,
-    placement: object,
-    user: User,
-  ): Promise<Note> {
-    const note = await this.notesRepository.create({ text, color, placement });
+  async create(createNoteDto: CreateNoteDto, user: User): Promise<Note> {
+    const note = await this.notesRepository.create({
+      text: createNoteDto.text,
+      color: createNoteDto.color,
+      placement: createNoteDto.placement,
+    });
 
     note.user = user;
 
@@ -42,14 +43,14 @@ export class NotesService {
 
   async update(
     noteId: string,
-    attrs: Partial<Note>,
+    updateNoteDto: UpdateNoteDto,
     userId: string,
   ): Promise<Note> {
     const note = await this.findOneOrFail({
       where: { id: noteId, user: { id: userId } },
     });
 
-    this.notesRepository.merge(note, attrs);
+    this.notesRepository.merge(note, updateNoteDto);
 
     return this.notesRepository.save(note);
   }

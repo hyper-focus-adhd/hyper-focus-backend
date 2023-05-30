@@ -16,7 +16,7 @@ import { Serialize } from '../interceptors/serialize.interceptor';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UserPasswordRecoveryDto } from './dtos/user-password-recovery.dto';
 import { UserDto } from './dtos/user.dto';
-import { User } from './user.entity';
+import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 
 @Controller('api/v1/user')

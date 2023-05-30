@@ -12,8 +12,9 @@ import {
 } from 'typeorm';
 import { ulid } from 'ulid';
 
-import { Gender, Language, Role } from '../enums/user.enum';
-import { Note } from '../notes/note.entity';
+import { Gender, Language, Role } from '../../enums/user.enum';
+import { Note } from '../../notes/entities/note.entity';
+import { Task } from '../../tasks/entities/task.entity';
 
 @Entity()
 export class User {
@@ -45,11 +46,14 @@ export class User {
   @Column({ default: Language.ENGLISH })
   language: Language;
 
+  @Column({ nullable: true })
+  hashedRefreshToken: string;
+
   @OneToMany(() => Note, (note) => note.user, { cascade: true })
   notes: Note[];
 
-  @Column({ nullable: true })
-  hashedRefreshToken: string;
+  @OneToMany(() => Task, (task) => task.user, { cascade: true })
+  tasks: Task[];
 
   @CreateDateColumn()
   created_at: Date;

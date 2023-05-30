@@ -1,21 +1,26 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { IsNotEmpty, IsObject, IsOptional, IsString } from 'class-validator';
 
-import { CreateNoteDto } from './create-note.dto';
+import { CreateTaskDto } from './create-task.dto';
 
-export class UpdateNoteDto extends PartialType(CreateNoteDto) {
+export class UpdateTaskDto extends PartialType(CreateTaskDto) {
   @IsOptional()
   @IsNotEmpty()
   @IsString()
-  text: string;
+  title: string;
 
   @IsOptional()
   @IsNotEmpty()
   @IsString()
-  color: string;
+  description: string;
 
   @IsOptional()
   @IsNotEmpty()
   @IsObject()
-  placement: { x: number; y: number };
+  date: { start: Date; end: Date };
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsObject()
+  time: { start: Date; end: Date };
 }

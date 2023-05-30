@@ -8,11 +8,12 @@ import * as argon2 from 'argon2';
 import * as bcrypt from 'bcryptjs';
 
 import { jwtConfig } from '../config/jwt.config';
-import { Gender, Language } from '../enums/user.enum';
 import { messagesHelper } from '../helpers/messages-helper';
-import { User } from '../users/user.entity';
+import { CreateUserDto } from '../users/dtos/create-user.dto';
+import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 
+import { LoginDto } from './dtos/login.dto';
 import { JwtPayload, Tokens } from './types';
 import { CreateUserType } from './types/create-user.type';
 
@@ -23,31 +24,21 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signUp(
-    username: string,
-    email: string,
-    password: string,
-    birthdate: Date,
-    gender: Gender,
-    nationality: string,
-    language: Language,
-  ): Promise<CreateUserType> {
-    await this.usersService.verifyExistingUser(username, email);
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    await this.usersService.create(
-      username,
-      email,
-      hashedPassword,
-      birthdate,
-      gender,
-      nationality,
-      language,
+  async signUp(createUserDto: CreateUserDto): Promise<CreateUserType> {
+    await this.usersService.verifyExistingUser(
+      createUserDto.username,
+      createUserDto.email,
     );
 
-    const user = await this.validateUser(username, password);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
+
+    await this.usersService.create(createUserDto, hashedPassword);
+
+    const user = await this.validateUser(
+      createUserDto.username,
+      createUserDto.password,
+    );
 
     return {
       id: user.id,
@@ -61,8 +52,8 @@ export class AuthService {
     };
   }
 
-  async login(username: string, password: string): Promise<CreateUserType> {
-    const user = await this.validateUser(username, password);
+  async login(loginDto: LoginDto): Promise<CreateUserType> {
+    const user = await this.validateUser(loginDto.username, loginDto.password);
 
     const tokens = await this.generateToken(user);
     await this.updateRefreshTokenHash(user.id, tokens.refreshToken);

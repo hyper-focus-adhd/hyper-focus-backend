@@ -13,7 +13,7 @@ import {
 } from 'typeorm';
 import { ulid } from 'ulid';
 
-import { User } from '../users/user.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity()
 export class Note {
@@ -50,16 +50,16 @@ export class Note {
 
   @AfterInsert()
   logInsert(): void {
-    console.log('Inserted User with id', this.id);
+    console.log('Inserted Note with id', this.id);
   }
 
   @AfterUpdate()
   logUpdate(): void {
-    console.log('Updated User with id', this.id);
+    console.log('Updated Note with id', this.id);
   }
 
   @AfterRemove()
   logRemove(): void {
-    console.log('Removed User with id', this.id);
+    console.log('Removed Note with id', this.id);
   }
 }
