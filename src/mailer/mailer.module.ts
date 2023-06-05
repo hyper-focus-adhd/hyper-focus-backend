@@ -12,6 +12,5 @@ import { MailerService } from './mailer.service';
   imports: [TypeOrmModule.forFeature([User]), JwtModule.register({})],
   controllers: [MailerController],
   providers: [MailerService, UsersService],
-  exports: [MailerService],
 })
 export class MailerModule {}

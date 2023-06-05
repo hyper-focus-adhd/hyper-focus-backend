@@ -26,7 +26,7 @@ export class Note {
   @Column()
   color: string;
 
-  @Column('json')
+  @Column({ type: 'json' })
   placement: { x: number; y: number };
 
   @JoinColumn({ name: 'user_id' })

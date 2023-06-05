@@ -22,19 +22,21 @@ import { NotesService } from './notes.service';
 @Controller('api/v1/note')
 @Serialize(NoteDto)
 export class NotesController {
-  constructor(private readonly noteService: NotesService) {}
+  constructor(private readonly notesService: NotesService) {}
 
   @Post()
   async createNote(
     @Body() body: CreateNoteDto,
     @CurrentUserId() userId: User,
   ): Promise<Note> {
-    return await this.noteService.create(body, userId);
+    return await this.notesService.create(body, userId);
   }
 
   @Get()
-  async getNotesByUserId(@CurrentUserId() userId: string): Promise<Note[]> {
-    return this.noteService.findAllByUser({ where: { user: { id: userId } } });
+  async findAllNotesByUserId(@CurrentUserId() userId: string): Promise<Note[]> {
+    return await this.notesService.findAllByUser({
+      where: { user: { id: userId } },
+    });
   }
 
   @Patch(':noteId')
@@ -43,15 +45,15 @@ export class NotesController {
     @CurrentUserId() userId: string,
     @Param('noteId') noteId: string,
   ): Promise<Note> {
-    return await this.noteService.update(noteId, body, userId);
+    return await this.notesService.update(noteId, body, userId);
   }
 
   @Delete(':noteId')
-  async deleteNote(
+  async removeNote(
     @CurrentUserId() userId: string,
     @Param('noteId') noteId: string,
   ): Promise<UpdateResult> {
-    return await this.noteService.delete(noteId, userId);
+    return await this.notesService.remove(noteId, userId);
   }
 
   @Patch('restore/:noteId')
@@ -59,6 +61,6 @@ export class NotesController {
     @CurrentUserId() userId: string,
     @Param('noteId') noteId: string,
   ): Promise<UpdateResult> {
-    return await this.noteService.restore(noteId, userId);
+    return await this.notesService.restore(noteId, userId);
   }
 }

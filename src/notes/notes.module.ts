@@ -11,6 +11,5 @@ import { NotesService } from './notes.service';
   imports: [TypeOrmModule.forFeature([User, Note])],
   controllers: [NotesController],
   providers: [NotesService],
-  exports: [NotesService],
 })
 export class NotesModule {}

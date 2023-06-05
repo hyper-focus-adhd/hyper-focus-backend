@@ -26,10 +26,10 @@ export class Task {
   @Column({ nullable: true })
   description: string;
 
-  @Column('json')
+  @Column({ type: 'json' })
   date: { start: Date; end: Date };
 
-  @Column('json', { nullable: true })
+  @Column({ type: 'json', nullable: true })
   time: { start: Date; end: Date };
 
   @JoinColumn({ name: 'user_id' })

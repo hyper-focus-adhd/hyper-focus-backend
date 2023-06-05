@@ -1,6 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
 import {
-  IsDateString,
   IsEmail,
   IsEnum,
   IsNotEmpty,
@@ -9,6 +8,7 @@ import {
   Matches,
 } from 'class-validator';
 
+import { IsCustomDate } from '../../common/decorators/date.decorator';
 import { Gender, Language, Role } from '../../enums/user.enum';
 import { messagesHelper } from '../../helpers/messages-helper';
 import { regexHelper } from '../../helpers/regex-helper';
@@ -41,7 +41,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
 
   @IsOptional()
   @IsNotEmpty()
-  @IsDateString()
+  @IsCustomDate()
   birthdate?: Date;
 
   @IsOptional()

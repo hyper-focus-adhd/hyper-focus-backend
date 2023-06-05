@@ -33,8 +33,7 @@ export class User {
   @Column()
   password: string;
 
-  // TODO: improve date format validation
-  @Column({ nullable: true })
+  @Column({ type: 'date', nullable: true })
   birthdate: Date;
 
   @Column({ nullable: true })

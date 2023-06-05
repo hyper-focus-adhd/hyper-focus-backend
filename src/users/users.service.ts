@@ -20,8 +20,7 @@ import { User } from './entities/user.entity';
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -39,7 +38,7 @@ export class UsersService {
       language: createUserDto.language,
     });
 
-    return this.userRepository.save(user);
+    return await this.userRepository.save(user);
   }
 
   async findAll(): Promise<User[]> {
@@ -59,14 +58,14 @@ export class UsersService {
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.findOneOrFail({ where: { id } });
-
     if (updateUserDto.username || updateUserDto.email) {
       await this.verifyExistingUser(
         updateUserDto.username,
         updateUserDto.email,
       );
     }
+
+    const user = await this.findOneOrFail({ where: { id } });
 
     if (updateUserDto.password) {
       const salt = await bcrypt.genSalt(10);
@@ -75,24 +74,25 @@ export class UsersService {
 
     this.userRepository.merge(user, updateUserDto);
 
-    return this.userRepository.save(user);
+    return await this.userRepository.save(user);
   }
 
-  async delete(id: string): Promise<UpdateResult> {
+  async remove(id: string): Promise<UpdateResult> {
     const user = await this.findOneOrFail({ where: { id } });
 
-    return this.userRepository.softDelete(user.id);
+    return await this.userRepository.softDelete(user.id);
   }
 
   async restore(id: string): Promise<UpdateResult> {
     const user = await this.findOneOrFail({ where: { id }, withDeleted: true });
 
-    return this.userRepository.restore(user.id);
+    return await this.userRepository.restore(user.id);
   }
 
   async verifyExistingUser(username: string, email: string): Promise<void> {
     const existingUser = await this.findOne({
       where: [{ username }, { email }],
+      withDeleted: true,
     });
 
     if (existingUser) {
@@ -127,7 +127,7 @@ export class UsersService {
 
     user.password = password;
 
-    return this.userRepository.save(user);
+    return await this.userRepository.save(user);
   }
 
   validateAndCheckToken(token: string): boolean {

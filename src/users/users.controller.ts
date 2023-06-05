@@ -43,8 +43,8 @@ export class UsersController {
   }
 
   @Delete()
-  async deleteUser(@CurrentUserId() userId: string): Promise<UpdateResult> {
-    return await this.usersService.delete(userId);
+  async removeUser(@CurrentUserId() userId: string): Promise<UpdateResult> {
+    return await this.usersService.remove(userId);
   }
 
   @Patch('restore')

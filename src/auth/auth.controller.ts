@@ -23,7 +23,7 @@ export class AuthController {
 
   @Post('signup')
   @PublicRoute()
-  async createUser(@Body() body: CreateUserDto): Promise<CreateUserType> {
+  async signUp(@Body() body: CreateUserDto): Promise<CreateUserType> {
     return await this.authService.signUp(body);
   }
 
@@ -37,7 +37,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('logout')
   async logout(@CurrentUserId() id: string): Promise<boolean> {
-    return this.authService.logout(id);
+    return await this.authService.logout(id);
   }
 
   @HttpCode(HttpStatus.OK)
@@ -48,6 +48,6 @@ export class AuthController {
     @CurrentUserId() id: string,
     @CurrentUser('refreshToken') refreshToken: string,
   ): Promise<{ accessToken: string }> {
-    return this.authService.refreshTokens(id, refreshToken);
+    return await this.authService.refreshTokens(id, refreshToken);
   }
 }
