@@ -5,36 +5,37 @@ import { FindManyOptions } from 'typeorm/find-options/FindManyOptions';
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
 import { messagesHelper } from '../helpers/messages-helper';
-import { User } from '../users/user.entity';
+import { User } from '../users/entities/user.entity';
 
-import { Note } from './note.entity';
+import { CreateNoteDto } from './dtos/create-note.dto';
+import { UpdateNoteDto } from './dtos/update-note.dto';
+import { Note } from './entities/note.entity';
 
 @Injectable()
 export class NotesService {
   constructor(
-    @InjectRepository(Note) private readonly notesRepository: Repository<Note>,
+    @InjectRepository(Note) private readonly noteRepository: Repository<Note>,
   ) {}
 
-  async create(
-    text: string,
-    color: string,
-    placement: object,
-    user: User,
-  ): Promise<Note> {
-    const note = await this.notesRepository.create({ text, color, placement });
+  async create(createNoteDto: CreateNoteDto, user: User): Promise<Note> {
+    const note = await this.noteRepository.create({
+      text: createNoteDto.text,
+      color: createNoteDto.color,
+      placement: createNoteDto.placement,
+    });
 
     note.user = user;
 
-    return this.notesRepository.save(note);
+    return await this.noteRepository.save(note);
   }
 
   async findAllByUser(options?: FindManyOptions<Note>): Promise<Note[]> {
-    return this.notesRepository.find(options);
+    return await this.noteRepository.find(options);
   }
 
   async findOneOrFail(options: FindOneOptions<Note>): Promise<Note> {
     try {
-      return await this.notesRepository.findOneOrFail(options);
+      return await this.noteRepository.findOneOrFail(options);
     } catch (error: any) {
       throw new NotFoundException(messagesHelper.NOTE_NOT_FOUND);
     }
@@ -42,24 +43,24 @@ export class NotesService {
 
   async update(
     noteId: string,
-    attrs: Partial<Note>,
+    updateNoteDto: UpdateNoteDto,
     userId: string,
   ): Promise<Note> {
     const note = await this.findOneOrFail({
       where: { id: noteId, user: { id: userId } },
     });
 
-    this.notesRepository.merge(note, attrs);
+    this.noteRepository.merge(note, updateNoteDto);
 
-    return this.notesRepository.save(note);
+    return await this.noteRepository.save(note);
   }
 
-  async delete(noteId: string, userId: string): Promise<UpdateResult> {
-    const note = await this.notesRepository.findOneOrFail({
+  async remove(noteId: string, userId: string): Promise<UpdateResult> {
+    const note = await this.noteRepository.findOneOrFail({
       where: { id: noteId, user: { id: userId } },
     });
 
-    return this.notesRepository.softDelete(note.id);
+    return await this.noteRepository.softDelete(note.id);
   }
 
   async restore(noteId: string, userId: string): Promise<UpdateResult> {
@@ -68,6 +69,6 @@ export class NotesService {
       withDeleted: true,
     });
 
-    return this.notesRepository.restore(note.id);
+    return await this.noteRepository.restore(note.id);
   }
 }

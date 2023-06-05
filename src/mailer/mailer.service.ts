@@ -6,7 +6,7 @@ import { JwtPayload } from '../auth/types';
 import { jwtConfig } from '../config/jwt.config';
 import { sendgridConfig } from '../config/sendgrid.config';
 import { messagesHelper } from '../helpers/messages-helper';
-import { User } from '../users/user.entity';
+import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 
 @Injectable()

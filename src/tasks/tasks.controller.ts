@@ -1,0 +1,66 @@
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
+import { UpdateResult } from 'typeorm';
+
+import { CurrentUserId } from '../common/decorators/current-user-id.decorator';
+import { Serialize } from '../interceptors/serialize.interceptor';
+import { User } from '../users/entities/user.entity';
+
+import { CreateTaskDto } from './dto/create-task.dto';
+import { TaskDto } from './dto/task.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
+import { Task } from './entities/task.entity';
+import { TasksService } from './tasks.service';
+
+@Controller('api/v1/task')
+@Serialize(TaskDto)
+export class TasksController {
+  constructor(private readonly tasksService: TasksService) {}
+
+  @Post()
+  async createTask(
+    @Body() body: CreateTaskDto,
+    @CurrentUserId() userId: User,
+  ): Promise<Task> {
+    return await this.tasksService.create(body, userId);
+  }
+
+  @Get()
+  async findAllTasksByUserId(@CurrentUserId() userId: string): Promise<Task[]> {
+    return await this.tasksService.findAllByUser({
+      where: { user: { id: userId } },
+    });
+  }
+
+  @Patch(':taskId')
+  async updateTask(
+    @Body() body: UpdateTaskDto,
+    @CurrentUserId() userId: string,
+    @Param('taskId') taskId: string,
+  ): Promise<Task> {
+    return await this.tasksService.update(taskId, body, userId);
+  }
+
+  @Delete(':taskId')
+  async removeTask(
+    @CurrentUserId() userId: string,
+    @Param('taskId') taskId: string,
+  ): Promise<UpdateResult> {
+    return await this.tasksService.remove(taskId, userId);
+  }
+
+  @Patch('restore/:taskId')
+  async restoreTask(
+    @CurrentUserId() userId: string,
+    @Param('taskId') taskId: string,
+  ): Promise<UpdateResult> {
+    return await this.tasksService.restore(taskId, userId);
+  }
+}

@@ -13,6 +13,5 @@ import { RefreshTokenStrategy } from './strategies/refresh-token.strategy';
   imports: [UsersModule, PassportModule, JwtModule.register({})],
   providers: [AuthService, AccessTokenStrategy, RefreshTokenStrategy],
   controllers: [AuthController],
-  exports: [AuthService],
 })
 export class AuthModule {}

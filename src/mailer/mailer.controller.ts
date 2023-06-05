@@ -10,13 +10,13 @@ export class MailerController {
 
   @Post('username-recovery')
   @PublicRoute()
-  async usernameRecovery(@Body('email') email: string) {
+  async usernameRecovery(@Body('email') email: string): Promise<void> {
     return await this.mailerService.mailUsername(email);
   }
 
   @Post('password-recovery')
   @PublicRoute()
-  async passwordRecovery(@Body('email') email: string) {
+  async passwordRecovery(@Body('email') email: string): Promise<void> {
     return await this.mailerService.mailPasswordLink(email);
   }
 }

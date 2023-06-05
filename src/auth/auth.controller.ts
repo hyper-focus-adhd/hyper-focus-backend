@@ -11,9 +11,9 @@ import { CurrentUserId } from '../common/decorators/current-user-id.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { PublicRoute } from '../common/decorators/public.decorator';
 import { RefreshTokenGuard } from '../common/guards/refresh-token.guard';
+import { CreateUserDto } from '../users/dtos/create-user.dto';
 
 import { AuthService } from './auth.service';
-import { CreateUserDto } from './dtos/create-user.dto';
 import { LoginDto } from './dtos/login.dto';
 import { CreateUserType } from './types/create-user.type';
 
@@ -23,29 +23,21 @@ export class AuthController {
 
   @Post('signup')
   @PublicRoute()
-  async createUser(@Body() body: CreateUserDto): Promise<CreateUserType> {
-    return await this.authService.signUp(
-      body.username,
-      body.email,
-      body.password,
-      body.birthdate,
-      body.gender,
-      body.nationality,
-      body.language,
-    );
+  async signUp(@Body() body: CreateUserDto): Promise<CreateUserType> {
+    return await this.authService.signUp(body);
   }
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
   @PublicRoute()
   async login(@Body() body: LoginDto): Promise<CreateUserType> {
-    return await this.authService.login(body.username, body.password);
+    return await this.authService.login(body);
   }
 
   @HttpCode(HttpStatus.OK)
   @Post('logout')
   async logout(@CurrentUserId() id: string): Promise<boolean> {
-    return this.authService.logout(id);
+    return await this.authService.logout(id);
   }
 
   @HttpCode(HttpStatus.OK)
@@ -56,6 +48,6 @@ export class AuthController {
     @CurrentUserId() id: string,
     @CurrentUser('refreshToken') refreshToken: string,
   ): Promise<{ accessToken: string }> {
-    return this.authService.refreshTokens(id, refreshToken);
+    return await this.authService.refreshTokens(id, refreshToken);
   }
 }

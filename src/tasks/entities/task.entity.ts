@@ -13,21 +13,24 @@ import {
 } from 'typeorm';
 import { ulid } from 'ulid';
 
-import { User } from '../users/user.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity()
-export class Note {
+export class Task {
   @PrimaryColumn()
   id: string;
 
   @Column()
-  text: string;
+  title: string;
 
-  @Column()
-  color: string;
+  @Column({ nullable: true })
+  description: string;
 
-  @Column('json')
-  placement: { x: number; y: number };
+  @Column({ type: 'json' })
+  date: { start: Date; end: Date };
+
+  @Column({ type: 'json', nullable: true })
+  time: { start: Date; end: Date };
 
   @JoinColumn({ name: 'user_id' })
   @ManyToOne(() => User, (user) => user.notes)
@@ -50,16 +53,16 @@ export class Note {
 
   @AfterInsert()
   logInsert(): void {
-    console.log('Inserted User with id', this.id);
+    console.log('Inserted Task with id', this.id);
   }
 
   @AfterUpdate()
   logUpdate(): void {
-    console.log('Updated User with id', this.id);
+    console.log('Updated Task with id', this.id);
   }
 
   @AfterRemove()
   logRemove(): void {
-    console.log('Removed User with id', this.id);
+    console.log('Removed Task with id', this.id);
   }
 }

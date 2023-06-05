@@ -1,5 +1,7 @@
+import { PartialType } from '@nestjs/mapped-types';
+import { Transform } from 'class-transformer';
 import {
-  IsDateString,
+  IsDate,
   IsEmail,
   IsEnum,
   IsNotEmpty,
@@ -7,26 +9,29 @@ import {
   IsString,
   Matches,
 } from 'class-validator';
+import * as moment from 'moment/moment';
 
 import { Gender, Language, Role } from '../../enums/user.enum';
 import { messagesHelper } from '../../helpers/messages-helper';
 import { regexHelper } from '../../helpers/regex-helper';
 
-export class UpdateUserDto {
+import { CreateUserDto } from './create-user.dto';
+
+export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsOptional()
   @IsNotEmpty()
   @IsString()
-  username: string;
+  username?: string;
 
   @IsOptional()
   @IsNotEmpty()
   @IsEnum(Role)
-  role: Role;
+  role?: Role;
 
   @IsOptional()
   @IsNotEmpty()
   @IsEmail()
-  email: string;
+  email?: string;
 
   @IsOptional()
   @IsNotEmpty()
@@ -34,25 +39,33 @@ export class UpdateUserDto {
   @Matches(regexHelper.password, {
     message: messagesHelper.PASSWORD_VALID,
   })
-  password: string;
+  password?: string;
 
   @IsOptional()
   @IsNotEmpty()
-  @IsDateString()
-  birthdate: Date;
+  @Transform(({ value }) =>
+    moment(value, ['DD-MM-YYYY', 'MM-DD-YYYY'], true).toDate(),
+  )
+  @IsDate({ message: messagesHelper.DATE_FORMAT })
+  birthdate?: Date;
 
   @IsOptional()
   @IsNotEmpty()
   @IsEnum(Gender)
-  gender: Gender;
+  gender?: Gender;
 
   @IsOptional()
   @IsNotEmpty()
   @IsString()
-  nationality: string;
+  nationality?: string;
 
   @IsOptional()
   @IsNotEmpty()
   @IsEnum(Language)
-  language: Language;
+  language?: Language;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsString()
+  hashedRefreshToken?: string;
 }
