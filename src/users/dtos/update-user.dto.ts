@@ -1,5 +1,7 @@
 import { PartialType } from '@nestjs/mapped-types';
+import { Transform } from 'class-transformer';
 import {
+  IsDate,
   IsEmail,
   IsEnum,
   IsNotEmpty,
@@ -7,8 +9,8 @@ import {
   IsString,
   Matches,
 } from 'class-validator';
+import * as moment from 'moment/moment';
 
-import { IsCustomDate } from '../../common/decorators/date.decorator';
 import { Gender, Language, Role } from '../../enums/user.enum';
 import { messagesHelper } from '../../helpers/messages-helper';
 import { regexHelper } from '../../helpers/regex-helper';
@@ -41,7 +43,10 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
 
   @IsOptional()
   @IsNotEmpty()
-  @IsCustomDate()
+  @Transform(({ value }) =>
+    moment(value, ['DD-MM-YYYY', 'MM-DD-YYYY'], true).toDate(),
+  )
+  @IsDate({ message: messagesHelper.DATE_FORMAT })
   birthdate?: Date;
 
   @IsOptional()
@@ -62,5 +67,5 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsOptional()
   @IsNotEmpty()
   @IsString()
-  hashedRefreshToken?;
+  hashedRefreshToken?: string;
 }

@@ -1,4 +1,6 @@
+import { Transform } from 'class-transformer';
 import {
+  IsDate,
   IsEmail,
   IsEnum,
   IsNotEmpty,
@@ -6,8 +8,8 @@ import {
   IsString,
   Matches,
 } from 'class-validator';
+import * as moment from 'moment';
 
-import { IsCustomDate } from '../../common/decorators/date.decorator';
 import { Gender, Language } from '../../enums/user.enum';
 import { messagesHelper } from '../../helpers/messages-helper';
 import { regexHelper } from '../../helpers/regex-helper';
@@ -30,7 +32,10 @@ export class CreateUserDto {
 
   @IsOptional()
   @IsNotEmpty()
-  @IsCustomDate()
+  @Transform(({ value }) =>
+    moment(value, ['DD-MM-YYYY', 'MM-DD-YYYY'], true).toDate(),
+  )
+  @IsDate({ message: messagesHelper.DATE_FORMAT })
   birthdate: Date;
 
   @IsOptional()
