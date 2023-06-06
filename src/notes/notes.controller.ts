@@ -29,12 +29,12 @@ export class NotesController {
     @Body() body: CreateNoteDto,
     @CurrentUserId() userId: User,
   ): Promise<Note> {
-    return await this.notesService.create(body, userId);
+    return await this.notesService.createNote(body, userId);
   }
 
   @Get()
   async findAllNotesByUserId(@CurrentUserId() userId: string): Promise<Note[]> {
-    return await this.notesService.findAllByUser({
+    return await this.notesService.findAllNotesByUserId({
       where: { user: { id: userId } },
     });
   }
@@ -45,7 +45,7 @@ export class NotesController {
     @CurrentUserId() userId: string,
     @Param('noteId') noteId: string,
   ): Promise<Note> {
-    return await this.notesService.update(noteId, body, userId);
+    return await this.notesService.updateNote(noteId, body, userId);
   }
 
   @Delete(':noteId')
@@ -53,7 +53,7 @@ export class NotesController {
     @CurrentUserId() userId: string,
     @Param('noteId') noteId: string,
   ): Promise<UpdateResult> {
-    return await this.notesService.remove(noteId, userId);
+    return await this.notesService.removeNote(noteId, userId);
   }
 
   @Patch('restore/:noteId')
@@ -61,6 +61,6 @@ export class NotesController {
     @CurrentUserId() userId: string,
     @Param('noteId') noteId: string,
   ): Promise<UpdateResult> {
-    return await this.notesService.restore(noteId, userId);
+    return await this.notesService.restoreNote(noteId, userId);
   }
 }

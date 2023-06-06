@@ -33,7 +33,7 @@ export class AuthService {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
 
-    await this.usersService.create(createUserDto, hashedPassword);
+    await this.usersService.createUser(createUserDto, hashedPassword);
 
     const user = await this.validateUser(
       createUserDto.username,
@@ -72,16 +72,16 @@ export class AuthService {
   }
 
   async logout(id: string): Promise<boolean> {
-    const user = await this.usersService.findOne({ where: { id } });
+    const user = await this.usersService.findOneUser({ where: { id } });
     if (!user || !user.hashedRefreshToken) {
       return false;
     }
-    await this.usersService.update(id, { hashedRefreshToken: null });
+    await this.usersService.updateUser(id, { hashedRefreshToken: null });
     return true;
   }
 
   async validateUser(username: string, password: string): Promise<User> {
-    const user = await this.usersService.findOne({ where: { username } });
+    const user = await this.usersService.findOneUser({ where: { username } });
     if (!user) {
       throw new UnauthorizedException(messagesHelper.INVALID_CREDENTIALS);
     }
@@ -119,7 +119,7 @@ export class AuthService {
     id: string,
     refreshToken: string,
   ): Promise<{ accessToken: string }> {
-    const user = await this.usersService.findOne({ where: { id } });
+    const user = await this.usersService.findOneUser({ where: { id } });
     if (!user || !user.hashedRefreshToken) {
       throw new ForbiddenException(messagesHelper.ACCESS_DENIED);
     }
@@ -141,7 +141,7 @@ export class AuthService {
     refreshToken: string,
   ): Promise<void> {
     const hashRefreshToken = await argon2.hash(refreshToken);
-    await this.usersService.update(id, {
+    await this.usersService.updateUser(id, {
       hashedRefreshToken: hashRefreshToken,
     });
   }

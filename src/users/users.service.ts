@@ -24,7 +24,7 @@ export class UsersService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async create(
+  async createUser(
     createUserDto: CreateUserDto,
     hashedPassword?: string,
   ): Promise<User> {
@@ -41,23 +41,23 @@ export class UsersService {
     return await this.userRepository.save(user);
   }
 
-  async findAll(): Promise<User[]> {
+  async findAllUsers(): Promise<User[]> {
     return await this.userRepository.find();
   }
 
-  async findOne(options: FindOneOptions<User>): Promise<User> {
+  async findOneUser(options: FindOneOptions<User>): Promise<User> {
     return await this.userRepository.findOne(options);
   }
 
-  async findOneOrFail(options: FindOneOptions<User>): Promise<User> {
+  async findOneUserOrFail(options: FindOneOptions<User>): Promise<User> {
     try {
       return await this.userRepository.findOneOrFail(options);
-    } catch (error: any) {
+    } catch (error: unknown) {
       throw new NotFoundException(messagesHelper.USER_NOT_FOUND);
     }
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+  async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     if (updateUserDto.username || updateUserDto.email) {
       await this.verifyExistingUser(
         updateUserDto.username,
@@ -65,7 +65,7 @@ export class UsersService {
       );
     }
 
-    const user = await this.findOneOrFail({ where: { id } });
+    const user = await this.findOneUserOrFail({ where: { id } });
 
     if (updateUserDto.password) {
       const salt = await bcrypt.genSalt(10);
@@ -77,20 +77,23 @@ export class UsersService {
     return await this.userRepository.save(user);
   }
 
-  async remove(id: string): Promise<UpdateResult> {
-    const user = await this.findOneOrFail({ where: { id } });
+  async removeUser(id: string): Promise<UpdateResult> {
+    const user = await this.findOneUserOrFail({ where: { id } });
 
     return await this.userRepository.softDelete(user.id);
   }
 
-  async restore(id: string): Promise<UpdateResult> {
-    const user = await this.findOneOrFail({ where: { id }, withDeleted: true });
+  async restoreUser(id: string): Promise<UpdateResult> {
+    const user = await this.findOneUserOrFail({
+      where: { id },
+      withDeleted: true,
+    });
 
     return await this.userRepository.restore(user.id);
   }
 
   async verifyExistingUser(username: string, email: string): Promise<void> {
-    const existingUser = await this.findOne({
+    const existingUser = await this.findOneUser({
       where: [{ username }, { email }],
       withDeleted: true,
     });
@@ -118,7 +121,7 @@ export class UsersService {
     const decodedToken = this.jwtService.decode(passwordRecoveryToken);
     const userId = decodedToken.sub;
 
-    const user = await this.findOneOrFail({
+    const user = await this.findOneUserOrFail({
       where: { id: userId },
     });
 

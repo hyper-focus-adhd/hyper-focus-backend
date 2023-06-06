@@ -9,7 +9,9 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 // To make the use of the interceptor shorter and verify if it's a class
-export function Serialize(dto: ClassConstructor<unknown>) {
+export function Serialize(
+  dto: ClassConstructor<unknown>,
+): MethodDecorator & ClassDecorator {
   return UseInterceptors(new SerializeInterceptor(dto));
 }
 
