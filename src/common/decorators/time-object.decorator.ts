@@ -9,16 +9,16 @@ import * as moment from 'moment';
 import { messagesHelper } from '../../helpers/messages-helper';
 
 @ValidatorConstraint({ async: false })
-export class ValidDatesValidator implements ValidatorConstraintInterface {
+export class ValidTimesValidator implements ValidatorConstraintInterface {
   private constraints: number[] = [];
 
-  validate(date: { start: Date; end: Date }): boolean {
-    const { start, end } = date;
+  validate(time: { start: Date; end: Date }): boolean {
+    const { start, end } = time;
 
-    // Validate date format
-    const dateFormat = ['DD-MM-YYYY', 'MM-DD-YYYY'];
-    const startIsValid = moment(start, dateFormat, true).isValid();
-    const endIsValid = moment(end, dateFormat, true).isValid();
+    // Validate time format
+    const timeFormat = ['HH:mm:ss', 'hh:mm:ss a'];
+    const startIsValid = moment(start, timeFormat, true).isValid();
+    const endIsValid = moment(end, timeFormat, true).isValid();
     if (!startIsValid) {
       this.constraints.push(1); // Set the flag to indicate invalid start date format
       return false;
@@ -27,9 +27,9 @@ export class ValidDatesValidator implements ValidatorConstraintInterface {
       return false;
     }
 
-    // Validate if the start date is before the end date
+    // Validate if the start time is before the end time
     if (start > end) {
-      this.constraints.push(3); // Set the flag to indicate start date validation failure
+      this.constraints.push(3); // Set the flag to indicate start time validation failure
       return false;
     }
 
@@ -42,25 +42,25 @@ export class ValidDatesValidator implements ValidatorConstraintInterface {
 
     if (startValidationFailed) {
       this.constraints.pop();
-      return messagesHelper.DATE_FORMAT_START;
+      return messagesHelper.TIME_FORMAT_START;
     }
     if (endValidationFailed) {
       this.constraints.pop();
-      return messagesHelper.DATE_FORMAT_END;
+      return messagesHelper.TIME_FORMAT_END;
     }
 
     this.constraints.pop();
-    return messagesHelper.DATE_RANGE;
+    return messagesHelper.TIME_RANGE;
   }
 }
 
-export function IsDateObject(validationOptions?: ValidationOptions) {
+export function IsTimeObject(validationOptions?: ValidationOptions) {
   return function (object: object, propertyName: string): void {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
-      validator: ValidDatesValidator,
+      validator: ValidTimesValidator,
     });
   };
 }

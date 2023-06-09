@@ -1,5 +1,7 @@
 import { Expose } from 'class-transformer';
 
+import { Status } from '../../enums/task.enum';
+
 export class TaskDto {
   @Expose()
   id: string;
@@ -9,6 +11,9 @@ export class TaskDto {
 
   @Expose()
   description: string;
+
+  @Expose()
+  status: Status;
 
   @Expose()
   date: object;
