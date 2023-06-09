@@ -8,15 +8,15 @@ import { MailerService } from './mailer.service';
 export class MailerController {
   constructor(private readonly mailerService: MailerService) {}
 
-  @Post('username-recovery')
+  @Post('recover-username')
   @PublicRoute()
-  async usernameRecovery(@Body('email') email: string): Promise<void> {
+  async recoverUsername(@Body('email') email: string): Promise<void> {
     return await this.mailerService.mailUsername(email);
   }
 
-  @Post('password-recovery')
+  @Post('recover-password')
   @PublicRoute()
-  async passwordRecovery(@Body('email') email: string): Promise<void> {
+  async recoverPassword(@Body('email') email: string): Promise<void> {
     return await this.mailerService.mailPasswordLink(email);
   }
 }

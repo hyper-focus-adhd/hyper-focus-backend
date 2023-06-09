@@ -25,13 +25,13 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get(':id')
-  async findUser(@Param('id') id: string): Promise<User> {
-    return await this.usersService.findOneOrFail({ where: { id } });
+  async findUserById(@Param('id') id: string): Promise<User> {
+    return await this.usersService.findOneUserOrFail({ where: { id } });
   }
 
   @Get()
   async findAllUsers(): Promise<User[]> {
-    return await this.usersService.findAll();
+    return await this.usersService.findAllUsers();
   }
 
   @Patch()
@@ -39,17 +39,17 @@ export class UsersController {
     @Body() body: UpdateUserDto,
     @CurrentUserId() userId: string,
   ): Promise<User> {
-    return await this.usersService.update(userId, body);
+    return await this.usersService.updateUser(userId, body);
   }
 
   @Delete()
   async removeUser(@CurrentUserId() userId: string): Promise<UpdateResult> {
-    return await this.usersService.remove(userId);
+    return await this.usersService.removeUser(userId);
   }
 
   @Patch('restore')
   async restoreUser(@CurrentUserId() userId: string): Promise<UpdateResult> {
-    return await this.usersService.restore(userId);
+    return await this.usersService.restoreUser(userId);
   }
 
   @PublicRoute()

@@ -29,12 +29,12 @@ export class TasksController {
     @Body() body: CreateTaskDto,
     @CurrentUserId() userId: User,
   ): Promise<Task> {
-    return await this.tasksService.create(body, userId);
+    return await this.tasksService.createTask(body, userId);
   }
 
   @Get()
   async findAllTasksByUserId(@CurrentUserId() userId: string): Promise<Task[]> {
-    return await this.tasksService.findAllByUser({
+    return await this.tasksService.findAllTasksByUserId({
       where: { user: { id: userId } },
     });
   }
@@ -45,7 +45,7 @@ export class TasksController {
     @CurrentUserId() userId: string,
     @Param('taskId') taskId: string,
   ): Promise<Task> {
-    return await this.tasksService.update(taskId, body, userId);
+    return await this.tasksService.updateTask(taskId, body, userId);
   }
 
   @Delete(':taskId')
@@ -53,7 +53,7 @@ export class TasksController {
     @CurrentUserId() userId: string,
     @Param('taskId') taskId: string,
   ): Promise<UpdateResult> {
-    return await this.tasksService.remove(taskId, userId);
+    return await this.tasksService.removeTask(taskId, userId);
   }
 
   @Patch('restore/:taskId')
@@ -61,6 +61,6 @@ export class TasksController {
     @CurrentUserId() userId: string,
     @Param('taskId') taskId: string,
   ): Promise<UpdateResult> {
-    return await this.tasksService.restore(taskId, userId);
+    return await this.tasksService.restoreTask(taskId, userId);
   }
 }

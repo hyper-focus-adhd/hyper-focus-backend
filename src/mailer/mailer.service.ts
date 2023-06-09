@@ -19,7 +19,7 @@ export class MailerService {
   }
 
   async mailUsername(email: string): Promise<void> {
-    const user = await this.usersService.findOneOrFail({
+    const user = await this.usersService.findOneUserOrFail({
       where: { email },
     });
 
@@ -35,7 +35,7 @@ export class MailerService {
   }
 
   async mailPasswordLink(email: string): Promise<void> {
-    const user = await this.usersService.findOneOrFail({
+    const user = await this.usersService.findOneUserOrFail({
       where: { email },
     });
 
