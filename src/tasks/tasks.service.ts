@@ -21,6 +21,7 @@ export class TasksService {
     const task = await this.taskRepository.create({
       title: createTaskDto.title,
       description: createTaskDto.description,
+      status: createTaskDto.status,
       date: createTaskDto.date,
       time: createTaskDto.time,
     });

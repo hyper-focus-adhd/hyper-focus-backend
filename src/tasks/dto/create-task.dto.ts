@@ -1,6 +1,14 @@
-import { IsNotEmpty, IsObject, IsOptional, IsString } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsObject,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 import { IsDateObject } from '../../common/decorators/date-object.decorator';
+import { IsTimeObject } from '../../common/decorators/time-object.decorator';
+import { Status } from '../../enums/task.enum';
 
 export class CreateTaskDto {
   @IsNotEmpty()
@@ -12,6 +20,11 @@ export class CreateTaskDto {
   @IsString()
   description: string;
 
+  @IsOptional()
+  @IsNotEmpty()
+  @IsEnum(Status)
+  status: Status;
+
   @IsNotEmpty()
   @IsObject()
   @IsDateObject()
@@ -20,6 +33,6 @@ export class CreateTaskDto {
   @IsOptional()
   @IsNotEmpty()
   @IsObject()
-  @IsDateObject()
+  @IsTimeObject()
   time: { start: Date; end: Date };
 }
