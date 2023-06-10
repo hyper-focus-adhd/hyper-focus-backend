@@ -1,5 +1,6 @@
 import {
   registerDecorator,
+  ValidationArguments,
   ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
@@ -8,11 +9,22 @@ import * as moment from 'moment';
 
 import { messagesHelper } from '../../helpers/messages-helper';
 
+interface DateRange {
+  date: {
+    start: Date;
+    end: Date;
+  };
+}
+
 @ValidatorConstraint({ async: false })
 export class ValidTimesValidator implements ValidatorConstraintInterface {
   private constraints: number[] = [];
 
-  validate(time: { start: Date; end: Date }): boolean {
+  validate(
+    time: { start: Date; end: Date },
+    args: ValidationArguments,
+  ): boolean {
+    const date = (args.object as DateRange).date;
     const { start, end } = time;
 
     // Validate time format
@@ -28,7 +40,7 @@ export class ValidTimesValidator implements ValidatorConstraintInterface {
     }
 
     // Validate if the start time is before the end time
-    if (start > end) {
+    if (date.start === date.end && start > end) {
       this.constraints.push(3); // Set the flag to indicate start time validation failure
       return false;
     }
