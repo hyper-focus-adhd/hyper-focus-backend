@@ -46,6 +46,9 @@ export class User {
   language: Language;
 
   @Column({ nullable: true })
+  profile_picture: string;
+
+  @Column({ nullable: true })
   hashedRefreshToken: string;
 
   @OneToMany(() => Note, (note) => note.user, { cascade: true })

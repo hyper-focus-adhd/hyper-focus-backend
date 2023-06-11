@@ -67,5 +67,10 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsOptional()
   @IsNotEmpty()
   @IsString()
+  profile_picture?: string;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsString()
   hashedRefreshToken?: string;
 }

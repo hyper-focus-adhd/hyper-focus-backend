@@ -36,6 +36,7 @@ export class UsersService {
       gender: createUserDto.gender,
       nationality: createUserDto.nationality,
       language: createUserDto.language,
+      profile_picture: createUserDto.profile_picture,
     });
 
     return await this.userRepository.save(user);
