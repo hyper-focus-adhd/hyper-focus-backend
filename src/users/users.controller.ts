@@ -24,12 +24,17 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @Get()
+  async findCurrentUser(@CurrentUserId() userId: string): Promise<User> {
+    return await this.usersService.findOneUser({ where: { id: userId } });
+  }
+
   @Get(':id')
   async findUserById(@Param('id') id: string): Promise<User> {
     return await this.usersService.findOneUserOrFail({ where: { id } });
   }
 
-  @Get()
+  @Get('all')
   async findAllUsers(): Promise<User[]> {
     return await this.usersService.findAllUsers();
   }
