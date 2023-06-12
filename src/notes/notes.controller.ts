@@ -27,9 +27,9 @@ export class NotesController {
   @Post()
   async createNote(
     @Body() body: CreateNoteDto,
-    @CurrentUserId() userId: User,
+    @CurrentUserId() user: User,
   ): Promise<Note> {
-    return await this.notesService.createNote(body, userId);
+    return await this.notesService.createNote(body, user);
   }
 
   @Get()

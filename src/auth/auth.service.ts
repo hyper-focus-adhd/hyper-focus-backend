@@ -49,6 +49,8 @@ export class AuthService {
       gender: user.gender,
       nationality: user.nationality,
       language: user.language,
+      profile_picture: user.profile_picture,
+      created_at: user.created_at,
     };
   }
 
@@ -67,16 +69,18 @@ export class AuthService {
       gender: user.gender,
       nationality: user.nationality,
       language: user.language,
+      profile_picture: user.profile_picture,
+      created_at: user.created_at,
       ...tokens,
     };
   }
 
-  async logout(id: string): Promise<boolean> {
-    const user = await this.usersService.findOneUser({ where: { id } });
+  async logout(userId: string): Promise<boolean> {
+    const user = await this.usersService.findOneUser({ where: { id: userId } });
     if (!user || !user.hashedRefreshToken) {
       return false;
     }
-    await this.usersService.updateUser(id, { hashedRefreshToken: null });
+    await this.usersService.updateUser(userId, { hashedRefreshToken: null });
     return true;
   }
 
@@ -116,10 +120,10 @@ export class AuthService {
   }
 
   async refreshTokens(
-    id: string,
+    userId: string,
     refreshToken: string,
   ): Promise<{ accessToken: string }> {
-    const user = await this.usersService.findOneUser({ where: { id } });
+    const user = await this.usersService.findOneUser({ where: { id: userId } });
     if (!user || !user.hashedRefreshToken) {
       throw new ForbiddenException(messagesHelper.ACCESS_DENIED);
     }
@@ -137,11 +141,11 @@ export class AuthService {
   }
 
   async updateRefreshTokenHash(
-    id: string,
+    userId: string,
     refreshToken: string,
   ): Promise<void> {
     const hashRefreshToken = await argon2.hash(refreshToken);
-    await this.usersService.updateUser(id, {
+    await this.usersService.updateUser(userId, {
       hashedRefreshToken: hashRefreshToken,
     });
   }

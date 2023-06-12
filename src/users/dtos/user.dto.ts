@@ -29,4 +29,7 @@ export class UserDto {
 
   @Expose()
   profile_picture?: string;
+
+  @Expose()
+  created_at: Date;
 }

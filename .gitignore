@@ -34,4 +34,4 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-src/keys/hyper-focus-389222-ceb716a7a3ef.json
+keys/hyper-focus-389222-ceb716a7a3ef.json
