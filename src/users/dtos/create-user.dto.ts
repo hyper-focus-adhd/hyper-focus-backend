@@ -52,4 +52,9 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsEnum(Language)
   language: Language;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsString()
+  profile_picture: string;
 }

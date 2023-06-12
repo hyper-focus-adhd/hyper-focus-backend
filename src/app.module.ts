@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { AccessTokenGuard } from './common/guards/access-token.guard';
 import { dataSourceOptions } from './database/data-source';
+import { FileStorageModule } from './file-storage/file-storage.module';
 import { MailerModule } from './mailer/mailer.module';
 import { NotesModule } from './notes/notes.module';
 import { TasksModule } from './tasks/tasks.module';
@@ -20,6 +21,7 @@ import { UsersModule } from './users/users.module';
     NotesModule,
     MailerModule,
     TasksModule,
+    FileStorageModule,
   ],
   controllers: [AppController],
   providers: [

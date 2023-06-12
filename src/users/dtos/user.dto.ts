@@ -26,4 +26,10 @@ export class UserDto {
 
   @Expose()
   language: Language;
+
+  @Expose()
+  profile_picture?: string;
+
+  @Expose()
+  created_at: Date;
 }

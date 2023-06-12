@@ -36,8 +36,8 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('logout')
-  async logout(@CurrentUserId() id: string): Promise<boolean> {
-    return await this.authService.logout(id);
+  async logout(@CurrentUserId() userId: string): Promise<boolean> {
+    return await this.authService.logout(userId);
   }
 
   @HttpCode(HttpStatus.OK)
@@ -45,9 +45,9 @@ export class AuthController {
   @PublicRoute()
   @UseGuards(RefreshTokenGuard)
   async refreshTokens(
-    @CurrentUserId() id: string,
+    @CurrentUserId() userId: string,
     @CurrentUser('refreshToken') refreshToken: string,
   ): Promise<{ accessToken: string }> {
-    return await this.authService.refreshTokens(id, refreshToken);
+    return await this.authService.refreshTokens(userId, refreshToken);
   }
 }
