@@ -12,5 +12,5 @@ export type CreateUserType = {
   profile_picture: string;
   accessToken?: string;
   refreshToken?: string;
-  created_at?: Date;
+  created_at: Date;
 };
