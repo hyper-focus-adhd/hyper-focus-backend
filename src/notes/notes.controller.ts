@@ -19,7 +19,7 @@ import { UpdateNoteDto } from './dtos/update-note.dto';
 import { Note } from './entities/note.entity';
 import { NotesService } from './notes.service';
 
-@Controller('api/v1/note')
+@Controller('api/v1/notes')
 @Serialize(NoteDto)
 export class NotesController {
   constructor(private readonly notesService: NotesService) {}

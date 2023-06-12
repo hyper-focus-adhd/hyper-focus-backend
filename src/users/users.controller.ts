@@ -19,7 +19,7 @@ import { UserDto } from './dtos/user.dto';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 
-@Controller('api/v1/user')
+@Controller('api/v1/users')
 @Serialize(UserDto)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}

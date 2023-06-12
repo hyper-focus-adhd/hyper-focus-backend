@@ -19,7 +19,7 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './entities/task.entity';
 import { TasksService } from './tasks.service';
 
-@Controller('api/v1/task')
+@Controller('api/v1/tasks')
 @Serialize(TaskDto)
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
