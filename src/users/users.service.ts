@@ -116,7 +116,7 @@ export class UsersService {
     const isValidToken = this.validateAndCheckToken(passwordRecoveryToken);
 
     if (isValidToken === false) {
-      throw new UnauthorizedException(messagesHelper.INVALID_TOKEN);
+      throw new UnauthorizedException(messagesHelper.TOKEN_INVALID);
     }
 
     const decodedToken = this.jwtService.decode(passwordRecoveryToken);

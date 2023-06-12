@@ -87,12 +87,12 @@ export class AuthService {
   async validateUser(username: string, password: string): Promise<User> {
     const user = await this.usersService.findOneUser({ where: { username } });
     if (!user) {
-      throw new UnauthorizedException(messagesHelper.INVALID_CREDENTIALS);
+      throw new UnauthorizedException(messagesHelper.CREDENTIALS_INVALID);
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      throw new UnauthorizedException(messagesHelper.INVALID_CREDENTIALS);
+      throw new UnauthorizedException(messagesHelper.CREDENTIALS_INVALID);
     }
     return user;
   }

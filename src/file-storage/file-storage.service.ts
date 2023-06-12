@@ -25,6 +25,18 @@ export class FileStorageService {
       throw new BadRequestException(messagesHelper.IMAGE_FILE_EMPTY);
     }
 
+    // Perform file type verification
+    const allowedFileTypes = ['image/jpeg', 'image/png'];
+    if (!allowedFileTypes.includes(image.mimetype)) {
+      throw new BadRequestException(messagesHelper.IMAGE_FILE_TYPE_INVALID);
+    }
+
+    // Perform file size verification (max size of 5MB)
+    const maxFileSizeInBytes = 0.5 * 1024 * 1024; // 5MB
+    if (image.size > maxFileSizeInBytes) {
+      throw new BadRequestException(messagesHelper.IMAGE_FILE_SIZE_ERROR);
+    }
+
     try {
       // Upload the image to Google Cloud Storage
       const bucket = this.storage.bucket(bucketName);
