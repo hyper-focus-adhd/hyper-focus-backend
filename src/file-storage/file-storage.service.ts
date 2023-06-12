@@ -1,9 +1,10 @@
 import { Readable } from 'stream';
 
 import { Storage } from '@google-cloud/storage';
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { ulid } from 'ulid';
 
+import { messagesHelper } from '../helpers/messages-helper';
 import { UsersService } from '../users/users.service';
 
 @Injectable()
@@ -20,6 +21,10 @@ export class FileStorageService {
     const bucketName = 'hyper-focus';
     const folderName = `users/${userId}/profile-pictures`;
 
+    if (!image) {
+      throw new BadRequestException(messagesHelper.IMAGE_FILE_EMPTY);
+    }
+
     try {
       // Upload the image to Google Cloud Storage
       const bucket = this.storage.bucket(bucketName);
@@ -30,10 +35,6 @@ export class FileStorageService {
       await bucket.deleteFiles({
         prefix: `${folderName}/`,
       });
-
-      // const filePath = 'src/file-storage/test.jpg';
-      // // Read the file as binary data
-      // const fileData = fs.readFileSync(filePath);
 
       // Create a readable stream from the image buffer
       const stream = new Readable();
@@ -58,8 +59,8 @@ export class FileStorageService {
 
       return { imagePath: publicUrl };
     } catch (error) {
-      console.error('Error occurred:', error);
-      throw new Error('An error occurred while uploading the image.');
+      console.error(messagesHelper.ERROR_OCCURRED, error);
+      throw new Error(messagesHelper.IMAGE_FILE_UPLOAD_ERROR);
     }
   }
 }
