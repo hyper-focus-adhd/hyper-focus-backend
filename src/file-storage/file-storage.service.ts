@@ -31,7 +31,7 @@ export class FileStorageService {
       throw new BadRequestException(messagesHelper.IMAGE_FILE_TYPE_INVALID);
     }
 
-    // Perform file size verification (max size of 5MB)
+    // Perform file size verification
     const maxFileSizeInBytes = 1024 * 1024; // 1MB
     if (image.size > maxFileSizeInBytes) {
       throw new BadRequestException(messagesHelper.IMAGE_FILE_SIZE_ERROR);
