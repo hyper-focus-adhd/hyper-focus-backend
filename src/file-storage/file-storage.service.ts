@@ -40,7 +40,9 @@ export class FileStorageService {
     try {
       // Upload the image to Google Cloud Storage
       const bucket = this.storage.bucket(bucketName);
-      const fileName = `${folderName}/image_${ulid()}.jpg`;
+      const fileName = `${folderName}/image_${ulid()}.${image.originalname
+        .split('.')
+        .pop()}`;
       const file = bucket.file(fileName);
 
       // Delete all existing files in the specified folder
