@@ -13,7 +13,7 @@ export const messagesHelper = {
   IMAGE_FILE_EMPTY: 'No image file provided.',
   IMAGE_FILE_UPLOAD_ERROR: 'An error occurred while uploading the image.',
   IMAGE_FILE_SIZE_ERROR:
-    'Image file size exceeds the maximum allowed limit (5MB).',
+    'Image file size exceeds the maximum allowed limit (1MB).',
   IMAGE_FILE_TYPE_INVALID:
     'Invalid image file type. Only JPEG and PNG image files are allowed.',
   CREDENTIALS_INVALID: 'Invalid credentials.',
