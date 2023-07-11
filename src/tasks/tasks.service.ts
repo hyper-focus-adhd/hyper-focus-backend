@@ -17,7 +17,7 @@ export class TasksService {
     @InjectRepository(Task) private readonly taskRepository: Repository<Task>,
   ) {}
 
-  async createTask(createTaskDto: CreateTaskDto, user: User): Promise<Task> {
+  async createTask(user: User, createTaskDto: CreateTaskDto): Promise<Task> {
     const task = await this.taskRepository.create({
       title: createTaskDto.title,
       description: createTaskDto.description,
@@ -32,7 +32,13 @@ export class TasksService {
   }
 
   async findAllTasksByUserId(options?: FindManyOptions<Task>): Promise<Task[]> {
-    return await this.taskRepository.find(options);
+    const tasks = await this.taskRepository.find(options);
+
+    if (!tasks.length) {
+      throw new NotFoundException(messagesHelper.TASK_NOT_FOUND);
+    }
+
+    return tasks;
   }
 
   async findOneTaskOrFail(options: FindOneOptions<Task>): Promise<Task> {
@@ -44,9 +50,9 @@ export class TasksService {
   }
 
   async updateTask(
+    userId: string,
     taskId: string,
     updateTaskDto: UpdateTaskDto,
-    userId: string,
   ): Promise<Task> {
     const task = await this.findOneTaskOrFail({
       where: { id: taskId, user: { id: userId } },
@@ -57,15 +63,15 @@ export class TasksService {
     return await this.taskRepository.save(task);
   }
 
-  async removeTask(taskId: string, userId: string): Promise<UpdateResult> {
-    const task = await this.taskRepository.findOneOrFail({
+  async removeTask(userId: string, taskId: string): Promise<UpdateResult> {
+    const task = await this.findOneTaskOrFail({
       where: { id: taskId, user: { id: userId } },
     });
 
     return await this.taskRepository.softDelete(task.id);
   }
 
-  async restoreTask(taskId: string, userId: string): Promise<UpdateResult> {
+  async restoreTask(userId: string, taskId: string): Promise<UpdateResult> {
     const task = await this.findOneTaskOrFail({
       where: { id: taskId, user: { id: userId } },
       withDeleted: true,

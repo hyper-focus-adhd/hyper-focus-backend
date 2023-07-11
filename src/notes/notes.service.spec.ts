@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
 
-import { User } from '../users/entities/user.entity';
+import { Board } from '../boards/entities/board.entity';
 
 import { UpdateNoteDto } from './dtos/update-note.dto';
 import { Note } from './entities/note.entity';
@@ -36,13 +36,13 @@ describe('NotesService', () => {
         color: 'yellow',
         placement: { x: 10, y: 20 },
       };
-      const user = { id: '1', username: 'Test User' } as User;
+      const board = { id: '1', title: 'Test Board' } as Board;
       const noteToSave = {
         id: '1',
         text: 'Test note',
         color: 'yellow',
         placement: { x: 10, y: 20 },
-        user: user,
+        board: board,
       } as Note;
 
       const createSpy = jest
@@ -51,7 +51,7 @@ describe('NotesService', () => {
       const saveSpy = jest
         .spyOn(noteRepository, 'save')
         .mockResolvedValue(noteToSave);
-      const createdNote = await notesService.createNote(createNoteDto, user);
+      const createdNote = await notesService.createNote(createNoteDto, board);
 
       expect(createSpy).toHaveBeenCalledWith({
         text: createNoteDto.text,
@@ -63,30 +63,30 @@ describe('NotesService', () => {
     });
   });
 
-  describe('findAllNotesByUserId', () => {
+  describe('findAllNotesByBoardId', () => {
     it('should return an array of notes', async () => {
-      const options = { where: { user: { id: '1' } } };
+      const options = { where: { board: { id: '1' } } };
       const expectedNotes = [
         {
           id: '1',
           text: 'Note 1',
           color: 'yellow',
           placement: { x: 10, y: 20 },
-          user: { id: '1', username: 'Test User' },
+          board: { id: '1', title: 'Test Board' },
         } as Note,
         {
           id: '2',
           text: 'Note 2',
           color: 'blue',
           placement: { x: 20, y: 30 },
-          user: { id: '1', username: 'Test User' },
+          board: { id: '1', title: 'Test Board' },
         } as Note,
       ];
 
       const findSpy = jest
         .spyOn(noteRepository, 'find')
         .mockResolvedValue(expectedNotes);
-      const notes = await notesService.findAllNotesByUserId(options);
+      const notes = await notesService.findAllNotesByBoardId(options);
 
       expect(findSpy).toHaveBeenCalledWith(options);
       expect(notes).toEqual(expectedNotes);
@@ -99,13 +99,13 @@ describe('NotesService', () => {
       const updateNoteDto = {
         text: 'Updated note',
       } as UpdateNoteDto;
-      const userId = '1';
+      const boardId = '1';
       const existingNote = {
         id: noteId,
         text: 'Note 1',
         color: 'yellow',
         placement: { x: 10, y: 20 },
-        user: { id: userId, username: 'Test User' },
+        board: { id: boardId, title: 'Test Board' },
       } as Note;
 
       const findOneSpy = jest
@@ -118,13 +118,13 @@ describe('NotesService', () => {
         .spyOn(noteRepository, 'save')
         .mockResolvedValue(existingNote);
       const updatedNote = await notesService.updateNote(
+        boardId,
         noteId,
         updateNoteDto,
-        userId,
       );
 
       expect(findOneSpy).toHaveBeenCalledWith({
-        where: { id: noteId, user: { id: userId } },
+        where: { id: noteId, board: { id: boardId } },
       });
       expect(mergeSpy).toHaveBeenCalledWith(existingNote, updateNoteDto);
       expect(saveSpy).toHaveBeenCalledWith(existingNote);
@@ -135,13 +135,13 @@ describe('NotesService', () => {
   describe('removeNote', () => {
     it('should soft delete the specified note', async () => {
       const noteId = '1';
-      const userId = '1';
+      const boardId = '1';
       const existingNote = {
         id: noteId,
         text: 'Note 1',
         color: 'yellow',
         placement: { x: 10, y: 20 },
-        user: { id: userId, username: 'Test User' },
+        board: { id: boardId, title: 'Test Board' },
       } as Note;
 
       const findOneSpy = jest
@@ -150,10 +150,10 @@ describe('NotesService', () => {
       const softDeleteSpy = jest
         .spyOn(noteRepository, 'softDelete')
         .mockResolvedValue({ affected: 1 } as UpdateResult);
-      const result = await notesService.removeNote(noteId, userId);
+      const result = await notesService.removeNote(boardId, noteId);
 
       expect(findOneSpy).toHaveBeenCalledWith({
-        where: { id: noteId, user: { id: userId } },
+        where: { id: noteId, board: { id: boardId } },
       });
       expect(softDeleteSpy).toHaveBeenCalledWith(existingNote.id);
       expect(result).toEqual({ affected: 1 });
@@ -163,13 +163,13 @@ describe('NotesService', () => {
   describe('restoreNote', () => {
     it('should restore the specified note', async () => {
       const noteId = '1';
-      const userId = '1';
+      const boardId = '1';
       const existingNote = {
         id: noteId,
         text: 'Note 1',
         color: 'yellow',
         placement: { x: 10, y: 20 },
-        user: { id: userId, username: 'Test User' },
+        board: { id: boardId, title: 'Test Board' },
       } as Note;
 
       const findOneSpy = jest
@@ -178,10 +178,10 @@ describe('NotesService', () => {
       const restoreSpy = jest
         .spyOn(noteRepository, 'restore')
         .mockResolvedValue({ affected: 1 } as UpdateResult);
-      const result = await notesService.restoreNote(noteId, userId);
+      const result = await notesService.restoreNote(boardId, noteId);
 
       expect(findOneSpy).toHaveBeenCalledWith({
-        where: { id: noteId, user: { id: userId } },
+        where: { id: noteId, board: { id: boardId } },
         withDeleted: true,
       });
       expect(restoreSpy).toHaveBeenCalledWith(existingNote.id);

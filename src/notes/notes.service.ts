@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
-import { FindManyOptions } from 'typeorm/find-options/FindManyOptions';
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
+import { BoardsService } from '../boards/boards.service';
+import { Board } from '../boards/entities/board.entity';
 import { messagesHelper } from '../helpers/messages-helper';
-import { User } from '../users/entities/user.entity';
 
 import { CreateNoteDto } from './dtos/create-note.dto';
 import { UpdateNoteDto } from './dtos/update-note.dto';
@@ -15,22 +15,46 @@ import { Note } from './entities/note.entity';
 export class NotesService {
   constructor(
     @InjectRepository(Note) private readonly noteRepository: Repository<Note>,
+    private readonly boardsService: BoardsService,
   ) {}
 
-  async createNote(createNoteDto: CreateNoteDto, user: User): Promise<Note> {
+  async createNote(
+    userId: string,
+    board: Board,
+    createNoteDto: CreateNoteDto,
+  ): Promise<Note> {
+    const boardId = JSON.parse(JSON.stringify(board));
+    await this.boardsService.findOneBoardOrFail({
+      where: { id: boardId, user: { id: userId } },
+    });
+
     const note = await this.noteRepository.create({
       text: createNoteDto.text,
       color: createNoteDto.color,
       placement: createNoteDto.placement,
     });
 
-    note.user = user;
+    note.board = board;
 
     return await this.noteRepository.save(note);
   }
 
-  async findAllNotesByUserId(options?: FindManyOptions<Note>): Promise<Note[]> {
-    return await this.noteRepository.find(options);
+  async findAllNotesByBoardId(
+    userId: string,
+    boardId: string,
+  ): Promise<Note[]> {
+    const boards = await this.boardsService.findAllBoardsByUserId({
+      where: { user: { id: userId } },
+    });
+
+    const foundBoard = boards.find((board) => board.id === boardId);
+    if (!foundBoard) {
+      throw new NotFoundException(messagesHelper.BOARD_NOT_FOUND);
+    }
+
+    return await this.noteRepository.find({
+      where: { board: { id: foundBoard.id } },
+    });
   }
 
   async findOneNoteOrFail(options: FindOneOptions<Note>): Promise<Note> {
@@ -42,12 +66,17 @@ export class NotesService {
   }
 
   async updateNote(
+    userId: string,
+    boardId: string,
     noteId: string,
     updateNoteDto: UpdateNoteDto,
-    userId: string,
   ): Promise<Note> {
+    await this.boardsService.findOneBoardOrFail({
+      where: { id: boardId, user: { id: userId } },
+    });
+
     const note = await this.findOneNoteOrFail({
-      where: { id: noteId, user: { id: userId } },
+      where: { id: noteId, board: { id: boardId } },
     });
 
     this.noteRepository.merge(note, updateNoteDto);
@@ -55,17 +84,33 @@ export class NotesService {
     return await this.noteRepository.save(note);
   }
 
-  async removeNote(noteId: string, userId: string): Promise<UpdateResult> {
-    const note = await this.noteRepository.findOneOrFail({
-      where: { id: noteId, user: { id: userId } },
+  async removeNote(
+    userId: string,
+    boardId: string,
+    noteId: string,
+  ): Promise<UpdateResult> {
+    await this.boardsService.findOneBoardOrFail({
+      where: { id: boardId, user: { id: userId } },
+    });
+
+    const note = await this.findOneNoteOrFail({
+      where: { id: noteId, board: { id: boardId } },
     });
 
     return await this.noteRepository.softDelete(note.id);
   }
 
-  async restoreNote(noteId: string, userId: string): Promise<UpdateResult> {
+  async restoreNote(
+    userId: string,
+    boardId: string,
+    noteId: string,
+  ): Promise<UpdateResult> {
+    await this.boardsService.findOneBoardOrFail({
+      where: { id: boardId, user: { id: userId } },
+    });
+
     const note = await this.findOneNoteOrFail({
-      where: { id: noteId, user: { id: userId } },
+      where: { id: noteId, board: { id: boardId } },
       withDeleted: true,
     });
 
