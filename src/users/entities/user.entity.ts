@@ -12,8 +12,8 @@ import {
 } from 'typeorm';
 import { ulid } from 'ulid';
 
+import { Board } from '../../boards/entities/board.entity';
 import { Gender, Language, Role } from '../../enums/user.enum';
-import { Note } from '../../notes/entities/note.entity';
 import { Task } from '../../tasks/entities/task.entity';
 
 @Entity()
@@ -51,8 +51,8 @@ export class User {
   @Column({ nullable: true })
   hashedRefreshToken: string;
 
-  @OneToMany(() => Note, (note) => note.user, { cascade: true })
-  notes: Note[];
+  @OneToMany(() => Board, (board) => board.user, { cascade: true })
+  boards: Board[];
 
   @OneToMany(() => Task, (task) => task.user, { cascade: true })
   tasks: Task[];

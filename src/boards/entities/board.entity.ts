@@ -8,37 +8,32 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { ulid } from 'ulid';
 
-import { Status } from '../../enums/task.enum';
+import { Note } from '../../notes/entities/note.entity';
 import { User } from '../../users/entities/user.entity';
 
 @Entity()
-export class Task {
+export class Board {
   @PrimaryColumn()
   id: string;
 
   @Column()
   title: string;
 
-  @Column({ nullable: true })
-  description: string;
-
   @Column()
-  status: Status;
-
-  @Column({ type: 'json' })
-  date: { start: Date; end: Date };
-
-  @Column({ type: 'json', nullable: true })
-  time: { start: Date; end: Date };
+  color: string;
 
   @JoinColumn({ name: 'user_id' })
-  @ManyToOne(() => User, (user) => user.tasks)
+  @ManyToOne(() => User, (user) => user.boards)
   user: User;
+
+  @OneToMany(() => Note, (note) => note.board, { cascade: true })
+  notes: Note[];
 
   @CreateDateColumn()
   created_at: Date;
@@ -57,16 +52,16 @@ export class Task {
 
   @AfterInsert()
   logInsert(): void {
-    console.log('Inserted Task with id', this.id);
+    console.log('Inserted Board with id', this.id);
   }
 
   @AfterUpdate()
   logUpdate(): void {
-    console.log('Updated Task with id', this.id);
+    console.log('Updated Board with id', this.id);
   }
 
   @AfterRemove()
   logRemove(): void {
-    console.log('Removed Task with id', this.id);
+    console.log('Removed Board with id', this.id);
   }
 }

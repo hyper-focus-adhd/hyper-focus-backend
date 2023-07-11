@@ -13,7 +13,7 @@ import {
 } from 'typeorm';
 import { ulid } from 'ulid';
 
-import { User } from '../../users/entities/user.entity';
+import { Board } from '../../boards/entities/board.entity';
 
 @Entity()
 export class Note {
@@ -29,9 +29,9 @@ export class Note {
   @Column({ type: 'json' })
   placement: { x: number; y: number };
 
-  @JoinColumn({ name: 'user_id' })
-  @ManyToOne(() => User, (user) => user.notes)
-  user: User;
+  @JoinColumn({ name: 'board_id' })
+  @ManyToOne(() => Board, (board) => board.notes)
+  board: Board;
 
   @CreateDateColumn()
   created_at: Date;

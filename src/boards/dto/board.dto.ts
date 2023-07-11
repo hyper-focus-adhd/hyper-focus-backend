@@ -1,18 +1,15 @@
 import { Expose } from 'class-transformer';
 
-export class NoteDto {
+export class BoardDto {
   @Expose()
   id: string;
 
   @Expose()
-  text: string;
+  title: string;
 
   @Expose()
   color: string;
 
   @Expose()
-  placement: object;
-
-  @Expose()
-  board: string;
+  user: string;
 }
