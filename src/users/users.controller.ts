@@ -7,6 +7,7 @@ import {
   Patch,
   Put,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
 
 import { CurrentUserId } from '../common/decorators/current-user-id.decorator';
@@ -19,6 +20,7 @@ import { UserDto } from './dtos/user.dto';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 
+@ApiTags('User')
 @Controller('api/v1/users')
 @Serialize(UserDto)
 export class UsersController {

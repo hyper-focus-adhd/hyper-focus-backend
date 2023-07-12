@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
 
 import { Board } from '../boards/entities/board.entity';
@@ -19,6 +20,7 @@ import { UpdateNoteDto } from './dtos/update-note.dto';
 import { Note } from './entities/note.entity';
 import { NotesService } from './notes.service';
 
+@ApiTags('Note')
 @Controller('api/v1/notes')
 @Serialize(NoteDto)
 export class NotesController {

@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
 
 import { CurrentUserId } from '../common/decorators/current-user-id.decorator';
@@ -19,6 +20,7 @@ import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 import { Board } from './entities/board.entity';
 
+@ApiTags('Board')
 @Controller('api/v1/boards')
 @Serialize(BoardDto)
 export class BoardsController {

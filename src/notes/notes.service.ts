@@ -23,6 +23,7 @@ export class NotesService {
     board: Board,
     createNoteDto: CreateNoteDto,
   ): Promise<Note> {
+    //TODO: improve this part of the code
     const boardId = JSON.parse(JSON.stringify(board));
     await this.boardsService.findOneBoardOrFail({
       where: { id: boardId, user: { id: userId } },
