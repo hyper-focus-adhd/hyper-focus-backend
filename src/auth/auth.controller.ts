@@ -6,6 +6,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { CurrentUserId } from '../common/decorators/current-user-id.decorator';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
@@ -17,6 +18,7 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dtos/login.dto';
 import { CreateUserType } from './types/create-user.type';
 
+@ApiTags('Auth')
 @Controller('api/v1/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

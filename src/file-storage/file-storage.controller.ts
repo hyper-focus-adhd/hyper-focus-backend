@@ -5,11 +5,13 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiTags } from '@nestjs/swagger';
 
 import { CurrentUserId } from '../common/decorators/current-user-id.decorator';
 
 import { FileStorageService } from './file-storage.service';
 
+@ApiTags('File Storage')
 @Controller('api/v1/file-storage')
 export class FileStorageController {
   constructor(private readonly fileStorageService: FileStorageService) {}

@@ -46,3 +46,10 @@ $ yarn migration:run
 # revert a migration
 $ yarn migration:revert
 ```
+
+## Swagger API
+
+```bash
+# access swagger api
+$ http://localhost:3000/api
+```
