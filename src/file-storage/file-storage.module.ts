@@ -1,7 +1,7 @@
 import { Storage } from '@google-cloud/storage';
 import { Module } from '@nestjs/common';
 
-import { UsersModule } from '../users/users.module';
+import { UsersModule } from '../modules/users/users.module';
 
 import { FileStorageController } from './file-storage.controller';
 import { FileStorageService } from './file-storage.service';
