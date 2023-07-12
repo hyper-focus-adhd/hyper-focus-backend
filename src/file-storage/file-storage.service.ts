@@ -5,7 +5,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { ulid } from 'ulid';
 
 import { messagesHelper } from '../helpers/messages-helper';
-import { UsersService } from '../users/users.service';
+import { UsersService } from '../modules/users/users.service';
 
 @Injectable()
 export class FileStorageService {
