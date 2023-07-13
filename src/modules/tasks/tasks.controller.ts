@@ -7,7 +7,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
 
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
@@ -21,6 +21,7 @@ import { Task } from './entities/task.entity';
 import { TasksService } from './tasks.service';
 
 @ApiTags('Task')
+@ApiSecurity('Access Token')
 @Controller('api/v1/tasks')
 @Serialize(TaskDto)
 export class TasksController {

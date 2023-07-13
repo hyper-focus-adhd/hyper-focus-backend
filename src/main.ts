@@ -20,10 +20,11 @@ async function bootstrap(): Promise<void> {
   });
 
   const config = new DocumentBuilder()
+    .addBearerAuth(undefined, 'Access Token')
+    .addBearerAuth(undefined, 'Refresh Token')
     .setTitle('Hyper Focus')
     .setDescription('The Hyper Focus API')
     .setVersion('1.0')
-    .addTag('focus')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

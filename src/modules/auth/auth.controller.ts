@@ -6,7 +6,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
@@ -36,12 +36,14 @@ export class AuthController {
     return await this.authService.login(body);
   }
 
+  @ApiSecurity('Access Token')
   @HttpCode(HttpStatus.OK)
   @Post('logout')
   async logout(@CurrentUserId() userId: string): Promise<boolean> {
     return await this.authService.logout(userId);
   }
 
+  @ApiSecurity('Refresh Token')
   @HttpCode(HttpStatus.OK)
   @Post('refresh')
   @PublicRoute()
