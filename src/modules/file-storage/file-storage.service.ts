@@ -79,7 +79,6 @@ export class FileStorageService {
     const folderName = `users/${userId}/profile-image`;
     const publicUrl = await this.uploadImage(image, folderName);
 
-    // Save the image path in the database
     await this.usersService.updateUser(userId, {
       profile_image: publicUrl,
     });
@@ -92,6 +91,7 @@ export class FileStorageService {
   ): Promise<void> {
     const folderName = `users/${authorId}/posts/${postId}/post-image`;
     const publicUrl = await this.uploadImage(image, folderName);
+
     await this.postsService.updatePost(authorId, postId, {
       image: publicUrl,
     });
