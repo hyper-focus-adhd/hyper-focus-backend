@@ -9,8 +9,8 @@ export class UpdateBoardDto extends PartialType(CreateBoardDto) {
     description: 'The updated title of the board',
     example: 'Updated title',
   })
-  @IsOptional()
   @IsNotEmpty()
+  @IsOptional()
   @IsString()
   title: string;
 
@@ -18,8 +18,8 @@ export class UpdateBoardDto extends PartialType(CreateBoardDto) {
     description: 'The updated color of the board',
     example: 'Brown',
   })
-  @IsOptional()
   @IsNotEmpty()
+  @IsOptional()
   @IsString()
   color: string;
 }

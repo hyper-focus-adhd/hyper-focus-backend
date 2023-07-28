@@ -28,7 +28,7 @@ export class UsersService {
     createUserDto: CreateUserDto,
     hashedPassword?: string,
   ): Promise<User> {
-    const user = await this.userRepository.create({
+    const user = this.userRepository.create({
       username: createUserDto.username,
       email: createUserDto.email,
       password: hashedPassword,
@@ -36,7 +36,8 @@ export class UsersService {
       gender: createUserDto.gender,
       nationality: createUserDto.nationality,
       language: createUserDto.language,
-      profile_picture: createUserDto.profile_picture,
+      friends: createUserDto.friends,
+      profile_image: createUserDto.profile_image,
     });
 
     return await this.userRepository.save(user);
@@ -78,10 +79,13 @@ export class UsersService {
     return await this.userRepository.save(user);
   }
 
-  async removeUser(id: string): Promise<UpdateResult> {
-    const user = await this.findOneUserOrFail({ where: { id } });
+  async removeUser(id: string): Promise<User> {
+    const user = await this.findOneUserOrFail({
+      where: { id },
+      relations: ['boards', 'tasks', 'posts'],
+    });
 
-    return await this.userRepository.softDelete(user.id);
+    return await this.userRepository.softRemove(user);
   }
 
   async restoreUser(id: string): Promise<UpdateResult> {

@@ -4,22 +4,23 @@ import { Storage } from '@google-cloud/storage';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ulid } from 'ulid';
 
-import { messagesHelper } from '../helpers/messages-helper';
-import { UsersService } from '../modules/users/users.service';
+import { messagesHelper } from '../../helpers/messages-helper';
+import { PostsService } from '../posts/posts.service';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class FileStorageService {
   constructor(
     private readonly usersService: UsersService,
+    private readonly postsService: PostsService,
     private readonly storage: Storage,
   ) {}
 
-  async uploadProfilePicture(
+  async uploadImage(
     image: Express.Multer.File,
-    userId: string,
-  ): Promise<{ imagePath: string }> {
+    folderName: string,
+  ): Promise<string> {
     const bucketName = 'hyper-focus';
-    const folderName = `users/${userId}/profile-pictures`;
 
     if (!image) {
       throw new BadRequestException(messagesHelper.IMAGE_FILE_EMPTY);
@@ -64,17 +65,35 @@ export class FileStorageService {
       });
 
       // Generate the public URL for the image
-      const publicUrl = `https://storage.googleapis.com/${bucketName}/${fileName}`;
-
-      // Save the image path in the database
-      await this.usersService.updateUser(userId, {
-        profile_picture: publicUrl,
-      });
-
-      return { imagePath: publicUrl };
+      return `https://storage.googleapis.com/${bucketName}/${fileName}`;
     } catch (error) {
       console.error(messagesHelper.ERROR_OCCURRED, error);
       throw new Error(messagesHelper.IMAGE_FILE_UPLOAD_ERROR);
     }
+  }
+
+  async uploadProfileImage(
+    userId: string,
+    image: Express.Multer.File,
+  ): Promise<void> {
+    const folderName = `users/${userId}/profile-image`;
+    const publicUrl = await this.uploadImage(image, folderName);
+
+    // Save the image path in the database
+    await this.usersService.updateUser(userId, {
+      profile_image: publicUrl,
+    });
+  }
+
+  async uploadPostImage(
+    authorId: string,
+    postId: string,
+    image: Express.Multer.File,
+  ): Promise<void> {
+    const folderName = `users/${authorId}/posts/${postId}/post-image`;
+    const publicUrl = await this.uploadImage(image, folderName);
+    await this.postsService.updatePost(authorId, postId, {
+      image: publicUrl,
+    });
   }
 }

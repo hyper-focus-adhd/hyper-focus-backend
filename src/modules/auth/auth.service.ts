@@ -49,7 +49,7 @@ export class AuthService {
       gender: user.gender,
       nationality: user.nationality,
       language: user.language,
-      profile_picture: user.profile_picture,
+      profile_image: user.profile_image,
       created_at: user.created_at,
     };
   }
@@ -69,7 +69,7 @@ export class AuthService {
       gender: user.gender,
       nationality: user.nationality,
       language: user.language,
-      profile_picture: user.profile_picture,
+      profile_image: user.profile_image,
       created_at: user.created_at,
       ...tokens,
     };

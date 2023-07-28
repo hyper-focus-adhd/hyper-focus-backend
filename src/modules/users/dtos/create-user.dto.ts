@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import {
+  IsArray,
   IsDate,
   IsEmail,
   IsEnum,
@@ -48,7 +49,6 @@ export class CreateUserDto {
     example: 'DD-MM-YYYY or MM-DD-YYYY',
   })
   @IsOptional()
-  @IsNotEmpty()
   @Transform(({ value }) =>
     moment(value, ['DD-MM-YYYY', 'MM-DD-YYYY'], true).toDate(),
   )
@@ -60,7 +60,6 @@ export class CreateUserDto {
     example: 'Male, Female or Other',
   })
   @IsOptional()
-  @IsNotEmpty()
   @IsEnum(Gender)
   gender: Gender;
 
@@ -69,7 +68,6 @@ export class CreateUserDto {
     example: 'Brazilian',
   })
   @IsOptional()
-  @IsNotEmpty()
   @IsString()
   nationality: string;
 
@@ -77,17 +75,29 @@ export class CreateUserDto {
     description: 'The language of the user',
     example: 'English or Portuguese',
   })
-  @IsOptional()
   @IsNotEmpty()
+  @IsOptional()
   @IsEnum(Language)
   language: Language;
 
   @ApiProperty({
-    description: 'The profile picture of the user',
-    example: 'A picture',
+    description: 'The profile image of the user',
+    example: 'An image',
   })
   @IsOptional()
-  @IsNotEmpty()
   @IsString()
-  profile_picture: string;
+  profile_image: string;
+
+  @ApiProperty({
+    description: 'The friends of the user',
+    example: [
+      'TGH6C5APTWQFKN46BPFFCNJ345',
+      'HJU6C5APTWQFKN46BPFFCNJ555',
+      'LOP6C5APTWQFKN46BPFFCNJ342',
+    ],
+  })
+  @IsArray()
+  @IsOptional()
+  @IsString({ each: true })
+  friends: string[];
 }

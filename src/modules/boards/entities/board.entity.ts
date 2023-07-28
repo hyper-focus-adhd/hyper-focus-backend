@@ -28,13 +28,6 @@ export class Board {
   @Column()
   color: string;
 
-  @JoinColumn({ name: 'user_id' })
-  @ManyToOne(() => User, (user) => user.boards)
-  user: User;
-
-  @OneToMany(() => Note, (note) => note.board, { cascade: true })
-  notes: Note[];
-
   @CreateDateColumn()
   created_at: Date;
 
@@ -43,6 +36,13 @@ export class Board {
 
   @DeleteDateColumn()
   deleted_at: Date;
+
+  @JoinColumn({ name: 'user_id' })
+  @ManyToOne(() => User, (userId) => userId.boards, { onDelete: 'CASCADE' })
+  userId: User;
+
+  @OneToMany(() => Note, (note) => note.boardId, { cascade: true })
+  notes: Note[];
 
   constructor() {
     if (!this.id) {

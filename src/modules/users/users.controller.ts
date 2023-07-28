@@ -55,7 +55,7 @@ export class UsersController {
 
   @ApiSecurity('Access Token')
   @Delete()
-  async removeUser(@CurrentUserId() userId: string): Promise<UpdateResult> {
+  async removeUser(@CurrentUserId() userId: string): Promise<User> {
     return await this.usersService.removeUser(userId);
   }
 

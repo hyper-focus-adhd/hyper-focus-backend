@@ -1,16 +1,20 @@
 import { Storage } from '@google-cloud/storage';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { UsersModule } from '../modules/users/users.module';
+import { Post } from '../posts/entities/post.entity';
+import { PostsService } from '../posts/posts.service';
+import { UsersModule } from '../users/users.module';
 
 import { FileStorageController } from './file-storage.controller';
 import { FileStorageService } from './file-storage.service';
 
 @Module({
-  imports: [UsersModule],
+  imports: [UsersModule, TypeOrmModule.forFeature([Post])],
   controllers: [FileStorageController],
   providers: [
     FileStorageService,
+    PostsService,
     {
       provide: Storage,
       useValue: new Storage({

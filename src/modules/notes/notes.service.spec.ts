@@ -42,7 +42,7 @@ describe('NotesService', () => {
         text: 'Test note',
         color: 'yellow',
         placement: { x: 10, y: 20 },
-        board: board,
+        boardId: board,
       } as Note;
 
       const createSpy = jest
@@ -65,21 +65,21 @@ describe('NotesService', () => {
 
   describe('findAllNotesByBoardId', () => {
     it('should return an array of notes', async () => {
-      const options = { where: { board: { id: '1' } } };
+      const options = { where: { boardId: { id: '1' } } };
       const expectedNotes = [
         {
           id: '1',
           text: 'Note 1',
           color: 'yellow',
           placement: { x: 10, y: 20 },
-          board: { id: '1', title: 'Test Board' },
+          boardId: { id: '1', title: 'Test Board' },
         } as Note,
         {
           id: '2',
           text: 'Note 2',
           color: 'blue',
           placement: { x: 20, y: 30 },
-          board: { id: '1', title: 'Test Board' },
+          boardId: { id: '1', title: 'Test Board' },
         } as Note,
       ];
 
@@ -105,7 +105,7 @@ describe('NotesService', () => {
         text: 'Note 1',
         color: 'yellow',
         placement: { x: 10, y: 20 },
-        board: { id: boardId, title: 'Test Board' },
+        boardId: { id: boardId, title: 'Test Board' },
       } as Note;
 
       const findOneSpy = jest
@@ -124,7 +124,7 @@ describe('NotesService', () => {
       );
 
       expect(findOneSpy).toHaveBeenCalledWith({
-        where: { id: noteId, board: { id: boardId } },
+        where: { id: noteId, boardId: { id: boardId } },
       });
       expect(mergeSpy).toHaveBeenCalledWith(existingNote, updateNoteDto);
       expect(saveSpy).toHaveBeenCalledWith(existingNote);
@@ -141,7 +141,7 @@ describe('NotesService', () => {
         text: 'Note 1',
         color: 'yellow',
         placement: { x: 10, y: 20 },
-        board: { id: boardId, title: 'Test Board' },
+        boardId: { id: boardId, title: 'Test Board' },
       } as Note;
 
       const findOneSpy = jest
@@ -153,7 +153,7 @@ describe('NotesService', () => {
       const result = await notesService.removeNote(boardId, noteId);
 
       expect(findOneSpy).toHaveBeenCalledWith({
-        where: { id: noteId, board: { id: boardId } },
+        where: { id: noteId, boardId: { id: boardId } },
       });
       expect(softDeleteSpy).toHaveBeenCalledWith(existingNote.id);
       expect(result).toEqual({ affected: 1 });
@@ -169,7 +169,7 @@ describe('NotesService', () => {
         text: 'Note 1',
         color: 'yellow',
         placement: { x: 10, y: 20 },
-        board: { id: boardId, title: 'Test Board' },
+        boardId: { id: boardId, title: 'Test Board' },
       } as Note;
 
       const findOneSpy = jest
@@ -181,7 +181,7 @@ describe('NotesService', () => {
       const result = await notesService.restoreNote(boardId, noteId);
 
       expect(findOneSpy).toHaveBeenCalledWith({
-        where: { id: noteId, board: { id: boardId } },
+        where: { id: noteId, boardId: { id: boardId } },
         withDeleted: true,
       });
       expect(restoreSpy).toHaveBeenCalledWith(existingNote.id);

@@ -8,33 +8,28 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { ulid } from 'ulid';
 
-import { Status } from '../../../enums/task.enum';
+import { Comment } from '../../comments/entities/comment.entity';
 import { User } from '../../users/entities/user.entity';
 
 @Entity()
-export class Task {
+export class Post {
   @PrimaryColumn()
   id: string;
 
   @Column()
-  title: string;
+  content: string;
 
   @Column({ nullable: true })
-  description: string;
+  image: string;
 
-  @Column()
-  status: Status;
-
-  @Column({ type: 'json' })
-  date: { start: Date; end: Date };
-
-  @Column({ type: 'json', nullable: true })
-  time: { start: Date; end: Date };
+  @Column({ type: 'json', default: { like: [], dislike: [] } })
+  reaction: { like: string[]; dislike: string[] };
 
   @CreateDateColumn()
   created_at: Date;
@@ -45,9 +40,12 @@ export class Task {
   @DeleteDateColumn()
   deleted_at: Date;
 
-  @JoinColumn({ name: 'user_id' })
-  @ManyToOne(() => User, (userId) => userId.tasks, { onDelete: 'CASCADE' })
-  userId: User;
+  @JoinColumn({ name: 'author_id' })
+  @ManyToOne(() => User, (authorId) => authorId.posts, { onDelete: 'CASCADE' })
+  authorId: User;
+
+  @OneToMany(() => Comment, (comment) => comment.postId, { cascade: true })
+  comments: Comment[];
 
   constructor() {
     if (!this.id) {
@@ -57,16 +55,16 @@ export class Task {
 
   @AfterInsert()
   logInsert(): void {
-    console.log('Inserted Task with id', this.id);
+    console.log('Inserted Post with id', this.id);
   }
 
   @AfterUpdate()
   logUpdate(): void {
-    console.log('Updated Task with id', this.id);
+    console.log('Updated Post with id', this.id);
   }
 
   @AfterRemove()
   logRemove(): void {
-    console.log('Removed Task with id', this.id);
+    console.log('Removed Post with id', this.id);
   }
 }

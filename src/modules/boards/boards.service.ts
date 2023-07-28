@@ -22,12 +22,12 @@ export class BoardsService {
     user: User,
     createBoardDto: CreateBoardDto,
   ): Promise<Board> {
-    const board = await this.boardRepository.create({
+    const board = this.boardRepository.create({
       title: createBoardDto.title,
       color: createBoardDto.color,
     });
 
-    board.user = user;
+    board.userId = user;
 
     return await this.boardRepository.save(board);
   }
@@ -53,12 +53,12 @@ export class BoardsService {
   }
 
   async updateBoard(
-    boardId: string,
     userId: string,
+    boardId: string,
     updateBoardDto: UpdateBoardDto,
   ): Promise<Board> {
     const board = await this.findOneBoardOrFail({
-      where: { id: boardId, user: { id: userId } },
+      where: { id: boardId, userId: { id: userId } },
     });
 
     this.boardRepository.merge(board, updateBoardDto);
@@ -66,17 +66,18 @@ export class BoardsService {
     return await this.boardRepository.save(board);
   }
 
-  async removeBoard(userId: string, boardId: string): Promise<UpdateResult> {
+  async removeBoard(userId: string, boardId: string): Promise<Board> {
     const board = await this.findOneBoardOrFail({
-      where: { id: boardId, user: { id: userId } },
+      where: { id: boardId, userId: { id: userId } },
+      relations: ['notes'],
     });
 
-    return await this.boardRepository.softDelete(board.id);
+    return await this.boardRepository.softRemove(board);
   }
 
   async restoreBoard(userId: string, boardId: string): Promise<UpdateResult> {
     const board = await this.findOneBoardOrFail({
-      where: { id: boardId, user: { id: userId } },
+      where: { id: boardId, userId: { id: userId } },
       withDeleted: true,
     });
 

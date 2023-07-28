@@ -21,6 +21,7 @@ export const messagesHelper = {
   NOTE_NOT_FOUND: 'Note not found.',
   PASSWORD_VALID:
     'Password must contain: At least one upper case letter, one lower case letter, one digit, one special character or space.',
+  POST_NOT_FOUND: 'Post not found.',
   SUBJECT_PASSWORD_RECOVERY: 'Password recovery.',
   SUBJECT_USERNAME_RECOVERY: 'Username recovery.',
   TASK_NOT_FOUND: 'Task not found.',

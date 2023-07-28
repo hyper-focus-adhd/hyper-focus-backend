@@ -26,16 +26,16 @@ export class NotesService {
     //TODO: improve this part of the code
     const boardId = JSON.parse(JSON.stringify(board));
     await this.boardsService.findOneBoardOrFail({
-      where: { id: boardId, user: { id: userId } },
+      where: { id: boardId, userId: { id: userId } },
     });
 
-    const note = await this.noteRepository.create({
+    const note = this.noteRepository.create({
       text: createNoteDto.text,
       color: createNoteDto.color,
       placement: createNoteDto.placement,
     });
 
-    note.board = board;
+    note.boardId = board;
 
     return await this.noteRepository.save(note);
   }
@@ -45,7 +45,7 @@ export class NotesService {
     boardId: string,
   ): Promise<Note[]> {
     const boards = await this.boardsService.findAllBoardsByUserId({
-      where: { user: { id: userId } },
+      where: { userId: { id: userId } },
     });
 
     const foundBoard = boards.find((board) => board.id === boardId);
@@ -54,7 +54,7 @@ export class NotesService {
     }
 
     return await this.noteRepository.find({
-      where: { board: { id: foundBoard.id } },
+      where: { boardId: { id: foundBoard.id } },
     });
   }
 
@@ -73,11 +73,11 @@ export class NotesService {
     updateNoteDto: UpdateNoteDto,
   ): Promise<Note> {
     await this.boardsService.findOneBoardOrFail({
-      where: { id: boardId, user: { id: userId } },
+      where: { id: boardId, userId: { id: userId } },
     });
 
     const note = await this.findOneNoteOrFail({
-      where: { id: noteId, board: { id: boardId } },
+      where: { id: noteId, boardId: { id: boardId } },
     });
 
     this.noteRepository.merge(note, updateNoteDto);
@@ -91,11 +91,11 @@ export class NotesService {
     noteId: string,
   ): Promise<UpdateResult> {
     await this.boardsService.findOneBoardOrFail({
-      where: { id: boardId, user: { id: userId } },
+      where: { id: boardId, userId: { id: userId } },
     });
 
     const note = await this.findOneNoteOrFail({
-      where: { id: noteId, board: { id: boardId } },
+      where: { id: noteId, boardId: { id: boardId } },
     });
 
     return await this.noteRepository.softDelete(note.id);
@@ -107,11 +107,11 @@ export class NotesService {
     noteId: string,
   ): Promise<UpdateResult> {
     await this.boardsService.findOneBoardOrFail({
-      where: { id: boardId, user: { id: userId } },
+      where: { id: boardId, userId: { id: userId } },
     });
 
     const note = await this.findOneNoteOrFail({
-      where: { id: noteId, board: { id: boardId } },
+      where: { id: noteId, boardId: { id: boardId } },
       withDeleted: true,
     });
 

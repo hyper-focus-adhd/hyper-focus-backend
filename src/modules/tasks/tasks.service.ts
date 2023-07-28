@@ -18,7 +18,7 @@ export class TasksService {
   ) {}
 
   async createTask(user: User, createTaskDto: CreateTaskDto): Promise<Task> {
-    const task = await this.taskRepository.create({
+    const task = this.taskRepository.create({
       title: createTaskDto.title,
       description: createTaskDto.description,
       status: createTaskDto.status,
@@ -26,7 +26,7 @@ export class TasksService {
       time: createTaskDto.time,
     });
 
-    task.user = user;
+    task.userId = user;
 
     return await this.taskRepository.save(task);
   }
@@ -55,7 +55,7 @@ export class TasksService {
     updateTaskDto: UpdateTaskDto,
   ): Promise<Task> {
     const task = await this.findOneTaskOrFail({
-      where: { id: taskId, user: { id: userId } },
+      where: { id: taskId, userId: { id: userId } },
     });
 
     this.taskRepository.merge(task, updateTaskDto);
@@ -65,7 +65,7 @@ export class TasksService {
 
   async removeTask(userId: string, taskId: string): Promise<UpdateResult> {
     const task = await this.findOneTaskOrFail({
-      where: { id: taskId, user: { id: userId } },
+      where: { id: taskId, userId: { id: userId } },
     });
 
     return await this.taskRepository.softDelete(task.id);
@@ -73,7 +73,7 @@ export class TasksService {
 
   async restoreTask(userId: string, taskId: string): Promise<UpdateResult> {
     const task = await this.findOneTaskOrFail({
-      where: { id: taskId, user: { id: userId } },
+      where: { id: taskId, userId: { id: userId } },
       withDeleted: true,
     });
 
