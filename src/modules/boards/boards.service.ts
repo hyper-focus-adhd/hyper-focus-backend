@@ -33,7 +33,7 @@ export class BoardsService {
   }
 
   async findAllBoardsByUserId(
-    options?: FindManyOptions<Board>,
+    options: FindManyOptions<Board>,
   ): Promise<Board[]> {
     const boards = await this.boardRepository.find(options);
 

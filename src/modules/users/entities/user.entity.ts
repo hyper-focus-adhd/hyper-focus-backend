@@ -50,7 +50,7 @@ export class User {
   @Column({ nullable: true })
   profile_image: string;
 
-  @Column('text', { array: true, nullable: true })
+  @Column('text', { array: true, default: [] })
   friends: string[];
 
   @Column({ nullable: true })

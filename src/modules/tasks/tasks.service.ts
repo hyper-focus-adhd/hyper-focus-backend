@@ -31,7 +31,7 @@ export class TasksService {
     return await this.taskRepository.save(task);
   }
 
-  async findAllTasksByUserId(options?: FindManyOptions<Task>): Promise<Task[]> {
+  async findAllTasksByUserId(options: FindManyOptions<Task>): Promise<Task[]> {
     const tasks = await this.taskRepository.find(options);
 
     if (!tasks.length) {

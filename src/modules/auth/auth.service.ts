@@ -24,7 +24,10 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signUp(createUserDto: CreateUserDto): Promise<CreateUserType> {
+  async signUp(
+    createUserDto: CreateUserDto,
+    image: Express.Multer.File,
+  ): Promise<CreateUserType> {
     await this.usersService.verifyExistingUser(
       createUserDto.username,
       createUserDto.email,
@@ -33,7 +36,7 @@ export class AuthService {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
 
-    await this.usersService.createUser(createUserDto, hashedPassword);
+    await this.usersService.createUser(createUserDto, hashedPassword, image);
 
     const user = await this.validateUser(
       createUserDto.username,

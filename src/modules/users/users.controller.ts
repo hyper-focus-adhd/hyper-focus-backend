@@ -5,8 +5,12 @@ import {
   Get,
   Param,
   Patch,
+  Post,
   Put,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
 
@@ -14,8 +18,9 @@ import { CurrentUserId } from '../../common/decorators/current-user-id.decorator
 import { PublicRoute } from '../../common/decorators/public.decorator';
 import { Serialize } from '../../interceptors/serialize.interceptor';
 
+import { RecoverUserCredentialsDto } from './dtos/recover-user-credential.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
-import { UserPasswordRecoveryDto } from './dtos/user-password-recovery.dto';
+import { UserPasswordChangeDto } from './dtos/user-password-change.dto';
 import { UserDto } from './dtos/user.dto';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
@@ -46,11 +51,13 @@ export class UsersController {
 
   @ApiSecurity('Access Token')
   @Patch()
+  @UseInterceptors(FileInterceptor('image'))
   async updateUser(
     @Body() body: UpdateUserDto,
     @CurrentUserId() userId: string,
+    @UploadedFile() image: Express.Multer.File,
   ): Promise<User> {
-    return await this.usersService.updateUser(userId, body);
+    return await this.usersService.updateUser(userId, body, image);
   }
 
   @ApiSecurity('Access Token')
@@ -66,11 +73,27 @@ export class UsersController {
   }
 
   @PublicRoute()
-  @Put('password-recovery')
-  async passwordRecovery(@Body() body: UserPasswordRecoveryDto): Promise<User> {
+  @Put('password-change')
+  async passwordRecovery(@Body() body: UserPasswordChangeDto): Promise<User> {
     return await this.usersService.passwordRecovery(
       body.password,
       body.passwordRecoveryToken,
     );
+  }
+
+  @Post('recover-username')
+  @PublicRoute()
+  async recoverUsername(
+    @Body() body: RecoverUserCredentialsDto,
+  ): Promise<void> {
+    return await this.usersService.mailUsername(body.email);
+  }
+
+  @Post('recover-password')
+  @PublicRoute()
+  async recoverPassword(
+    @Body() body: RecoverUserCredentialsDto,
+  ): Promise<void> {
+    return await this.usersService.mailPasswordLink(body.email);
   }
 }

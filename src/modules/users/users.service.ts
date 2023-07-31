@@ -11,7 +11,11 @@ import { Repository, UpdateResult } from 'typeorm';
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
 import { jwtConfig } from '../../config/jwt.config';
+import { sendgridConfig } from '../../config/sendgrid.config';
 import { messagesHelper } from '../../helpers/messages-helper';
+import { JwtPayload } from '../auth/types';
+import { FileStorageService } from '../file-storage/file-storage.service';
+import { MailerService } from '../mailer/mailer.service';
 
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
@@ -22,11 +26,16 @@ export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
-  ) {}
+    private readonly fileStorageService: FileStorageService,
+    private readonly mailerService: MailerService,
+  ) {
+    // sendgridMail.setApiKey(sendgridConfig.sendgridAccessKey);
+  }
 
   async createUser(
     createUserDto: CreateUserDto,
-    hashedPassword?: string,
+    hashedPassword: string,
+    image: Express.Multer.File,
   ): Promise<User> {
     const user = this.userRepository.create({
       username: createUserDto.username,
@@ -37,8 +46,11 @@ export class UsersService {
       nationality: createUserDto.nationality,
       language: createUserDto.language,
       friends: createUserDto.friends,
-      profile_image: createUserDto.profile_image,
     });
+
+    if (image) {
+      user.profile_image = await this.uploadProfileImage(user.id, image);
+    }
 
     return await this.userRepository.save(user);
   }
@@ -59,7 +71,11 @@ export class UsersService {
     }
   }
 
-  async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+  async updateUser(
+    id: string,
+    updateUserDto: UpdateUserDto,
+    image?: Express.Multer.File,
+  ): Promise<User> {
     if (updateUserDto.username || updateUserDto.email) {
       await this.verifyExistingUser(
         updateUserDto.username,
@@ -72,6 +88,10 @@ export class UsersService {
     if (updateUserDto.password) {
       const salt = await bcrypt.genSalt(10);
       updateUserDto.password = await bcrypt.hash(updateUserDto.password, salt);
+    }
+
+    if (image) {
+      user.profile_image = await this.uploadProfileImage(user.id, image);
     }
 
     this.userRepository.merge(user, updateUserDto);
@@ -156,5 +176,54 @@ export class UsersService {
       // Token verification failed
       return false;
     }
+  }
+
+  async mailUsername(email: string): Promise<void> {
+    const user = await this.findOneUserOrFail({
+      where: { email },
+    });
+
+    await this.mailerService.sendgridMail(
+      user.email,
+      sendgridConfig.sendgridUsernameTemplateId,
+      messagesHelper.SUBJECT_USERNAME_RECOVERY,
+      user.username,
+    );
+  }
+
+  async generatePasswordRecoveryToken(user: User): Promise<string> {
+    const jwtPayload: JwtPayload = {
+      username: user.username,
+      sub: user.id,
+    };
+    return await this.jwtService.signAsync(jwtPayload, {
+      secret: jwtConfig.passwordRecoverySecret,
+      expiresIn: jwtConfig.passwordRecoveryExpiresIn,
+    });
+  }
+
+  async mailPasswordLink(email: string): Promise<void> {
+    const user = await this.findOneUserOrFail({
+      where: { email },
+    });
+
+    const token = await this.generatePasswordRecoveryToken(user);
+
+    await this.mailerService.sendgridMail(
+      user.email,
+      sendgridConfig.sendgridPasswordTemplateId,
+      messagesHelper.SUBJECT_PASSWORD_RECOVERY,
+      undefined,
+      `${sendgridConfig.sendgridPasswordRecoveryPage}?token=${token}`,
+    );
+  }
+
+  async uploadProfileImage(
+    userId: string,
+    image: Express.Multer.File,
+  ): Promise<string> {
+    const folderName = `users/${userId}/profile-image`;
+
+    return await this.fileStorageService.uploadImage(image, folderName);
   }
 }

@@ -6,7 +6,10 @@ import {
   Param,
   Patch,
   Post,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
 
@@ -30,11 +33,13 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Post()
+  @UseInterceptors(FileInterceptor('image'))
   async createPost(
     @Body() body: CreatePostDto,
     @CurrentUserId() user: User,
+    @UploadedFile() image: Express.Multer.File,
   ): Promise<PostEntity> {
-    return await this.postsService.createPost(user, body);
+    return await this.postsService.createPost(user, body, image);
   }
 
   @Get()
@@ -47,12 +52,14 @@ export class PostsController {
   }
 
   @Patch(':postId')
+  @UseInterceptors(FileInterceptor('image'))
   async updatePost(
     @Body() body: UpdatePostDto,
     @CurrentUserId() userId: string,
     @Param('postId') postId: string,
+    @UploadedFile() image: Express.Multer.File,
   ): Promise<PostEntity> {
-    return await this.postsService.updatePost(userId, postId, body);
+    return await this.postsService.updatePost(userId, postId, body, image);
   }
 
   @Delete(':postId')
@@ -78,5 +85,15 @@ export class PostsController {
     @Param('postId') postId: string,
   ): Promise<PostEntity> {
     return await this.postsService.reactionPost(userId, postId, reaction);
+  }
+
+  @Post('post-image/:postId')
+  @UseInterceptors(FileInterceptor('image'))
+  async uploadPostImage(
+    @CurrentUserId() authorId: string,
+    @Param('postId') postId: string,
+    @UploadedFile() image: Express.Multer.File,
+  ): Promise<void> {
+    await this.postsService.uploadPostImage(authorId, postId, image);
   }
 }

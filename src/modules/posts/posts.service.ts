@@ -5,6 +5,7 @@ import { FindManyOptions } from 'typeorm/find-options/FindManyOptions';
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
 import { messagesHelper } from '../../helpers/messages-helper';
+import { FileStorageService } from '../file-storage/file-storage.service';
 import { User } from '../users/entities/user.entity';
 
 import { CreatePostDto } from './dto/create-post.dto';
@@ -16,21 +17,31 @@ import { Reaction } from './types';
 export class PostsService {
   constructor(
     @InjectRepository(Post) private readonly postRepository: Repository<Post>,
+    private readonly fileStorageService: FileStorageService,
   ) {}
 
-  async createPost(user: User, createPostDto: CreatePostDto): Promise<Post> {
+  async createPost(
+    user: User,
+    createPostDto: CreatePostDto,
+    image: Express.Multer.File,
+  ): Promise<Post> {
     const post = this.postRepository.create({
       content: createPostDto.content,
-      image: createPostDto.image,
       reaction: createPostDto.reaction,
     });
+
+    //TODO: understand why do I need to use JSON.parse(JSON.stringify(x)) and improve this part of the code
+    const userId = JSON.parse(JSON.stringify(user));
+    if (image) {
+      post.image = await this.uploadPostImage(userId, post.id, image);
+    }
 
     post.authorId = user;
 
     return await this.postRepository.save(post);
   }
 
-  async findAllPostsByUserId(options?: FindManyOptions<Post>): Promise<Post[]> {
+  async findAllPostsByUserId(options: FindManyOptions<Post>): Promise<Post[]> {
     const posts = await this.postRepository.find(options);
 
     if (!posts.length) {
@@ -52,10 +63,16 @@ export class PostsService {
     authorId: string,
     postId: string,
     updatePostDto: UpdatePostDto,
+    image: Express.Multer.File,
   ): Promise<Post> {
     const post = await this.findOnePostOrFail({
       where: { id: postId, authorId: { id: authorId } },
     });
+
+    if (image) {
+      post.image = await this.uploadPostImage(authorId, postId, image);
+    }
+
     this.postRepository.merge(post, updatePostDto);
 
     return await this.postRepository.save(post);
@@ -112,5 +129,15 @@ export class PostsService {
     }
 
     return await this.postRepository.save(post);
+  }
+
+  async uploadPostImage(
+    authorId: string,
+    postId: string,
+    image: Express.Multer.File,
+  ): Promise<string> {
+    const folderName = `users/${authorId}/posts/${postId}/post-image`;
+
+    return await this.fileStorageService.uploadImage(image, folderName);
   }
 }

@@ -5,16 +5,10 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { ulid } from 'ulid';
 
 import { messagesHelper } from '../../helpers/messages-helper';
-import { PostsService } from '../posts/posts.service';
-import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class FileStorageService {
-  constructor(
-    private readonly usersService: UsersService,
-    private readonly postsService: PostsService,
-    private readonly storage: Storage,
-  ) {}
+  constructor(private readonly storage: Storage) {}
 
   async uploadImage(
     image: Express.Multer.File,
@@ -33,7 +27,7 @@ export class FileStorageService {
     }
 
     // Perform file size verification
-    const maxFileSizeInBytes = 1024 * 1024; // 1MB
+    const maxFileSizeInBytes = 500 * 1024; // 500KB
     if (image.size > maxFileSizeInBytes) {
       throw new BadRequestException(messagesHelper.IMAGE_FILE_SIZE_ERROR);
     }
@@ -70,30 +64,5 @@ export class FileStorageService {
       console.error(messagesHelper.ERROR_OCCURRED, error);
       throw new Error(messagesHelper.IMAGE_FILE_UPLOAD_ERROR);
     }
-  }
-
-  async uploadProfileImage(
-    userId: string,
-    image: Express.Multer.File,
-  ): Promise<void> {
-    const folderName = `users/${userId}/profile-image`;
-    const publicUrl = await this.uploadImage(image, folderName);
-
-    await this.usersService.updateUser(userId, {
-      profile_image: publicUrl,
-    });
-  }
-
-  async uploadPostImage(
-    authorId: string,
-    postId: string,
-    image: Express.Multer.File,
-  ): Promise<void> {
-    const folderName = `users/${authorId}/posts/${postId}/post-image`;
-    const publicUrl = await this.uploadImage(image, folderName);
-
-    await this.postsService.updatePost(authorId, postId, {
-      image: publicUrl,
-    });
   }
 }

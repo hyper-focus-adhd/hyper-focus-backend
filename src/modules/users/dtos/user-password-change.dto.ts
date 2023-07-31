@@ -4,7 +4,7 @@ import { IsNotEmpty, IsString, Matches } from 'class-validator';
 import { messagesHelper } from '../../../helpers/messages-helper';
 import { regexHelper } from '../../../helpers/regex-helper';
 
-export class UserPasswordRecoveryDto {
+export class UserPasswordChangeDto {
   @ApiProperty({
     description: 'The new password of the user',
     example: 'Cc!123456',
