@@ -31,5 +31,8 @@ export class UserDto {
   profile_image: string;
 
   @Expose()
+  friends: string[];
+
+  @Expose()
   created_at: Date;
 }

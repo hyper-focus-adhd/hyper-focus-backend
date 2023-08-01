@@ -26,6 +26,7 @@ export class UpdatePostDto extends PartialType(CreatePostDto) {
     example:
       '{like: [UIO6C5APTWQFKN46BPFFCNJ830], dislike:[ADR6C5APTWQFKN46BPFFCNJ341]}',
   })
+  @IsNotEmpty()
   @IsObject()
   @IsOptional()
   reaction?: {

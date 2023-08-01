@@ -8,14 +8,14 @@ import { messagesHelper } from '../../helpers/messages-helper';
 
 @Injectable()
 export class FileStorageService {
+  bucketName = 'hyper-focus';
+
   constructor(private readonly storage: Storage) {}
 
   async uploadImage(
     image: Express.Multer.File,
     folderName: string,
   ): Promise<string> {
-    const bucketName = 'hyper-focus';
-
     if (!image) {
       throw new BadRequestException(messagesHelper.IMAGE_FILE_EMPTY);
     }
@@ -34,7 +34,7 @@ export class FileStorageService {
 
     try {
       // Upload the image to Google Cloud Storage
-      const bucket = this.storage.bucket(bucketName);
+      const bucket = this.storage.bucket(this.bucketName);
       const fileName = `${folderName}/image_${ulid()}.${image.originalname
         .split('.')
         .pop()}`;
@@ -59,10 +59,23 @@ export class FileStorageService {
       });
 
       // Generate the public URL for the image
-      return `https://storage.googleapis.com/${bucketName}/${fileName}`;
+      return `https://storage.googleapis.com/${this.bucketName}/${fileName}`;
     } catch (error) {
       console.error(messagesHelper.ERROR_OCCURRED, error);
       throw new Error(messagesHelper.IMAGE_FILE_UPLOAD_ERROR);
+    }
+  }
+
+  async cleanBucket(folderName: string): Promise<void> {
+    try {
+      const bucket = this.storage.bucket(this.bucketName);
+
+      await bucket.deleteFiles({
+        prefix: `${folderName}/`,
+      });
+    } catch (error) {
+      console.error(messagesHelper.ERROR_OCCURRED, error);
+      throw new Error(messagesHelper.CLEAN_BUCKET_ERROR);
     }
   }
 }

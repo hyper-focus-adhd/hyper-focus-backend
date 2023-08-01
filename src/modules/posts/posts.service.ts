@@ -30,8 +30,8 @@ export class PostsService {
       reaction: createPostDto.reaction,
     });
 
-    //TODO: understand why do I need to use JSON.parse(JSON.stringify(x)) and improve this part of the code
     const userId = JSON.parse(JSON.stringify(user));
+
     if (image) {
       post.image = await this.uploadPostImage(userId, post.id, image);
     }
@@ -71,6 +71,10 @@ export class PostsService {
 
     if (image) {
       post.image = await this.uploadPostImage(authorId, postId, image);
+    }
+
+    if (updatePostDto.image === '') {
+      await this.removePostImage(authorId, postId);
     }
 
     this.postRepository.merge(post, updatePostDto);
@@ -139,5 +143,11 @@ export class PostsService {
     const folderName = `users/${authorId}/posts/${postId}/post-image`;
 
     return await this.fileStorageService.uploadImage(image, folderName);
+  }
+
+  async removePostImage(authorId: string, postId: string): Promise<void> {
+    const folderName = `users/${authorId}/posts/${postId}/post-image`;
+
+    return await this.fileStorageService.cleanBucket(folderName);
   }
 }

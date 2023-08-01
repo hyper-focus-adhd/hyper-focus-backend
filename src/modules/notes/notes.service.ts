@@ -23,8 +23,8 @@ export class NotesService {
     board: Board,
     createNoteDto: CreateNoteDto,
   ): Promise<Note> {
-    //TODO: understand why do I need to use JSON.parse(JSON.stringify(x)) and improve this part of the code
     const boardId = JSON.parse(JSON.stringify(board));
+
     await this.boardsService.findOneBoardOrFail({
       where: { id: boardId, userId: { id: userId } },
     });

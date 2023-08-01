@@ -28,9 +28,7 @@ export class UsersService {
     private readonly jwtService: JwtService,
     private readonly fileStorageService: FileStorageService,
     private readonly mailerService: MailerService,
-  ) {
-    // sendgridMail.setApiKey(sendgridConfig.sendgridAccessKey);
-  }
+  ) {}
 
   async createUser(
     createUserDto: CreateUserDto,
@@ -72,7 +70,7 @@ export class UsersService {
   }
 
   async updateUser(
-    id: string,
+    userId: string,
     updateUserDto: UpdateUserDto,
     image?: Express.Multer.File,
   ): Promise<User> {
@@ -83,7 +81,7 @@ export class UsersService {
       );
     }
 
-    const user = await this.findOneUserOrFail({ where: { id } });
+    const user = await this.findOneUserOrFail({ where: { id: userId } });
 
     if (updateUserDto.password) {
       const salt = await bcrypt.genSalt(10);
@@ -99,18 +97,18 @@ export class UsersService {
     return await this.userRepository.save(user);
   }
 
-  async removeUser(id: string): Promise<User> {
+  async removeUser(userId: string): Promise<User> {
     const user = await this.findOneUserOrFail({
-      where: { id },
+      where: { id: userId },
       relations: ['boards', 'tasks', 'posts'],
     });
 
     return await this.userRepository.softRemove(user);
   }
 
-  async restoreUser(id: string): Promise<UpdateResult> {
+  async restoreUser(userId: string): Promise<UpdateResult> {
     const user = await this.findOneUserOrFail({
-      where: { id },
+      where: { id: userId },
       withDeleted: true,
     });
 
@@ -225,5 +223,21 @@ export class UsersService {
     const folderName = `users/${userId}/profile-image`;
 
     return await this.fileStorageService.uploadImage(image, folderName);
+  }
+
+  async followUser(userId: string, followUserId: string): Promise<User> {
+    const user = await this.findOneUserOrFail({ where: { id: userId } });
+
+    await this.findOneUserOrFail({ where: { id: followUserId } });
+
+    const followIndex = user.friends.indexOf(followUserId);
+
+    if (followIndex === -1) {
+      user.friends.push(followUserId);
+    } else {
+      user.friends.splice(followIndex, 1);
+    }
+
+    return await this.userRepository.save(user);
   }
 }

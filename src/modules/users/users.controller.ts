@@ -96,4 +96,12 @@ export class UsersController {
   ): Promise<void> {
     return await this.usersService.mailPasswordLink(body.email);
   }
+
+  @Patch('follow/:followUserId')
+  async followUser(
+    @CurrentUserId() userId: string,
+    @Param('followUserId') followUserId: string,
+  ): Promise<User> {
+    return await this.usersService.followUser(userId, followUserId);
+  }
 }

@@ -79,7 +79,7 @@ export class PostsController {
   }
 
   @Patch('reactions/:postId')
-  async likePost(
+  async reactionPost(
     @Body() reaction: Reaction,
     @CurrentUserId() userId: string,
     @Param('postId') postId: string,
