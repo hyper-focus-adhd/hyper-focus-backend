@@ -38,7 +38,7 @@ export class TasksController {
   @Get()
   async findAllTasksByUserId(@CurrentUserId() userId: string): Promise<Task[]> {
     return await this.tasksService.findAllTasksByUserId({
-      where: { user: { id: userId } },
+      where: { userId: { id: userId } },
     });
   }
 

@@ -2,6 +2,8 @@ import { PartialType } from '@nestjs/mapped-types';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import {
+  ArrayNotEmpty,
+  IsArray,
   IsDate,
   IsEmail,
   IsEnum,
@@ -23,8 +25,8 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     description: 'The updated username of the user',
     example: 'Brad',
   })
-  @IsOptional()
   @IsNotEmpty()
+  @IsOptional()
   @IsString()
   username?: string;
 
@@ -32,8 +34,8 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     description: 'The updated role of the user',
     example: 'Admin, Doctor or User',
   })
-  @IsOptional()
   @IsNotEmpty()
+  @IsOptional()
   @IsEnum(Role)
   role?: Role;
 
@@ -41,8 +43,8 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     description: 'The updated email of the user',
     example: 'brad@gmail.com',
   })
-  @IsOptional()
   @IsNotEmpty()
+  @IsOptional()
   @IsEmail()
   email?: string;
 
@@ -50,8 +52,8 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     description: 'The updated password of the user',
     example: 'Bb!123456',
   })
-  @IsOptional()
   @IsNotEmpty()
+  @IsOptional()
   @IsString()
   @Matches(regexHelper.password, {
     message: messagesHelper.PASSWORD_VALID,
@@ -63,7 +65,6 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     example: 'DD-MM-YYYY or MM-DD-YYYY',
   })
   @IsOptional()
-  @IsNotEmpty()
   @Transform(({ value }) =>
     moment(value, ['DD-MM-YYYY', 'MM-DD-YYYY'], true).toDate(),
   )
@@ -75,7 +76,6 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     example: 'Male, Female or Other',
   })
   @IsOptional()
-  @IsNotEmpty()
   @IsEnum(Gender)
   gender?: Gender;
 
@@ -84,7 +84,6 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     example: 'North American',
   })
   @IsOptional()
-  @IsNotEmpty()
   @IsString()
   nationality?: string;
 
@@ -98,13 +97,22 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   language?: Language;
 
   @ApiProperty({
-    description: 'The updated profile picture of the user',
-    example: 'A picture',
+    description: 'The updated profile image of the user',
+    example: 'An image',
   })
   @IsOptional()
-  @IsNotEmpty()
   @IsString()
-  profile_picture?: string;
+  profile_image?: string;
+
+  @ApiProperty({
+    description: 'The updated friends of the user',
+    example: ['TGH6C5APTWQFKN46BPFFCNJ345', 'LOP6C5APTWQFKN46BPFFCNJ342'],
+  })
+  @ArrayNotEmpty()
+  @IsArray()
+  @IsOptional()
+  @IsString({ each: true })
+  friends?: string[];
 
   @ApiProperty({
     description: 'The updated hashed refresh token of the user',

@@ -29,10 +29,6 @@ export class Note {
   @Column({ type: 'json' })
   placement: { x: number; y: number };
 
-  @JoinColumn({ name: 'board_id' })
-  @ManyToOne(() => Board, (board) => board.notes)
-  board: Board;
-
   @CreateDateColumn()
   created_at: Date;
 
@@ -41,6 +37,10 @@ export class Note {
 
   @DeleteDateColumn()
   deleted_at: Date;
+
+  @JoinColumn({ name: 'board_id' })
+  @ManyToOne(() => Board, (boardId) => boardId.notes, { onDelete: 'CASCADE' })
+  boardId: Board;
 
   constructor() {
     if (!this.id) {

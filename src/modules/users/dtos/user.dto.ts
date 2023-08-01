@@ -28,7 +28,10 @@ export class UserDto {
   language: Language;
 
   @Expose()
-  profile_picture?: string;
+  profile_image: string;
+
+  @Expose()
+  friends: string[];
 
   @Expose()
   created_at: Date;

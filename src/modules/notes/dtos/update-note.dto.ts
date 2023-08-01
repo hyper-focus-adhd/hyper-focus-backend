@@ -9,14 +9,14 @@ export class UpdateNoteDto extends PartialType(CreateNoteDto) {
     description: 'The updated text of the note',
     example: 'Updated text',
   })
-  @IsOptional()
   @IsNotEmpty()
+  @IsOptional()
   @IsString()
   text: string;
 
   @ApiProperty({ description: 'The updated color of the note', example: 'Red' })
-  @IsOptional()
   @IsNotEmpty()
+  @IsOptional()
   @IsString()
   color: string;
 
@@ -24,8 +24,8 @@ export class UpdateNoteDto extends PartialType(CreateNoteDto) {
     description: 'The updated placement of the note',
     example: { x: 15, y: 25 },
   })
-  @IsOptional()
   @IsNotEmpty()
+  @IsOptional()
   @IsObject()
   placement: { x: number; y: number };
 }

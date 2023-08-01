@@ -4,8 +4,11 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
@@ -25,8 +28,12 @@ export class AuthController {
 
   @Post('signup')
   @PublicRoute()
-  async signUp(@Body() body: CreateUserDto): Promise<CreateUserType> {
-    return await this.authService.signUp(body);
+  @UseInterceptors(FileInterceptor('image'))
+  async signUp(
+    @Body() body: CreateUserDto,
+    @UploadedFile() image: Express.Multer.File,
+  ): Promise<CreateUserType> {
+    return await this.authService.signUp(body, image);
   }
 
   @HttpCode(HttpStatus.OK)

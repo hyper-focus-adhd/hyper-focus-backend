@@ -1,6 +1,8 @@
 export const messagesHelper = {
   ACCESS_DENIED: 'Access Denied.',
   BOARD_NOT_FOUND: 'Board not found.',
+  CLEAN_BUCKET_ERROR: 'An error occurred while cleaning the bucket.',
+  COMMENT_NOT_FOUND: 'Comment not found.',
   CREDENTIALS_INVALID: 'Invalid credentials.',
   DATE_FORMAT:
     'Invalid date format. Please provide a valid date in DD-MM-YYYY or MM-DD-YYYY format.',
@@ -14,13 +16,14 @@ export const messagesHelper = {
   ERROR_OCCURRED: 'Error occurred:',
   IMAGE_FILE_EMPTY: 'No image file provided.',
   IMAGE_FILE_SIZE_ERROR:
-    'Image file size exceeds the maximum allowed limit (1MB).',
+    'Image file size exceeds the maximum allowed limit (500KB).',
   IMAGE_FILE_TYPE_INVALID:
     'Invalid image file type. Only JPEG and PNG image files are allowed.',
   IMAGE_FILE_UPLOAD_ERROR: 'An error occurred while uploading the image.',
   NOTE_NOT_FOUND: 'Note not found.',
   PASSWORD_VALID:
     'Password must contain: At least one upper case letter, one lower case letter, one digit, one special character or space.',
+  POST_NOT_FOUND: 'Post not found.',
   SUBJECT_PASSWORD_RECOVERY: 'Password recovery.',
   SUBJECT_USERNAME_RECOVERY: 'Username recovery.',
   TASK_NOT_FOUND: 'Task not found.',

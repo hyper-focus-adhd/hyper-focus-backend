@@ -9,7 +9,7 @@ export type CreateUserType = {
   gender: Gender;
   nationality: string;
   language: Language;
-  profile_picture: string;
+  profile_image: string;
   accessToken?: string;
   refreshToken?: string;
   created_at: Date;

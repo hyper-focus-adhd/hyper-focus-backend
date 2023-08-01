@@ -14,6 +14,8 @@ import { ulid } from 'ulid';
 
 import { Gender, Language, Role } from '../../../enums/user.enum';
 import { Board } from '../../boards/entities/board.entity';
+import { Comment } from '../../comments/entities/comment.entity';
+import { Post } from '../../posts/entities/post.entity';
 import { Task } from '../../tasks/entities/task.entity';
 
 @Entity()
@@ -46,16 +48,13 @@ export class User {
   language: Language;
 
   @Column({ nullable: true })
-  profile_picture: string;
+  profile_image: string;
+
+  @Column('text', { array: true, default: [] })
+  friends: string[];
 
   @Column({ nullable: true })
   hashedRefreshToken: string;
-
-  @OneToMany(() => Board, (board) => board.user, { cascade: true })
-  boards: Board[];
-
-  @OneToMany(() => Task, (task) => task.user, { cascade: true })
-  tasks: Task[];
 
   @CreateDateColumn()
   created_at: Date;
@@ -65,6 +64,18 @@ export class User {
 
   @DeleteDateColumn()
   deleted_at: Date;
+
+  @OneToMany(() => Board, (board) => board.userId, { cascade: true })
+  boards: Board[];
+
+  @OneToMany(() => Task, (task) => task.userId, { cascade: true })
+  tasks: Task[];
+
+  @OneToMany(() => Post, (post) => post.userId, { cascade: true })
+  posts: Post[];
+
+  @OneToMany(() => Comment, (comment) => comment.userId, { cascade: true })
+  comments: Comment[];
 
   constructor() {
     if (!this.id) {

@@ -4,23 +4,18 @@ import { Storage } from '@google-cloud/storage';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ulid } from 'ulid';
 
-import { messagesHelper } from '../helpers/messages-helper';
-import { UsersService } from '../modules/users/users.service';
+import { messagesHelper } from '../../helpers/messages-helper';
 
 @Injectable()
 export class FileStorageService {
-  constructor(
-    private readonly usersService: UsersService,
-    private readonly storage: Storage,
-  ) {}
+  bucketName = 'hyper-focus';
 
-  async uploadProfilePicture(
+  constructor(private readonly storage: Storage) {}
+
+  async uploadImage(
     image: Express.Multer.File,
-    userId: string,
-  ): Promise<{ imagePath: string }> {
-    const bucketName = 'hyper-focus';
-    const folderName = `users/${userId}/profile-pictures`;
-
+    folderName: string,
+  ): Promise<string> {
     if (!image) {
       throw new BadRequestException(messagesHelper.IMAGE_FILE_EMPTY);
     }
@@ -32,14 +27,14 @@ export class FileStorageService {
     }
 
     // Perform file size verification
-    const maxFileSizeInBytes = 1024 * 1024; // 1MB
+    const maxFileSizeInBytes = 500 * 1024; // 500KB
     if (image.size > maxFileSizeInBytes) {
       throw new BadRequestException(messagesHelper.IMAGE_FILE_SIZE_ERROR);
     }
 
     try {
       // Upload the image to Google Cloud Storage
-      const bucket = this.storage.bucket(bucketName);
+      const bucket = this.storage.bucket(this.bucketName);
       const fileName = `${folderName}/image_${ulid()}.${image.originalname
         .split('.')
         .pop()}`;
@@ -64,17 +59,23 @@ export class FileStorageService {
       });
 
       // Generate the public URL for the image
-      const publicUrl = `https://storage.googleapis.com/${bucketName}/${fileName}`;
-
-      // Save the image path in the database
-      await this.usersService.updateUser(userId, {
-        profile_picture: publicUrl,
-      });
-
-      return { imagePath: publicUrl };
+      return `https://storage.googleapis.com/${this.bucketName}/${fileName}`;
     } catch (error) {
       console.error(messagesHelper.ERROR_OCCURRED, error);
       throw new Error(messagesHelper.IMAGE_FILE_UPLOAD_ERROR);
+    }
+  }
+
+  async cleanBucket(folderName: string): Promise<void> {
+    try {
+      const bucket = this.storage.bucket(this.bucketName);
+
+      await bucket.deleteFiles({
+        prefix: `${folderName}/`,
+      });
+    } catch (error) {
+      console.error(messagesHelper.ERROR_OCCURRED, error);
+      throw new Error(messagesHelper.CLEAN_BUCKET_ERROR);
     }
   }
 }

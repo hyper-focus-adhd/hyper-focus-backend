@@ -19,7 +19,6 @@ export class CreateTaskDto {
     example: 'Sample description',
   })
   @IsOptional()
-  @IsNotEmpty()
   @IsString()
   description: string;
 
@@ -43,8 +42,8 @@ export class CreateTaskDto {
     description: 'The time of the task',
     example: '{start: HH:mm:ss or hh:mm:ss a, end: HH:mm:ss or hh:mm:ss a}',
   })
-  @IsOptional()
   @IsNotEmpty()
+  @IsOptional()
   @IsTimeObject()
   time: { start: Date; end: Date };
 }

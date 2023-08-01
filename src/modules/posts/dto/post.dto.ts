@@ -2,15 +2,18 @@ import { Expose } from 'class-transformer';
 
 import { User } from '../../users/entities/user.entity';
 
-export class BoardDto {
+export class PostDto {
   @Expose()
   id: string;
 
   @Expose()
-  title: string;
+  content: string;
 
   @Expose()
-  color: string;
+  image: string;
+
+  @Expose()
+  reaction: object;
 
   @Expose()
   created_at: Date;

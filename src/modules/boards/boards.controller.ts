@@ -40,7 +40,7 @@ export class BoardsController {
     @CurrentUserId() userId: string,
   ): Promise<Board[]> {
     return await this.boardsService.findAllBoardsByUserId({
-      where: { user: { id: userId } },
+      where: { userId: { id: userId } },
     });
   }
 
@@ -57,7 +57,7 @@ export class BoardsController {
   async removeBoard(
     @CurrentUserId() userId: string,
     @Param('boardId') boardId: string,
-  ): Promise<UpdateResult> {
+  ): Promise<Board> {
     return await this.boardsService.removeBoard(userId, boardId);
   }
 

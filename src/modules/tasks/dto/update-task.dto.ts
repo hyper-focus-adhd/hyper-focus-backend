@@ -13,8 +13,8 @@ export class UpdateTaskDto extends PartialType(CreateTaskDto) {
     description: 'The updated title of the task',
     example: 'Updated title',
   })
-  @IsOptional()
   @IsNotEmpty()
+  @IsOptional()
   @IsString()
   title: string;
 
@@ -23,7 +23,6 @@ export class UpdateTaskDto extends PartialType(CreateTaskDto) {
     example: 'Updated description',
   })
   @IsOptional()
-  @IsNotEmpty()
   @IsString()
   description: string;
 
@@ -31,8 +30,8 @@ export class UpdateTaskDto extends PartialType(CreateTaskDto) {
     description: 'The updated status of the task',
     example: 'To Do, In Progress or Done',
   })
-  @IsOptional()
   @IsNotEmpty()
+  @IsOptional()
   @IsEnum(Status)
   status: Status;
 
@@ -40,8 +39,8 @@ export class UpdateTaskDto extends PartialType(CreateTaskDto) {
     description: 'The updated date of the task',
     example: '{start: DD-MM-YYYY or MM-DD-YYYY, end: DD-MM-YYYY or MM-DD-YYYY}',
   })
-  @IsOptional()
   @IsNotEmpty()
+  @IsOptional()
   @IsDateObject()
   date: { start: Date; end: Date };
 
@@ -49,8 +48,8 @@ export class UpdateTaskDto extends PartialType(CreateTaskDto) {
     description: 'The updated time of the task',
     example: '{start: HH:mm:ss or hh:mm:ss a, end: HH:mm:ss or hh:mm:ss a}',
   })
-  @IsOptional()
   @IsNotEmpty()
+  @IsOptional()
   @IsTimeObject()
   time: { start: Date; end: Date };
 }
