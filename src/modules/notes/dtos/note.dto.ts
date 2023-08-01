@@ -1,5 +1,7 @@
 import { Expose } from 'class-transformer';
 
+import { Board } from '../../boards/entities/board.entity';
+
 export class NoteDto {
   @Expose()
   id: string;
@@ -14,5 +16,8 @@ export class NoteDto {
   placement: object;
 
   @Expose()
-  board: string;
+  created_at: Date;
+
+  @Expose()
+  boardId: Board;
 }

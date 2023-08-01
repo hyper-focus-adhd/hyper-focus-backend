@@ -1,5 +1,7 @@
 import { Expose } from 'class-transformer';
 
+import { User } from '../../users/entities/user.entity';
+
 export class BoardDto {
   @Expose()
   id: string;
@@ -11,5 +13,8 @@ export class BoardDto {
   color: string;
 
   @Expose()
-  user: string;
+  created_at: Date;
+
+  @Expose()
+  userId: User;
 }

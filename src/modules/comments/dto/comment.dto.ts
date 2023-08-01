@@ -1,16 +1,14 @@
 import { Expose } from 'class-transformer';
 
+import { Post } from '../../posts/entities/post.entity';
 import { User } from '../../users/entities/user.entity';
 
-export class PostDto {
+export class CommentDto {
   @Expose()
   id: string;
 
   @Expose()
   content: string;
-
-  @Expose()
-  image: string;
 
   @Expose()
   reaction: object;
@@ -20,4 +18,10 @@ export class PostDto {
 
   @Expose()
   userId: User;
+
+  @Expose()
+  postId: Post;
+
+  @Expose()
+  parentCommentId: string;
 }

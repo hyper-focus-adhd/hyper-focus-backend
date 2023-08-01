@@ -14,6 +14,7 @@ import { ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
 
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
+import { Reaction } from '../../common/types';
 import { Serialize } from '../../interceptors/serialize.interceptor';
 import { User } from '../users/entities/user.entity';
 
@@ -22,7 +23,6 @@ import { PostDto } from './dto/post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Post as PostEntity } from './entities/post.entity';
 import { PostsService } from './posts.service';
-import { Reaction } from './types';
 
 @ApiTags('Post')
 @ApiSecurity('Access Token')
@@ -47,7 +47,7 @@ export class PostsController {
     @CurrentUserId() userId: string,
   ): Promise<PostEntity[]> {
     return await this.postsService.findAllPostsByUserId({
-      where: { authorId: { id: userId } },
+      where: { userId: { id: userId } },
     });
   }
 
@@ -90,10 +90,10 @@ export class PostsController {
   @Post('post-image/:postId')
   @UseInterceptors(FileInterceptor('image'))
   async uploadPostImage(
-    @CurrentUserId() authorId: string,
+    @CurrentUserId() userId: string,
     @Param('postId') postId: string,
     @UploadedFile() image: Express.Multer.File,
   ): Promise<void> {
-    await this.postsService.uploadPostImage(authorId, postId, image);
+    await this.postsService.uploadPostImage(userId, postId, image);
   }
 }

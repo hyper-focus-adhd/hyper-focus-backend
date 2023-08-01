@@ -33,9 +33,8 @@ export class NotesService {
       text: createNoteDto.text,
       color: createNoteDto.color,
       placement: createNoteDto.placement,
+      boardId: board,
     });
-
-    note.boardId = board;
 
     return await this.noteRepository.save(note);
   }

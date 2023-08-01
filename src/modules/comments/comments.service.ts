@@ -1,27 +1,164 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, UpdateResult } from 'typeorm';
+import { FindManyOptions } from 'typeorm/find-options/FindManyOptions';
+import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
+
+import { Reaction } from '../../common/types';
+import { messagesHelper } from '../../helpers/messages-helper';
+import { Post } from '../posts/entities/post.entity';
+import { PostsService } from '../posts/posts.service';
+import { User } from '../users/entities/user.entity';
 
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
+import { Comment } from './entities/comment.entity';
 
 @Injectable()
 export class CommentsService {
-  create(createCommentDto: CreateCommentDto) {
-    return 'This action adds a new comment';
+  constructor(
+    @InjectRepository(Comment)
+    private readonly commentRepository: Repository<Comment>,
+    private readonly postsService: PostsService,
+  ) {}
+
+  async createComment(
+    user: User,
+    post: Post,
+    parentComment: string,
+    createCommentDto: CreateCommentDto,
+  ): Promise<Comment> {
+    const postId = JSON.parse(JSON.stringify(post));
+
+    await this.postsService.findOnePostOrFail({
+      where: { id: postId },
+    });
+
+    const comment = this.commentRepository.create({
+      content: createCommentDto.content,
+      reaction: createCommentDto.reaction,
+      userId: user,
+      postId: post,
+    });
+
+    if (parentComment) {
+      comment.parentCommentId = parentComment;
+    }
+
+    return await this.commentRepository.save(comment);
   }
 
-  findAll() {
-    return `This action returns all comments`;
+  async findAllCommentsByUserId(
+    options: FindManyOptions<Comment>,
+  ): Promise<Comment[]> {
+    const comments = await this.commentRepository.find(options);
+
+    if (!comments.length) {
+      throw new NotFoundException(messagesHelper.COMMENT_NOT_FOUND);
+    }
+
+    return comments;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} comment`;
+  async findOneCommentOrFail(
+    options: FindOneOptions<Comment>,
+  ): Promise<Comment> {
+    try {
+      return await this.commentRepository.findOneOrFail(options);
+    } catch (error: unknown) {
+      throw new NotFoundException(messagesHelper.COMMENT_NOT_FOUND);
+    }
   }
 
-  update(id: number, updateCommentDto: UpdateCommentDto) {
-    return `This action updates a #${id} comment`;
+  async updateComment(
+    userId: string,
+    postId: string,
+    commentId: string,
+    updateCommentDto: UpdateCommentDto,
+  ): Promise<Comment> {
+    await this.postsService.findOnePostOrFail({
+      where: { id: postId },
+    });
+
+    const comment = await this.findOneCommentOrFail({
+      where: { id: commentId, userId: { id: userId } },
+    });
+
+    this.commentRepository.merge(comment, updateCommentDto);
+
+    return await this.commentRepository.save(comment);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} comment`;
+  async removeComment(
+    userId: string,
+    postId: string,
+    commentId: string,
+  ): Promise<UpdateResult> {
+    await this.postsService.findOnePostOrFail({
+      where: { id: postId },
+    });
+
+    const comment = await this.findOneCommentOrFail({
+      where: { id: commentId, userId: { id: userId } },
+    });
+
+    return await this.commentRepository.softDelete(comment.id);
+  }
+
+  async restoreComment(
+    userId: string,
+    postId: string,
+    commentId: string,
+  ): Promise<UpdateResult> {
+    await this.postsService.findOnePostOrFail({
+      where: { id: postId },
+    });
+
+    const comment = await this.findOneCommentOrFail({
+      where: { id: commentId, userId: { id: userId } },
+      withDeleted: true,
+    });
+
+    return await this.commentRepository.restore(comment.id);
+  }
+
+  async reactionComment(
+    userId: string,
+    postId: string,
+    commentId: string,
+    reaction: Reaction,
+  ): Promise<Comment> {
+    await this.postsService.findOnePostOrFail({
+      where: { id: postId },
+    });
+
+    const comment = await this.findOneCommentOrFail({
+      where: { id: commentId },
+    });
+
+    const likeIndex = comment.reaction.like.indexOf(userId);
+    const dislikeIndex = comment.reaction.dislike.indexOf(userId);
+
+    if (reaction.value === true) {
+      if (likeIndex === -1) {
+        comment.reaction.like.push(userId);
+      } else {
+        comment.reaction.like.splice(likeIndex, 1);
+      }
+      if (dislikeIndex !== -1) {
+        comment.reaction.dislike.splice(dislikeIndex, 1);
+      }
+    } else if (reaction.value === false) {
+      if (dislikeIndex === -1) {
+        comment.reaction.dislike.push(userId);
+      } else {
+        comment.reaction.dislike.splice(dislikeIndex, 1);
+      }
+      if (likeIndex !== -1) {
+        comment.reaction.like.splice(likeIndex, 1);
+      }
+    }
+
+    return await this.commentRepository.save(comment);
   }
 }

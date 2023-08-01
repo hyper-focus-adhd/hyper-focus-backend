@@ -24,9 +24,8 @@ export class TasksService {
       status: createTaskDto.status,
       date: createTaskDto.date,
       time: createTaskDto.time,
+      userId: user,
     });
-
-    task.userId = user;
 
     return await this.taskRepository.save(task);
   }

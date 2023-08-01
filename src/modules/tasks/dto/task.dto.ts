@@ -1,6 +1,7 @@
 import { Expose } from 'class-transformer';
 
 import { Status } from '../../../enums/task.enum';
+import { User } from '../../users/entities/user.entity';
 
 export class TaskDto {
   @Expose()
@@ -22,5 +23,8 @@ export class TaskDto {
   time: object;
 
   @Expose()
-  user: string;
+  created_at: Date;
+
+  @Expose()
+  userId: User;
 }

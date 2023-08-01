@@ -25,9 +25,8 @@ export class BoardsService {
     const board = this.boardRepository.create({
       title: createBoardDto.title,
       color: createBoardDto.color,
+      userId: user,
     });
-
-    board.userId = user;
 
     return await this.boardRepository.save(board);
   }

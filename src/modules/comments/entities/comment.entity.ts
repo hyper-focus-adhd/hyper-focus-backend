@@ -25,14 +25,8 @@ export class Comment {
   @Column()
   content: string;
 
-  @Column()
-  timestamp: number;
-
-  @Column({ type: 'text', array: true, nullable: true })
-  likes: string[];
-
-  @Column({ type: 'text', array: true, nullable: true })
-  dislikes: string[];
+  @Column({ type: 'json', default: { like: [], dislike: [] } })
+  reaction: { like: string[]; dislike: string[] };
 
   @CreateDateColumn()
   created_at: Date;
@@ -43,22 +37,21 @@ export class Comment {
   @DeleteDateColumn()
   deleted_at: Date;
 
-  @ManyToOne(() => User, (authorId) => authorId.comments, {
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn({ name: 'author_Id' })
-  authorId: User;
+  @JoinColumn({ name: 'user_id' })
+  @ManyToOne(() => User, (userId) => userId.comments, { onDelete: 'CASCADE' })
+  userId: User;
 
   @JoinColumn({ name: 'post_id' })
   @ManyToOne(() => Post, (postId) => postId.comments, { onDelete: 'CASCADE' })
   postId: Post;
 
+  @JoinColumn({ name: 'parent_comment_id' })
   @ManyToOne(() => Comment, (comment) => comment.replies, {
     onDelete: 'CASCADE',
   })
-  parentComment: Comment;
+  parentCommentId: string;
 
-  @OneToMany(() => Comment, (comment) => comment.parentComment, {
+  @OneToMany(() => Comment, (comment) => comment.parentCommentId, {
     cascade: true,
   })
   replies: Comment[];
