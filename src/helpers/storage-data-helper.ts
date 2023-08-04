@@ -1,6 +1,6 @@
 import { Storage } from '@google-cloud/storage';
 
-export const storageData = {
+export const storageDataHelper = {
   provide: Storage,
   useValue: new Storage({
     projectId: 'hyper-focus-389222',

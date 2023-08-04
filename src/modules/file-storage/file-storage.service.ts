@@ -6,6 +6,7 @@ import { ulid } from 'ulid';
 
 import { messagesHelper } from '../../helpers/messages-helper';
 
+//TODO: think about transforming it into a helper function
 @Injectable()
 export class FileStorageService {
   bucketName = 'hyper-focus';

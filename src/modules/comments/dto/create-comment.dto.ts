@@ -12,8 +12,14 @@ export class CreateCommentDto {
 
   @ApiProperty({
     description: 'The likes and dislikes of the comment',
-    example:
-      '{like: [ADR6C5APTWQFKN46BPFFCNJ323, 01H6C5APTWQFKN46BPFFCNJ512, UIO6C5APTWQFKN46BPFFCNJ830], dislike:[ADR6C5APTWQFKN46BPFFCNJ341]}',
+    example: {
+      like: [
+        'ADR6C5APTWQFKN46BPFFCNJ323',
+        '01H6C5APTWQFKN46BPFFCNJ512',
+        'UIO6C5APTWQFKN46BPFFCNJ830',
+      ],
+      dislike: ['ADR6C5APTWQFKN46BPFFCNJ341'],
+    },
   })
   @IsObject()
   @IsOptional()

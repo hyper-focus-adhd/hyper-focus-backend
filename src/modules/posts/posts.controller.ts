@@ -10,7 +10,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
 
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
@@ -32,6 +32,7 @@ import { PostsService } from './posts.service';
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
+  @ApiOperation({ summary: 'Create a new post' })
   @Post()
   @UseInterceptors(FileInterceptor('image'))
   async createPost(
@@ -42,15 +43,29 @@ export class PostsController {
     return await this.postsService.createPost(user, body, image);
   }
 
+  @ApiOperation({ summary: 'Find all posts' })
+  @Get('all')
+  async findAllPosts(): Promise<PostEntity[]> {
+    return await this.postsService.findAllPosts();
+  }
+
+  @ApiOperation({ summary: 'Find all friends posts by user id' })
+  @Get('friends-posts')
+  async findAllFriendsPostsByUserId(
+    @CurrentUserId() userId: string,
+  ): Promise<PostEntity[][]> {
+    return await this.postsService.findAllFriendsPostsByUserId(userId);
+  }
+
+  @ApiOperation({ summary: 'Find all posts by user id' })
   @Get()
   async findAllPostsByUserId(
     @CurrentUserId() userId: string,
   ): Promise<PostEntity[]> {
-    return await this.postsService.findAllPostsByUserId({
-      where: { userId: { id: userId } },
-    });
+    return await this.postsService.findAllPostsByUserId(userId);
   }
 
+  @ApiOperation({ summary: 'Update a post' })
   @Patch(':postId')
   @UseInterceptors(FileInterceptor('image'))
   async updatePost(
@@ -62,6 +77,7 @@ export class PostsController {
     return await this.postsService.updatePost(userId, postId, body, image);
   }
 
+  @ApiOperation({ summary: 'Delete a post' })
   @Delete(':postId')
   async removePost(
     @CurrentUserId() userId: string,
@@ -70,6 +86,7 @@ export class PostsController {
     return await this.postsService.removePost(userId, postId);
   }
 
+  @ApiOperation({ summary: 'Restore a deleted post' })
   @Patch('restore/:postId')
   async restorePost(
     @CurrentUserId() userId: string,
@@ -78,6 +95,7 @@ export class PostsController {
     return await this.postsService.restorePost(userId, postId);
   }
 
+  @ApiOperation({ summary: 'React to a post' })
   @Patch('reactions/:postId')
   async reactionPost(
     @Body() reaction: Reaction,
@@ -85,15 +103,5 @@ export class PostsController {
     @Param('postId') postId: string,
   ): Promise<PostEntity> {
     return await this.postsService.reactionPost(userId, postId, reaction);
-  }
-
-  @Post('post-image/:postId')
-  @UseInterceptors(FileInterceptor('image'))
-  async uploadPostImage(
-    @CurrentUserId() userId: string,
-    @Param('postId') postId: string,
-    @UploadedFile() image: Express.Multer.File,
-  ): Promise<void> {
-    await this.postsService.uploadPostImage(userId, postId, image);
   }
 }

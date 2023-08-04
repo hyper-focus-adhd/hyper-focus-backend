@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { storageData } from '../../helpers/storage-data-helper';
+import { storageDataHelper } from '../../helpers/storage-data-helper';
 import { FileStorageService } from '../file-storage/file-storage.service';
 import { MailerService } from '../mailer/mailer.service';
 
@@ -13,7 +13,12 @@ import { UsersService } from './users.service';
 @Module({
   imports: [TypeOrmModule.forFeature([User]), JwtModule.register({})],
   controllers: [UsersController],
-  providers: [UsersService, FileStorageService, storageData, MailerService],
+  providers: [
+    UsersService,
+    FileStorageService,
+    storageDataHelper,
+    MailerService,
+  ],
   exports: [UsersService],
 })
 export class UsersModule {}

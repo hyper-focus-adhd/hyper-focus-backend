@@ -7,6 +7,9 @@ export class PostDto {
   id: string;
 
   @Expose()
+  title: string;
+
+  @Expose()
   content: string;
 
   @Expose()

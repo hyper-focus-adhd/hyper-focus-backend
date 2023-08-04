@@ -1,12 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
-import { FindManyOptions } from 'typeorm/find-options/FindManyOptions';
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
 import { Reaction } from '../../common/types';
 import { messagesHelper } from '../../helpers/messages-helper';
-import { Post } from '../posts/entities/post.entity';
+import { reactionHelper } from '../../helpers/reaction-helper';
 import { PostsService } from '../posts/posts.service';
 import { User } from '../users/entities/user.entity';
 
@@ -24,21 +23,21 @@ export class CommentsService {
 
   async createComment(
     user: User,
-    post: Post,
+    post: string,
     parentComment: string,
     createCommentDto: CreateCommentDto,
   ): Promise<Comment> {
     const postId = JSON.parse(JSON.stringify(post));
 
     await this.postsService.findOnePostOrFail({
-      where: { id: postId },
+      where: { id: post },
     });
 
     const comment = this.commentRepository.create({
       content: createCommentDto.content,
       reaction: createCommentDto.reaction,
       userId: user,
-      postId: post,
+      postId: postId,
     });
 
     if (parentComment) {
@@ -48,10 +47,10 @@ export class CommentsService {
     return await this.commentRepository.save(comment);
   }
 
-  async findAllCommentsByUserId(
-    options: FindManyOptions<Comment>,
-  ): Promise<Comment[]> {
-    const comments = await this.commentRepository.find(options);
+  async findAllCommentsByUserId(userId: string): Promise<Comment[]> {
+    const comments = await this.commentRepository.find({
+      where: { userId: { id: userId } },
+    });
 
     if (!comments.length) {
       throw new NotFoundException(messagesHelper.COMMENT_NOT_FOUND);
@@ -136,28 +135,12 @@ export class CommentsService {
       where: { id: commentId },
     });
 
-    const likeIndex = comment.reaction.like.indexOf(userId);
-    const dislikeIndex = comment.reaction.dislike.indexOf(userId);
-
-    if (reaction.value === true) {
-      if (likeIndex === -1) {
-        comment.reaction.like.push(userId);
-      } else {
-        comment.reaction.like.splice(likeIndex, 1);
-      }
-      if (dislikeIndex !== -1) {
-        comment.reaction.dislike.splice(dislikeIndex, 1);
-      }
-    } else if (reaction.value === false) {
-      if (dislikeIndex === -1) {
-        comment.reaction.dislike.push(userId);
-      } else {
-        comment.reaction.dislike.splice(dislikeIndex, 1);
-      }
-      if (likeIndex !== -1) {
-        comment.reaction.like.splice(likeIndex, 1);
-      }
-    }
+    reactionHelper(
+      userId,
+      comment.reaction.like,
+      comment.reaction.dislike,
+      reaction,
+    );
 
     return await this.commentRepository.save(comment);
   }

@@ -15,8 +15,10 @@ export class UpdateCommentDto extends PartialType(CreateCommentDto) {
 
   @ApiProperty({
     description: 'The updated likes and dislikes of the comment',
-    example:
-      '{like: [UIO6C5APTWQFKN46BPFFCNJ830], dislike:[ADR6C5APTWQFKN46BPFFCNJ341]}',
+    example: {
+      like: ['UIO6C5APTWQFKN46BPFFCNJ830'],
+      dislike: ['ADR6C5APTWQFKN46BPFFCNJ341'],
+    },
   })
   @IsNotEmpty()
   @IsObject()

@@ -7,12 +7,11 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
 
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
 import { Serialize } from '../../interceptors/serialize.interceptor';
-import { Board } from '../boards/entities/board.entity';
 
 import { CreateNoteDto } from './dtos/create-note.dto';
 import { NoteDto } from './dtos/note.dto';
@@ -27,15 +26,17 @@ import { NotesService } from './notes.service';
 export class NotesController {
   constructor(private readonly notesService: NotesService) {}
 
+  @ApiOperation({ summary: 'Create a new note' })
   @Post(':boardId')
   async createNote(
     @Body() body: CreateNoteDto,
     @CurrentUserId() userId: string,
-    @Param('boardId') boardId: Board,
+    @Param('boardId') boardId: string,
   ): Promise<Note> {
     return await this.notesService.createNote(userId, boardId, body);
   }
 
+  @ApiOperation({ summary: 'Find all notes by board id' })
   @Get(':boardId')
   async findAllNotesByBoardId(
     @CurrentUserId() userId: string,
@@ -44,6 +45,7 @@ export class NotesController {
     return await this.notesService.findAllNotesByBoardId(userId, boardId);
   }
 
+  @ApiOperation({ summary: 'Update a note' })
   @Patch(':boardId/:noteId')
   async updateNote(
     @Body() body: UpdateNoteDto,
@@ -54,6 +56,7 @@ export class NotesController {
     return await this.notesService.updateNote(userId, boardId, noteId, body);
   }
 
+  @ApiOperation({ summary: 'Delete a note' })
   @Delete(':boardId/:noteId')
   async removeNote(
     @CurrentUserId() userId: string,
@@ -63,6 +66,7 @@ export class NotesController {
     return await this.notesService.removeNote(userId, boardId, noteId);
   }
 
+  @ApiOperation({ summary: 'Restore a deleted note' })
   @Patch('restore/:boardId/:noteId')
   async restoreNote(
     @CurrentUserId() userId: string,

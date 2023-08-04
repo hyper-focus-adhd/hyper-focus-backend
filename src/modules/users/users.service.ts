@@ -54,7 +54,13 @@ export class UsersService {
   }
 
   async findAllUsers(): Promise<User[]> {
-    return await this.userRepository.find();
+    const users = await this.userRepository.find();
+
+    if (!users) {
+      throw new NotFoundException(messagesHelper.USER_NOT_FOUND);
+    }
+
+    return users;
   }
 
   async findOneUser(options: FindOneOptions<User>): Promise<User> {
@@ -131,7 +137,7 @@ export class UsersService {
     }
   }
 
-  async passwordRecovery(
+  async passwordChange(
     password: string,
     passwordRecoveryToken: string,
   ): Promise<User> {

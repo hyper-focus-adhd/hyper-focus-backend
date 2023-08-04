@@ -11,7 +11,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
 
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
@@ -31,24 +31,21 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @ApiSecurity('Access Token')
-  @Get()
-  async findCurrentUser(@CurrentUserId() userId: string): Promise<User> {
-    return await this.usersService.findOneUser({ where: { id: userId } });
-  }
-
-  @ApiSecurity('Access Token')
-  @Get(':id')
-  async findUserById(@Param('id') id: string): Promise<User> {
-    return await this.usersService.findOneUserOrFail({ where: { id } });
-  }
-
+  @ApiOperation({ summary: 'Find all users' })
   @ApiSecurity('Access Token')
   @Get('all')
   async findAllUsers(): Promise<User[]> {
     return await this.usersService.findAllUsers();
   }
 
+  @ApiOperation({ summary: 'Find a user by id' })
+  @ApiSecurity('Access Token')
+  @Get(':id')
+  async findUserById(@Param('id') id: string): Promise<User> {
+    return await this.usersService.findOneUserOrFail({ where: { id } });
+  }
+
+  @ApiOperation({ summary: 'Update a user' })
   @ApiSecurity('Access Token')
   @Patch()
   @UseInterceptors(FileInterceptor('image'))
@@ -60,27 +57,31 @@ export class UsersController {
     return await this.usersService.updateUser(userId, body, image);
   }
 
+  @ApiOperation({ summary: 'Delete a user' })
   @ApiSecurity('Access Token')
   @Delete()
   async removeUser(@CurrentUserId() userId: string): Promise<User> {
     return await this.usersService.removeUser(userId);
   }
 
+  @ApiOperation({ summary: 'Restore a deleted user' })
   @ApiSecurity('Access Token')
   @Patch('restore')
   async restoreUser(@CurrentUserId() userId: string): Promise<UpdateResult> {
     return await this.usersService.restoreUser(userId);
   }
 
+  @ApiOperation({ summary: 'Change a lost password' })
   @PublicRoute()
   @Put('password-change')
-  async passwordRecovery(@Body() body: UserPasswordChangeDto): Promise<User> {
-    return await this.usersService.passwordRecovery(
+  async passwordChange(@Body() body: UserPasswordChangeDto): Promise<User> {
+    return await this.usersService.passwordChange(
       body.password,
       body.passwordRecoveryToken,
     );
   }
 
+  @ApiOperation({ summary: 'Recover a lost username' })
   @Post('recover-username')
   @PublicRoute()
   async recoverUsername(
@@ -89,14 +90,16 @@ export class UsersController {
     return await this.usersService.mailUsername(body.email);
   }
 
-  @Post('recover-password')
+  @ApiOperation({ summary: 'Mail a password link' })
+  @Post('mail-password-link')
   @PublicRoute()
-  async recoverPassword(
+  async mailPasswordLink(
     @Body() body: RecoverUserCredentialsDto,
   ): Promise<void> {
     return await this.usersService.mailPasswordLink(body.email);
   }
 
+  @ApiOperation({ summary: 'Follow a user' })
   @Patch('follow/:followUserId')
   async followUser(
     @CurrentUserId() userId: string,

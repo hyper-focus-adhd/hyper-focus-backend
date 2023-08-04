@@ -37,7 +37,10 @@ export class UpdateTaskDto extends PartialType(CreateTaskDto) {
 
   @ApiProperty({
     description: 'The updated date of the task',
-    example: '{start: DD-MM-YYYY or MM-DD-YYYY, end: DD-MM-YYYY or MM-DD-YYYY}',
+    example: {
+      start: 'DD-MM-YYYY or MM-DD-YYYY',
+      end: 'DD-MM-YYYY or MM-DD-YYYY',
+    },
   })
   @IsNotEmpty()
   @IsOptional()
@@ -46,7 +49,7 @@ export class UpdateTaskDto extends PartialType(CreateTaskDto) {
 
   @ApiProperty({
     description: 'The updated time of the task',
-    example: '{start: HH:mm:ss or hh:mm:ss a, end: HH:mm:ss or hh:mm:ss a}',
+    example: { start: 'HH:mm:ss or hh:mm:ss a', end: 'HH:mm:ss or hh:mm:ss a' },
   })
   @IsNotEmpty()
   @IsOptional()

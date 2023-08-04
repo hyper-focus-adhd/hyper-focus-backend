@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
-import { FindManyOptions } from 'typeorm/find-options/FindManyOptions';
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
 import { messagesHelper } from '../../helpers/messages-helper';
@@ -30,8 +29,10 @@ export class TasksService {
     return await this.taskRepository.save(task);
   }
 
-  async findAllTasksByUserId(options: FindManyOptions<Task>): Promise<Task[]> {
-    const tasks = await this.taskRepository.find(options);
+  async findAllTasksByUserId(userId: string): Promise<Task[]> {
+    const tasks = await this.taskRepository.find({
+      where: { userId: { id: userId } },
+    });
 
     if (!tasks.length) {
       throw new NotFoundException(messagesHelper.TASK_NOT_FOUND);

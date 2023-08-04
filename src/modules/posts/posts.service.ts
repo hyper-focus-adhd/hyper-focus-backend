@@ -1,13 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
-import { FindManyOptions } from 'typeorm/find-options/FindManyOptions';
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
 import { Reaction } from '../../common/types';
 import { messagesHelper } from '../../helpers/messages-helper';
+import { reactionHelper } from '../../helpers/reaction-helper';
 import { FileStorageService } from '../file-storage/file-storage.service';
 import { User } from '../users/entities/user.entity';
+import { UsersService } from '../users/users.service';
 
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -18,6 +19,7 @@ export class PostsService {
   constructor(
     @InjectRepository(Post) private readonly postRepository: Repository<Post>,
     private readonly fileStorageService: FileStorageService,
+    private readonly usersService: UsersService,
   ) {}
 
   async createPost(
@@ -26,6 +28,7 @@ export class PostsService {
     image: Express.Multer.File,
   ): Promise<Post> {
     const post = this.postRepository.create({
+      title: createPostDto.title,
       content: createPostDto.content,
       reaction: createPostDto.reaction,
       userId: user,
@@ -40,14 +43,44 @@ export class PostsService {
     return await this.postRepository.save(post);
   }
 
-  async findAllPostsByUserId(options: FindManyOptions<Post>): Promise<Post[]> {
-    const posts = await this.postRepository.find(options);
+  async findAllPosts(): Promise<Post[]> {
+    const posts = await this.postRepository.find();
 
     if (!posts.length) {
       throw new NotFoundException(messagesHelper.POST_NOT_FOUND);
     }
 
     return posts;
+  }
+
+  async findAllPostsByUserId(userId: string): Promise<Post[]> {
+    const posts = await this.postRepository.find({
+      where: { userId: { id: userId } },
+    });
+
+    if (!posts.length) {
+      throw new NotFoundException(messagesHelper.POST_NOT_FOUND);
+    }
+
+    return posts;
+  }
+
+  async findAllFriendsPostsByUserId(userId: string): Promise<Post[][]> {
+    const user = await this.usersService.findOneUserOrFail({
+      where: { id: userId },
+    });
+
+    const friendsPosts: Post[][] = [];
+    for (const friend of user.friends) {
+      const friendData = await this.usersService.findOneUserOrFail({
+        where: { id: friend },
+      });
+
+      const friendPosts = await this.findAllPostsByUserId(friendData.id);
+      friendsPosts.push(friendPosts);
+    }
+
+    return friendsPosts;
   }
 
   async findOnePostOrFail(options: FindOneOptions<Post>): Promise<Post> {
@@ -72,7 +105,7 @@ export class PostsService {
       post.image = await this.uploadPostImage(userId, postId, image);
     }
 
-    if (updatePostDto.image === '') {
+    if (updatePostDto.image === null) {
       await this.removePostImage(userId, postId);
     }
 
@@ -108,28 +141,7 @@ export class PostsService {
       where: { id: postId },
     });
 
-    const likeIndex = post.reaction.like.indexOf(userId);
-    const dislikeIndex = post.reaction.dislike.indexOf(userId);
-
-    if (reaction.value === true) {
-      if (likeIndex === -1) {
-        post.reaction.like.push(userId);
-      } else {
-        post.reaction.like.splice(likeIndex, 1);
-      }
-      if (dislikeIndex !== -1) {
-        post.reaction.dislike.splice(dislikeIndex, 1);
-      }
-    } else if (reaction.value === false) {
-      if (dislikeIndex === -1) {
-        post.reaction.dislike.push(userId);
-      } else {
-        post.reaction.dislike.splice(dislikeIndex, 1);
-      }
-      if (likeIndex !== -1) {
-        post.reaction.like.splice(likeIndex, 1);
-      }
-    }
+    reactionHelper(userId, post.reaction.like, post.reaction.dislike, reaction);
 
     return await this.postRepository.save(post);
   }

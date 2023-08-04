@@ -5,7 +5,6 @@ import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
 import { messagesHelper } from '../../helpers/messages-helper';
 import { BoardsService } from '../boards/boards.service';
-import { Board } from '../boards/entities/board.entity';
 
 import { CreateNoteDto } from './dtos/create-note.dto';
 import { UpdateNoteDto } from './dtos/update-note.dto';
@@ -20,20 +19,20 @@ export class NotesService {
 
   async createNote(
     userId: string,
-    board: Board,
+    board: string,
     createNoteDto: CreateNoteDto,
   ): Promise<Note> {
     const boardId = JSON.parse(JSON.stringify(board));
 
     await this.boardsService.findOneBoardOrFail({
-      where: { id: boardId, userId: { id: userId } },
+      where: { id: board, userId: { id: userId } },
     });
 
     const note = this.noteRepository.create({
       text: createNoteDto.text,
       color: createNoteDto.color,
       placement: createNoteDto.placement,
-      boardId: board,
+      boardId: boardId,
     });
 
     return await this.noteRepository.save(note);
@@ -43,9 +42,7 @@ export class NotesService {
     userId: string,
     boardId: string,
   ): Promise<Note[]> {
-    const boards = await this.boardsService.findAllBoardsByUserId({
-      where: { userId: { id: userId } },
-    });
+    const boards = await this.boardsService.findAllBoardsByUserId(userId);
 
     const foundBoard = boards.find((board) => board.id === boardId);
     if (!foundBoard) {
