@@ -32,7 +32,10 @@ export class CreateTaskDto {
 
   @ApiProperty({
     description: 'The date of the task',
-    example: '{start: DD-MM-YYYY or MM-DD-YYYY, end: DD-MM-YYYY or MM-DD-YYYY}',
+    example: {
+      start: 'DD-MM-YYYY or MM-DD-YYYY',
+      end: 'DD-MM-YYYY or MM-DD-YYYY',
+    },
   })
   @IsNotEmpty()
   @IsDateObject()
@@ -40,7 +43,7 @@ export class CreateTaskDto {
 
   @ApiProperty({
     description: 'The time of the task',
-    example: '{start: HH:mm:ss or hh:mm:ss a, end: HH:mm:ss or hh:mm:ss a}',
+    example: { start: 'HH:mm:ss or hh:mm:ss a', end: 'HH:mm:ss or hh:mm:ss a' },
   })
   @IsNotEmpty()
   @IsOptional()

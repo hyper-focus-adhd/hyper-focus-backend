@@ -5,6 +5,15 @@ import { CreatePostDto } from './create-post.dto';
 
 export class UpdatePostDto extends PartialType(CreatePostDto) {
   @ApiProperty({
+    description: 'The updated title of the post',
+    example: 'Sample title',
+  })
+  @IsNotEmpty()
+  @IsOptional()
+  @IsString()
+  title?: string;
+
+  @ApiProperty({
     description: 'The updated content of the post',
     example: 'Sample content',
   })
@@ -23,8 +32,10 @@ export class UpdatePostDto extends PartialType(CreatePostDto) {
 
   @ApiProperty({
     description: 'The updated likes and dislikes of the post',
-    example:
-      '{like: [UIO6C5APTWQFKN46BPFFCNJ830], dislike:[ADR6C5APTWQFKN46BPFFCNJ341]}',
+    example: {
+      like: ['UIO6C5APTWQFKN46BPFFCNJ830'],
+      dislike: ['ADR6C5APTWQFKN46BPFFCNJ341'],
+    },
   })
   @IsNotEmpty()
   @IsObject()

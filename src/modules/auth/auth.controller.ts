@@ -9,7 +9,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
@@ -26,6 +26,7 @@ import { CreateUserType } from './types/create-user.type';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @ApiOperation({ summary: 'Sign Up' })
   @Post('signup')
   @PublicRoute()
   @UseInterceptors(FileInterceptor('image'))
@@ -36,6 +37,7 @@ export class AuthController {
     return await this.authService.signUp(body, image);
   }
 
+  @ApiOperation({ summary: 'Login' })
   @HttpCode(HttpStatus.OK)
   @Post('login')
   @PublicRoute()
@@ -43,6 +45,7 @@ export class AuthController {
     return await this.authService.login(body);
   }
 
+  @ApiOperation({ summary: 'Logout' })
   @ApiSecurity('Access Token')
   @HttpCode(HttpStatus.OK)
   @Post('logout')
@@ -50,6 +53,7 @@ export class AuthController {
     return await this.authService.logout(userId);
   }
 
+  @ApiOperation({ summary: 'Refresh Token' })
   @ApiSecurity('Refresh Token')
   @HttpCode(HttpStatus.OK)
   @Post('refresh')

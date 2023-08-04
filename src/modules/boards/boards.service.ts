@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
-import { FindManyOptions } from 'typeorm/find-options/FindManyOptions';
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
 import { messagesHelper } from '../../helpers/messages-helper';
@@ -31,10 +30,10 @@ export class BoardsService {
     return await this.boardRepository.save(board);
   }
 
-  async findAllBoardsByUserId(
-    options: FindManyOptions<Board>,
-  ): Promise<Board[]> {
-    const boards = await this.boardRepository.find(options);
+  async findAllBoardsByUserId(userId: string): Promise<Board[]> {
+    const boards = await this.boardRepository.find({
+      where: { userId: { id: userId } },
+    });
 
     if (!boards.length) {
       throw new NotFoundException(messagesHelper.BOARD_NOT_FOUND);

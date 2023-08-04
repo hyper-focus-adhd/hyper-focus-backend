@@ -7,7 +7,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
 
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
@@ -27,6 +27,7 @@ import { TasksService } from './tasks.service';
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
+  @ApiOperation({ summary: 'Create a new task' })
   @Post()
   async createTask(
     @Body() body: CreateTaskDto,
@@ -35,13 +36,13 @@ export class TasksController {
     return await this.tasksService.createTask(user, body);
   }
 
+  @ApiOperation({ summary: 'Find all tasks by user id' })
   @Get()
   async findAllTasksByUserId(@CurrentUserId() userId: string): Promise<Task[]> {
-    return await this.tasksService.findAllTasksByUserId({
-      where: { userId: { id: userId } },
-    });
+    return await this.tasksService.findAllTasksByUserId(userId);
   }
 
+  @ApiOperation({ summary: 'Update a task' })
   @Patch(':taskId')
   async updateTask(
     @Body() body: UpdateTaskDto,
@@ -51,6 +52,7 @@ export class TasksController {
     return await this.tasksService.updateTask(userId, taskId, body);
   }
 
+  @ApiOperation({ summary: 'Delete a task' })
   @Delete(':taskId')
   async removeTask(
     @CurrentUserId() userId: string,
@@ -59,6 +61,7 @@ export class TasksController {
     return await this.tasksService.removeTask(userId, taskId);
   }
 
+  @ApiOperation({ summary: 'Restore a deleted task' })
   @Patch('restore/:taskId')
   async restoreTask(
     @CurrentUserId() userId: string,

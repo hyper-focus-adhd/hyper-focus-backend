@@ -7,14 +7,13 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
 
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
 import { Reaction } from '../../common/types';
 import { Serialize } from '../../interceptors/serialize.interceptor';
 import { UpdatePostDto } from '../posts/dto/update-post.dto';
-import { Post as PostEntity } from '../posts/entities/post.entity';
 import { User } from '../users/entities/user.entity';
 
 import { CommentsService } from './comments.service';
@@ -29,11 +28,13 @@ import { Comment } from './entities/comment.entity';
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
+  @ApiOperation({ summary: 'Create a new comment' })
+  @ApiParam({ name: 'parentCommentId', required: false })
   @Post(':postId/:parentCommentId?')
   async createComment(
     @Body() body: CreateCommentDto,
     @CurrentUserId() user: User,
-    @Param('postId') postId: PostEntity,
+    @Param('postId') postId: string,
     @Param('parentCommentId') parentCommentId: string,
   ): Promise<Comment> {
     return await this.commentsService.createComment(
@@ -44,15 +45,15 @@ export class CommentsController {
     );
   }
 
+  @ApiOperation({ summary: 'Find all comments by user id' })
   @Get()
   async findAllCommentsByUserId(
     @CurrentUserId() userId: string,
   ): Promise<Comment[]> {
-    return await this.commentsService.findAllCommentsByUserId({
-      where: { userId: { id: userId } },
-    });
+    return await this.commentsService.findAllCommentsByUserId(userId);
   }
 
+  @ApiOperation({ summary: 'Update a comment' })
   @Patch(':postId/:commentId')
   async updateComment(
     @Body() body: UpdatePostDto,
@@ -68,6 +69,7 @@ export class CommentsController {
     );
   }
 
+  @ApiOperation({ summary: 'Delete a comment' })
   @Delete(':postId/:commentId')
   async removeComment(
     @CurrentUserId() userId: string,
@@ -77,6 +79,7 @@ export class CommentsController {
     return await this.commentsService.removeComment(userId, postId, commentId);
   }
 
+  @ApiOperation({ summary: 'Restore a deleted comment' })
   @Patch('restore/:postId/:commentId')
   async restoreComment(
     @CurrentUserId() userId: string,
@@ -86,6 +89,7 @@ export class CommentsController {
     return await this.commentsService.restoreComment(userId, postId, commentId);
   }
 
+  @ApiOperation({ summary: 'React to a comment' })
   @Patch('reactions/:postId/:commentId')
   async reactionComment(
     @Body() reaction: Reaction,
