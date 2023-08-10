@@ -42,12 +42,6 @@ export class PostsController {
     return await this.postsService.createPost(user, body, image);
   }
 
-  @ApiOperation({ summary: 'Find all posts' })
-  @Get('all')
-  async findAllPosts(): Promise<PostEntity[]> {
-    return await this.postsService.findAllPosts();
-  }
-
   @ApiOperation({ summary: 'Find all friends posts by user id' })
   @Get('friends-posts')
   async findAllFriendsPostsByUserId(
@@ -62,6 +56,18 @@ export class PostsController {
     @CurrentUserId() userId: string,
   ): Promise<PostEntity[]> {
     return await this.postsService.findAllPostsByUserId(userId);
+  }
+
+  @ApiOperation({ summary: 'Find a post by a post id' })
+  @Get(':postId')
+  async findPostByPostId(@Param('postId') postId: string): Promise<PostEntity> {
+    return await this.postsService.findPostByPostId(postId);
+  }
+
+  @ApiOperation({ summary: 'Find all posts' })
+  @Get('all')
+  async findAllPosts(): Promise<PostEntity[]> {
+    return await this.postsService.findAllPosts();
   }
 
   @ApiOperation({ summary: 'Update a post' })
