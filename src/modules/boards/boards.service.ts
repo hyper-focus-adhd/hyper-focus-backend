@@ -33,6 +33,7 @@ export class BoardsService {
   async findAllBoardsByUserId(userId: string): Promise<Board[]> {
     const boards = await this.boardRepository.find({
       where: { userId: { id: userId } },
+      relations: ['userId'],
     });
 
     if (!boards.length) {
@@ -57,6 +58,7 @@ export class BoardsService {
   ): Promise<Board> {
     const board = await this.findOneBoardOrFail({
       where: { id: boardId, userId: { id: userId } },
+      relations: ['userId'],
     });
 
     this.boardRepository.merge(board, updateBoardDto);

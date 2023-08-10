@@ -28,7 +28,6 @@ import { PostsService } from './posts.service';
 @ApiSecurity('Access Token')
 @Controller('api/v1/posts')
 @Serialize(PostDto)
-@Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 

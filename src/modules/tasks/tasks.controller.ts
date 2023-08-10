@@ -27,6 +27,7 @@ import { TasksService } from './tasks.service';
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
+  //TODO: verify why is not returning userId on create
   @ApiOperation({ summary: 'Create a new task' })
   @Post()
   async createTask(

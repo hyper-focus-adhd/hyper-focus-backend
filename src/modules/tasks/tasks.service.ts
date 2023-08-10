@@ -32,6 +32,7 @@ export class TasksService {
   async findAllTasksByUserId(userId: string): Promise<Task[]> {
     const tasks = await this.taskRepository.find({
       where: { userId: { id: userId } },
+      relations: ['userId'],
     });
 
     if (!tasks.length) {
@@ -56,6 +57,7 @@ export class TasksService {
   ): Promise<Task> {
     const task = await this.findOneTaskOrFail({
       where: { id: taskId, userId: { id: userId } },
+      relations: ['userId'],
     });
 
     this.taskRepository.merge(task, updateTaskDto);

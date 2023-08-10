@@ -1,7 +1,6 @@
-import { Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
 
 import { Status } from '../../../enums/task.enum';
-import { User } from '../../users/entities/user.entity';
 
 export class TaskDto {
   @Expose()
@@ -25,6 +24,7 @@ export class TaskDto {
   @Expose()
   created_at: Date;
 
+  @Transform(({ obj }) => obj.userId?.id)
   @Expose()
-  userId: User;
+  userId: string;
 }

@@ -50,7 +50,10 @@ export class NotesService {
     }
 
     return await this.noteRepository.find({
-      where: { boardId: { id: foundBoard.id } },
+      where: {
+        boardId: { id: foundBoard.id },
+      },
+      relations: ['boardId'],
     });
   }
 
@@ -74,6 +77,7 @@ export class NotesService {
 
     const note = await this.findOneNoteOrFail({
       where: { id: noteId, boardId: { id: boardId } },
+      relations: ['boardId'],
     });
 
     this.noteRepository.merge(note, updateNoteDto);

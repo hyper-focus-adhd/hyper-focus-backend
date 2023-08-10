@@ -11,7 +11,7 @@ $ yarn install
 ## Running the app
 
 ```bash
-# development
+# development mode
 $ yarn run start
 
 # watch mode
@@ -37,13 +37,13 @@ $ yarn run test:cov
 ## Migrations
 
 ```bash
-# generate a migration
+# generates a migration
 $ yarn migration:generate "src/database/migrations/MigrationName"
 
-# run a migration
+# runs a migration
 $ yarn migration:run
 
-# revert a migration
+# reverts a migration
 $ yarn migration:revert
 ```
 

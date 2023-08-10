@@ -16,7 +16,7 @@ import * as moment from 'moment/moment';
 
 import { Gender, Language, Role } from '../../../enums/user.enum';
 import { messagesHelper } from '../../../helpers/messages-helper';
-import { regexHelper } from '../../../helpers/regex-helper';
+import { passwordHelper } from '../../../helpers/password-helper';
 
 import { CreateUserDto } from './create-user.dto';
 
@@ -55,7 +55,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsNotEmpty()
   @IsOptional()
   @IsString()
-  @Matches(regexHelper.password, {
+  @Matches(passwordHelper.password, {
     message: messagesHelper.PASSWORD_VALID,
   })
   password?: string;

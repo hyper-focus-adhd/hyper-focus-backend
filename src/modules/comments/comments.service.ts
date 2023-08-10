@@ -50,6 +50,7 @@ export class CommentsService {
   async findAllCommentsByUserId(userId: string): Promise<Comment[]> {
     const comments = await this.commentRepository.find({
       where: { userId: { id: userId } },
+      relations: ['userId', 'postId', 'parentCommentId'],
     });
 
     if (!comments.length) {
@@ -81,8 +82,8 @@ export class CommentsService {
 
     const comment = await this.findOneCommentOrFail({
       where: { id: commentId, userId: { id: userId } },
+      relations: ['userId', 'postId', 'parentCommentId'],
     });
-
     this.commentRepository.merge(comment, updateCommentDto);
 
     return await this.commentRepository.save(comment);

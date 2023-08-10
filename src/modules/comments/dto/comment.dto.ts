@@ -1,7 +1,4 @@
-import { Expose } from 'class-transformer';
-
-import { Post } from '../../posts/entities/post.entity';
-import { User } from '../../users/entities/user.entity';
+import { Expose, Transform } from 'class-transformer';
 
 export class CommentDto {
   @Expose()
@@ -17,11 +14,17 @@ export class CommentDto {
   created_at: Date;
 
   @Expose()
-  userId: User;
+  updated_at: Date;
 
+  @Transform(({ obj }) => obj.userId?.id)
   @Expose()
-  postId: Post;
+  userId: string;
 
+  @Transform(({ obj }) => obj.postId?.id)
+  @Expose()
+  postId: string;
+
+  @Transform(({ obj }) => obj.parentCommentId?.id)
   @Expose()
   parentCommentId: string;
 }
