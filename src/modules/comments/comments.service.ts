@@ -47,6 +47,19 @@ export class CommentsService {
     return await this.commentRepository.save(comment);
   }
 
+  async findAllCommentsByPostId(postId: string): Promise<Comment[]> {
+    const comments = await this.commentRepository.find({
+      where: { postId: { id: postId } },
+      relations: ['userId', 'postId', 'parentCommentId'],
+    });
+
+    if (!comments.length) {
+      throw new NotFoundException(messagesHelper.COMMENT_NOT_FOUND);
+    }
+
+    return comments;
+  }
+
   async findAllCommentsByUserId(userId: string): Promise<Comment[]> {
     const comments = await this.commentRepository.find({
       where: { userId: { id: userId } },

@@ -45,6 +45,14 @@ export class CommentsController {
     );
   }
 
+  @ApiOperation({ summary: 'Find all comments by post id' })
+  @Get(':postId')
+  async findAllCommentsByPostId(
+    @Param('postId') postId: string,
+  ): Promise<Comment[]> {
+    return await this.commentsService.findAllCommentsByPostId(postId);
+  }
+
   @ApiOperation({ summary: 'Find all comments by user id' })
   @Get()
   async findAllCommentsByUserId(
