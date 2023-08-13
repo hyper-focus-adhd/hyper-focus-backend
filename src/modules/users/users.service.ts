@@ -53,6 +53,16 @@ export class UsersService {
     return await this.userRepository.save(user);
   }
 
+  async findAllUsers(): Promise<User[]> {
+    const users = await this.userRepository.find();
+
+    if (!users) {
+      throw new NotFoundException(messagesHelper.USER_NOT_FOUND);
+    }
+
+    return users;
+  }
+
   async findOneUser(options: FindOneOptions<User>): Promise<User> {
     return await this.userRepository.findOne(options);
   }
@@ -63,16 +73,6 @@ export class UsersService {
     } catch (error: unknown) {
       throw new NotFoundException(messagesHelper.USER_NOT_FOUND);
     }
-  }
-
-  async findAllUsers(): Promise<User[]> {
-    const users = await this.userRepository.find();
-
-    if (!users) {
-      throw new NotFoundException(messagesHelper.USER_NOT_FOUND);
-    }
-
-    return users;
   }
 
   async updateUser(

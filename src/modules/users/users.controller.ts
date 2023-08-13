@@ -31,6 +31,13 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @ApiOperation({ summary: 'Find all users' })
+  @ApiSecurity('Access Token')
+  @Get('all')
+  async findAllUsers(): Promise<User[]> {
+    return await this.usersService.findAllUsers();
+  }
+
   @ApiOperation({ summary: 'Find current user' })
   @ApiSecurity('Access Token')
   @Get()
@@ -43,13 +50,6 @@ export class UsersController {
   @Get(':id')
   async findUserById(@Param('id') id: string): Promise<User> {
     return await this.usersService.findOneUserOrFail({ where: { id } });
-  }
-
-  @ApiOperation({ summary: 'Find all users' })
-  @ApiSecurity('Access Token')
-  @Get('all')
-  async findAllUsers(): Promise<User[]> {
-    return await this.usersService.findAllUsers();
   }
 
   @ApiOperation({ summary: 'Update a user' })

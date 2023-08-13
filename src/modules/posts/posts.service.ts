@@ -43,6 +43,16 @@ export class PostsService {
     return await this.postRepository.save(post);
   }
 
+  async findAllPosts(): Promise<Post[]> {
+    const posts = await this.postRepository.find({ relations: ['userId'] });
+
+    if (!posts.length) {
+      throw new NotFoundException(messagesHelper.POST_NOT_FOUND);
+    }
+
+    return posts;
+  }
+
   async findAllPostsByUserId(userId: string): Promise<Post[]> {
     const posts = await this.postRepository.find({
       where: { userId: { id: userId } },
@@ -85,16 +95,6 @@ export class PostsService {
     }
 
     return friendsPosts;
-  }
-
-  async findAllPosts(): Promise<Post[]> {
-    const posts = await this.postRepository.find({ relations: ['userId'] });
-
-    if (!posts.length) {
-      throw new NotFoundException(messagesHelper.POST_NOT_FOUND);
-    }
-
-    return posts;
   }
 
   async findOnePostOrFail(options: FindOneOptions<Post>): Promise<Post> {
