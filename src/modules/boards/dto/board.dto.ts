@@ -1,6 +1,4 @@
-import { Expose, Transform } from "class-transformer";
-
-import { User } from '../../users/entities/user.entity';
+import { Expose, Transform } from 'class-transformer';
 
 export class BoardDto {
   @Expose()
