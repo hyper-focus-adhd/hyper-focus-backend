@@ -1,6 +1,6 @@
 import { Expose, Transform } from 'class-transformer';
 
-import { Status } from '../../../enums/task.enum';
+import { Status } from '../../../common/enums/task.enum';
 
 export class TaskDto {
   @Expose()

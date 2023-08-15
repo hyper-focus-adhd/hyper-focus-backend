@@ -14,8 +14,8 @@ import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
 
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
+import { Serialize } from '../../common/interceptors/serialize.interceptor';
 import { Reaction } from '../../common/types';
-import { Serialize } from '../../interceptors/serialize.interceptor';
 import { User } from '../users/entities/user.entity';
 
 import { CreatePostDto } from './dto/create-post.dto';

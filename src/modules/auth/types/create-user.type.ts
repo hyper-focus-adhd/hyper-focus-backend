@@ -1,4 +1,4 @@
-import { Gender, Language, Role } from '../../../enums/user.enum';
+import { Gender, Language, Role } from '../../../common/enums/user.enum';
 
 export type CreateUserType = {
   id: string;

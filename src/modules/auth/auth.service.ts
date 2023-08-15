@@ -7,8 +7,8 @@ import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
 import * as bcrypt from 'bcryptjs';
 
+import { messagesHelper } from '../../common/helpers/messages-helper';
 import { jwtConfig } from '../../config/jwt.config';
-import { messagesHelper } from '../../helpers/messages-helper';
 import { CreateUserDto } from '../users/dtos/create-user.dto';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';

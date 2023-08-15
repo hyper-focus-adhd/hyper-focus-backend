@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
-import { messagesHelper } from '../../helpers/messages-helper';
+import { messagesHelper } from '../../common/helpers/messages-helper';
 import { BoardsService } from '../boards/boards.service';
 
 import { CreateNoteDto } from './dtos/create-note.dto';

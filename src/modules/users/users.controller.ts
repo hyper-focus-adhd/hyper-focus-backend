@@ -16,7 +16,7 @@ import { UpdateResult } from 'typeorm';
 
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
 import { PublicRoute } from '../../common/decorators/public.decorator';
-import { Serialize } from '../../interceptors/serialize.interceptor';
+import { Serialize } from '../../common/interceptors/serialize.interceptor';
 
 import { RecoverUserCredentialsDto } from './dtos/recover-user-credential.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';

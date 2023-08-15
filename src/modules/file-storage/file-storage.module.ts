@@ -1,7 +1,7 @@
 import { Storage } from '@google-cloud/storage';
 import { Module } from '@nestjs/common';
 
-import { storageDataHelper } from '../../helpers/storage-data-helper';
+import { storageDataHelper } from '../../common/helpers/storage-data-helper';
 
 import { FileStorageService } from './file-storage.service';
 

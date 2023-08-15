@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, Matches } from 'class-validator';
 
-import { messagesHelper } from '../../../helpers/messages-helper';
-import { passwordHelper } from '../../../helpers/password-helper';
+import { messagesHelper } from '../../../common/helpers/messages-helper';
+import { passwordHelper } from '../../../common/helpers/password-helper';
 
 export class UserPasswordChangeDto {
   @ApiProperty({

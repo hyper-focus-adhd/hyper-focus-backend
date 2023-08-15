@@ -1,4 +1,4 @@
-import { Reaction } from '../common/types';
+import { Reaction } from '../types';
 
 export const reactionHelper = (
   userId: string,

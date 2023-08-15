@@ -3,9 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
+import { messagesHelper } from '../../common/helpers/messages-helper';
+import { reactionHelper } from '../../common/helpers/reaction-helper';
 import { Reaction } from '../../common/types';
-import { messagesHelper } from '../../helpers/messages-helper';
-import { reactionHelper } from '../../helpers/reaction-helper';
 import { PostsService } from '../posts/posts.service';
 import { User } from '../users/entities/user.entity';
 

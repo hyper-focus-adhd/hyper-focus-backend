@@ -14,9 +14,9 @@ import {
 } from 'class-validator';
 import * as moment from 'moment/moment';
 
-import { Gender, Language, Role } from '../../../enums/user.enum';
-import { messagesHelper } from '../../../helpers/messages-helper';
-import { passwordHelper } from '../../../helpers/password-helper';
+import { Gender, Language, Role } from '../../../common/enums/user.enum';
+import { messagesHelper } from '../../../common/helpers/messages-helper';
+import { passwordHelper } from '../../../common/helpers/password-helper';
 
 import { CreateUserDto } from './create-user.dto';
 

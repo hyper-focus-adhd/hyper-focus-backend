@@ -12,7 +12,7 @@ import {
 } from 'typeorm';
 import { ulid } from 'ulid';
 
-import { Gender, Language, Role } from '../../../enums/user.enum';
+import { Gender, Language, Role } from '../../../common/enums/user.enum';
 import { Board } from '../../boards/entities/board.entity';
 import { Comment } from '../../comments/entities/comment.entity';
 import { Post } from '../../posts/entities/post.entity';
