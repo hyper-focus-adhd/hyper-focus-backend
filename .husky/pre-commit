@@ -1,4 +1,23 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-yarn run lint
+npx --no-install
+
+echo '🩺 Starting the checkout'
+
+# Check ESLint Standards
+yarn run lint ||
+(
+        echo '⚙️❌ ESLint Check Failed. Make the required changes listed above, add changes and try to commit again.'
+        false;
+)
+
+# Check tsconfig standards
+yarn run format-no-test ||
+(
+    echo '🤡❌ Failed Type check. Make the changes required above.'
+    false;
+)
+
+# If everything passes... Now we can commit
+echo '✅ Every test passed!'
