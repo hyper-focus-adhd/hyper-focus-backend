@@ -78,7 +78,7 @@ export class UsersService {
   async updateUser(
     userId: string,
     updateUserDto: UpdateUserDto,
-    image?: Express.Multer.File,
+    profile_image?: Express.Multer.File,
   ): Promise<User> {
     if (updateUserDto.username || updateUserDto.email) {
       await this.verifyExistingUser(
@@ -94,8 +94,11 @@ export class UsersService {
       updateUserDto.password = await bcrypt.hash(updateUserDto.password, salt);
     }
 
-    if (image) {
-      user.profile_image = await this.uploadProfileImage(user.id, image);
+    if (profile_image) {
+      user.profile_image = await this.uploadProfileImage(
+        user.id,
+        profile_image,
+      );
     }
 
     this.userRepository.merge(user, updateUserDto);

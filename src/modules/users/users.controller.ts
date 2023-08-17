@@ -55,13 +55,13 @@ export class UsersController {
   @ApiOperation({ summary: 'Update a user' })
   @ApiSecurity('Access Token')
   @Patch()
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(FileInterceptor('profile_image'))
   async updateUser(
     @Body() body: UpdateUserDto,
     @CurrentUserId() userId: string,
-    @UploadedFile() image: Express.Multer.File,
+    @UploadedFile() profile_image: Express.Multer.File,
   ): Promise<User> {
-    return await this.usersService.updateUser(userId, body, image);
+    return await this.usersService.updateUser(userId, body, profile_image);
   }
 
   @ApiOperation({ summary: 'Delete a user' })

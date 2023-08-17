@@ -29,12 +29,12 @@ export class AuthController {
   @ApiOperation({ summary: 'Sign Up' })
   @Post('signup')
   @PublicRoute()
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(FileInterceptor('profile_image'))
   async signUp(
     @Body() body: CreateUserDto,
-    @UploadedFile() image: Express.Multer.File,
+    @UploadedFile() profile_image: Express.Multer.File,
   ): Promise<CreateUserType> {
-    return await this.authService.signUp(body, image);
+    return await this.authService.signUp(body, profile_image);
   }
 
   @ApiOperation({ summary: 'Login' })

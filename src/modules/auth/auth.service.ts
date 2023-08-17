@@ -26,7 +26,7 @@ export class AuthService {
 
   async signUp(
     createUserDto: CreateUserDto,
-    image: Express.Multer.File,
+    profile_image: Express.Multer.File,
   ): Promise<CreateUserType> {
     await this.usersService.verifyExistingUser(
       createUserDto.username,
@@ -36,7 +36,11 @@ export class AuthService {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
 
-    await this.usersService.createUser(createUserDto, hashedPassword, image);
+    await this.usersService.createUser(
+      createUserDto,
+      hashedPassword,
+      profile_image,
+    );
 
     const user = await this.validateUser(
       createUserDto.username,
