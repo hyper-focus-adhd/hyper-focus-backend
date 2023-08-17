@@ -38,8 +38,8 @@ export class Comment {
   deleted_at: Date;
 
   @JoinColumn({ name: 'user_id' })
-  @ManyToOne(() => User, (userId) => userId.comments, { onDelete: 'CASCADE' })
-  userId: User;
+  @ManyToOne(() => User, (user) => user.comments, { onDelete: 'CASCADE' })
+  user: User;
 
   @JoinColumn({ name: 'post_id' })
   @ManyToOne(() => Post, (postId) => postId.comments, { onDelete: 'CASCADE' })

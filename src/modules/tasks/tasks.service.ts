@@ -23,16 +23,16 @@ export class TasksService {
       status: createTaskDto.status,
       date: createTaskDto.date,
       time: createTaskDto.time,
-      userId: user,
+      user: user,
     });
 
     return await this.taskRepository.save(task);
   }
 
-  async findAllTasksByUserId(userId: string): Promise<Task[]> {
+  async findAllTasksByUserId(user: string): Promise<Task[]> {
     const tasks = await this.taskRepository.find({
-      where: { userId: { id: userId } },
-      relations: ['userId'],
+      where: { user: { id: user } },
+      relations: ['user'],
     });
 
     if (!tasks.length) {
@@ -51,13 +51,13 @@ export class TasksService {
   }
 
   async updateTask(
-    userId: string,
+    user: string,
     taskId: string,
     updateTaskDto: UpdateTaskDto,
   ): Promise<Task> {
     const task = await this.findOneTaskOrFail({
-      where: { id: taskId, userId: { id: userId } },
-      relations: ['userId'],
+      where: { id: taskId, user: { id: user } },
+      relations: ['user'],
     });
 
     this.taskRepository.merge(task, updateTaskDto);
@@ -65,17 +65,17 @@ export class TasksService {
     return await this.taskRepository.save(task);
   }
 
-  async removeTask(userId: string, taskId: string): Promise<UpdateResult> {
+  async removeTask(user: string, taskId: string): Promise<UpdateResult> {
     const task = await this.findOneTaskOrFail({
-      where: { id: taskId, userId: { id: userId } },
+      where: { id: taskId, user: { id: user } },
     });
 
     return await this.taskRepository.softDelete(task.id);
   }
 
-  async restoreTask(userId: string, taskId: string): Promise<UpdateResult> {
+  async restoreTask(user: string, taskId: string): Promise<UpdateResult> {
     const task = await this.findOneTaskOrFail({
-      where: { id: taskId, userId: { id: userId } },
+      where: { id: taskId, user: { id: user } },
       withDeleted: true,
     });
 

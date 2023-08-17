@@ -51,17 +51,17 @@ export class PostsController {
   @ApiOperation({ summary: 'Find all friends posts by user id' })
   @Get('friends-posts')
   async findAllFriendsPostsByUserId(
-    @CurrentUserId() userId: string,
+    @CurrentUserId() user: string,
   ): Promise<PostEntity[][]> {
-    return await this.postsService.findAllFriendsPostsByUserId(userId);
+    return await this.postsService.findAllFriendsPostsByUserId(user);
   }
 
   @ApiOperation({ summary: 'Find all posts by user id' })
   @Get()
   async findAllPostsByUserId(
-    @CurrentUserId() userId: string,
+    @CurrentUserId() user: string,
   ): Promise<PostEntity[]> {
-    return await this.postsService.findAllPostsByUserId(userId);
+    return await this.postsService.findAllPostsByUserId(user);
   }
 
   @ApiOperation({ summary: 'Find a post by a post id' })
@@ -75,38 +75,38 @@ export class PostsController {
   @UseInterceptors(FileInterceptor('image'))
   async updatePost(
     @Body() body: UpdatePostDto,
-    @CurrentUserId() userId: string,
+    @CurrentUserId() user: string,
     @Param('postId') postId: string,
     @UploadedFile() image: Express.Multer.File,
   ): Promise<PostEntity> {
-    return await this.postsService.updatePost(userId, postId, body, image);
+    return await this.postsService.updatePost(user, postId, body, image);
   }
 
   @ApiOperation({ summary: 'Delete a post' })
   @Delete(':postId')
   async removePost(
-    @CurrentUserId() userId: string,
+    @CurrentUserId() user: string,
     @Param('postId') postId: string,
   ): Promise<PostEntity> {
-    return await this.postsService.removePost(userId, postId);
+    return await this.postsService.removePost(user, postId);
   }
 
   @ApiOperation({ summary: 'Restore a deleted post' })
   @Patch('restore/:postId')
   async restorePost(
-    @CurrentUserId() userId: string,
+    @CurrentUserId() user: string,
     @Param('postId') postId: string,
   ): Promise<UpdateResult> {
-    return await this.postsService.restorePost(userId, postId);
+    return await this.postsService.restorePost(user, postId);
   }
 
   @ApiOperation({ summary: 'React to a post' })
   @Patch('reactions/:postId')
   async reactionPost(
     @Body() reaction: Reaction,
-    @CurrentUserId() userId: string,
+    @CurrentUserId() user: string,
     @Param('postId') postId: string,
   ): Promise<PostEntity> {
-    return await this.postsService.reactionPost(userId, postId, reaction);
+    return await this.postsService.reactionPost(user, postId, reaction);
   }
 }

@@ -36,7 +36,7 @@ export class CommentsService {
     const comment = this.commentRepository.create({
       content: createCommentDto.content,
       reaction: createCommentDto.reaction,
-      userId: user,
+      user: user,
       postId: postId,
     });
 
@@ -50,7 +50,7 @@ export class CommentsService {
   async findAllCommentsByPostId(postId: string): Promise<Comment[]> {
     const comments = await this.commentRepository.find({
       where: { postId: { id: postId } },
-      relations: ['userId', 'postId', 'parentCommentId'],
+      relations: ['user', 'postId', 'parentCommentId'],
     });
 
     if (!comments.length) {
@@ -60,10 +60,10 @@ export class CommentsService {
     return comments;
   }
 
-  async findAllCommentsByUserId(userId: string): Promise<Comment[]> {
+  async findAllCommentsByUserId(user: string): Promise<Comment[]> {
     const comments = await this.commentRepository.find({
-      where: { userId: { id: userId } },
-      relations: ['userId', 'postId', 'parentCommentId'],
+      where: { user: { id: user } },
+      relations: ['user', 'postId', 'parentCommentId'],
     });
 
     if (!comments.length) {
@@ -84,7 +84,7 @@ export class CommentsService {
   }
 
   async updateComment(
-    userId: string,
+    user: string,
     postId: string,
     commentId: string,
     updateCommentDto: UpdateCommentDto,
@@ -94,8 +94,8 @@ export class CommentsService {
     });
 
     const comment = await this.findOneCommentOrFail({
-      where: { id: commentId, userId: { id: userId } },
-      relations: ['userId', 'postId', 'parentCommentId'],
+      where: { id: commentId, user: { id: user } },
+      relations: ['user', 'postId', 'parentCommentId'],
     });
     this.commentRepository.merge(comment, updateCommentDto);
 
@@ -103,7 +103,7 @@ export class CommentsService {
   }
 
   async removeComment(
-    userId: string,
+    user: string,
     postId: string,
     commentId: string,
   ): Promise<UpdateResult> {
@@ -112,14 +112,14 @@ export class CommentsService {
     });
 
     const comment = await this.findOneCommentOrFail({
-      where: { id: commentId, userId: { id: userId } },
+      where: { id: commentId, user: { id: user } },
     });
 
     return await this.commentRepository.softDelete(comment.id);
   }
 
   async restoreComment(
-    userId: string,
+    user: string,
     postId: string,
     commentId: string,
   ): Promise<UpdateResult> {
@@ -128,7 +128,7 @@ export class CommentsService {
     });
 
     const comment = await this.findOneCommentOrFail({
-      where: { id: commentId, userId: { id: userId } },
+      where: { id: commentId, user: { id: user } },
       withDeleted: true,
     });
 
@@ -136,7 +136,7 @@ export class CommentsService {
   }
 
   async reactionComment(
-    userId: string,
+    user: string,
     postId: string,
     commentId: string,
     reaction: Reaction,
@@ -150,7 +150,7 @@ export class CommentsService {
     });
 
     reactionHelper(
-      userId,
+      user,
       comment.reaction.like,
       comment.reaction.dislike,
       reaction,

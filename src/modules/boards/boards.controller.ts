@@ -38,37 +38,35 @@ export class BoardsController {
 
   @ApiOperation({ summary: 'Find all boards by user id' })
   @Get()
-  async findAllBoardsByUserId(
-    @CurrentUserId() userId: string,
-  ): Promise<Board[]> {
-    return await this.boardsService.findAllBoardsByUserId(userId);
+  async findAllBoardsByUserId(@CurrentUserId() user: string): Promise<Board[]> {
+    return await this.boardsService.findAllBoardsByUserId(user);
   }
 
   @ApiOperation({ summary: 'Update a board' })
   @Patch(':boardId')
   async updateBoard(
     @Body() body: UpdateBoardDto,
-    @CurrentUserId() userId: string,
+    @CurrentUserId() user: string,
     @Param('boardId') boardId: string,
   ): Promise<Board> {
-    return await this.boardsService.updateBoard(userId, boardId, body);
+    return await this.boardsService.updateBoard(user, boardId, body);
   }
 
   @ApiOperation({ summary: 'Delete a board' })
   @Delete(':boardId')
   async removeBoard(
-    @CurrentUserId() userId: string,
+    @CurrentUserId() user: string,
     @Param('boardId') boardId: string,
   ): Promise<Board> {
-    return await this.boardsService.removeBoard(userId, boardId);
+    return await this.boardsService.removeBoard(user, boardId);
   }
 
   @ApiOperation({ summary: 'Restore a deleted board' })
   @Patch('restore/:boardId')
   async restoreBoard(
-    @CurrentUserId() userId: string,
+    @CurrentUserId() user: string,
     @Param('boardId') boardId: string,
   ): Promise<UpdateResult> {
-    return await this.boardsService.restoreBoard(userId, boardId);
+    return await this.boardsService.restoreBoard(user, boardId);
   }
 }

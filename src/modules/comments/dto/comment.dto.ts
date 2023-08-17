@@ -1,4 +1,6 @@
-import { Expose, Transform } from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
+
+import { UserDto } from '../../users/dtos/user.dto';
 
 export class CommentDto {
   @Expose()
@@ -16,9 +18,9 @@ export class CommentDto {
   @Expose()
   updated_at: Date;
 
-  @Transform(({ obj }) => obj.userId?.id)
+  @Type(() => UserDto)
   @Expose()
-  userId: string;
+  user: UserDto;
 
   @Transform(({ obj }) => obj.postId?.id)
   @Expose()

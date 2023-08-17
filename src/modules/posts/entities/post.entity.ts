@@ -44,8 +44,8 @@ export class Post {
   deleted_at: Date;
 
   @JoinColumn({ name: 'user_id' })
-  @ManyToOne(() => User, (userId) => userId.posts, { onDelete: 'CASCADE' })
-  userId: User;
+  @ManyToOne(() => User, (user) => user.posts, { onDelete: 'CASCADE' })
+  user: User;
 
   @OneToMany(() => Comment, (comment) => comment.postId, { cascade: true })
   comments: Comment[];

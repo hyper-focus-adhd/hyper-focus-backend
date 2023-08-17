@@ -24,16 +24,16 @@ export class BoardsService {
     const board = this.boardRepository.create({
       title: createBoardDto.title,
       color: createBoardDto.color,
-      userId: user,
+      user: user,
     });
 
     return await this.boardRepository.save(board);
   }
 
-  async findAllBoardsByUserId(userId: string): Promise<Board[]> {
+  async findAllBoardsByUserId(user: string): Promise<Board[]> {
     const boards = await this.boardRepository.find({
-      where: { userId: { id: userId } },
-      relations: ['userId'],
+      where: { user: { id: user } },
+      relations: ['user'],
     });
 
     if (!boards.length) {
@@ -52,13 +52,13 @@ export class BoardsService {
   }
 
   async updateBoard(
-    userId: string,
+    user: string,
     boardId: string,
     updateBoardDto: UpdateBoardDto,
   ): Promise<Board> {
     const board = await this.findOneBoardOrFail({
-      where: { id: boardId, userId: { id: userId } },
-      relations: ['userId'],
+      where: { id: boardId, user: { id: user } },
+      relations: ['user'],
     });
 
     this.boardRepository.merge(board, updateBoardDto);
@@ -66,18 +66,18 @@ export class BoardsService {
     return await this.boardRepository.save(board);
   }
 
-  async removeBoard(userId: string, boardId: string): Promise<Board> {
+  async removeBoard(user: string, boardId: string): Promise<Board> {
     const board = await this.findOneBoardOrFail({
-      where: { id: boardId, userId: { id: userId } },
+      where: { id: boardId, user: { id: user } },
       relations: ['notes'],
     });
 
     return await this.boardRepository.softRemove(board);
   }
 
-  async restoreBoard(userId: string, boardId: string): Promise<UpdateResult> {
+  async restoreBoard(user: string, boardId: string): Promise<UpdateResult> {
     const board = await this.findOneBoardOrFail({
-      where: { id: boardId, userId: { id: userId } },
+      where: { id: boardId, user: { id: user } },
       withDeleted: true,
     });
 

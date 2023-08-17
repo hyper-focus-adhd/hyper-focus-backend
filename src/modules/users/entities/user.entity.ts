@@ -65,16 +65,16 @@ export class User {
   @DeleteDateColumn()
   deleted_at: Date;
 
-  @OneToMany(() => Board, (board) => board.userId, { cascade: true })
+  @OneToMany(() => Board, (board) => board.user, { cascade: true })
   boards: Board[];
 
-  @OneToMany(() => Task, (task) => task.userId, { cascade: true })
+  @OneToMany(() => Task, (task) => task.user, { cascade: true })
   tasks: Task[];
 
-  @OneToMany(() => Post, (post) => post.userId, { cascade: true })
+  @OneToMany(() => Post, (post) => post.user, { cascade: true })
   posts: Post[];
 
-  @OneToMany(() => Comment, (comment) => comment.userId, { cascade: true })
+  @OneToMany(() => Comment, (comment) => comment.user, { cascade: true })
   comments: Comment[];
 
   constructor() {

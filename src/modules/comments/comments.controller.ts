@@ -56,21 +56,21 @@ export class CommentsController {
   @ApiOperation({ summary: 'Find all comments by user id' })
   @Get()
   async findAllCommentsByUserId(
-    @CurrentUserId() userId: string,
+    @CurrentUserId() user: string,
   ): Promise<Comment[]> {
-    return await this.commentsService.findAllCommentsByUserId(userId);
+    return await this.commentsService.findAllCommentsByUserId(user);
   }
 
   @ApiOperation({ summary: 'Update a comment' })
   @Patch(':postId/:commentId')
   async updateComment(
     @Body() body: UpdatePostDto,
-    @CurrentUserId() userId: string,
+    @CurrentUserId() user: string,
     @Param('postId') postId: string,
     @Param('commentId') commentId: string,
   ): Promise<Comment> {
     return await this.commentsService.updateComment(
-      userId,
+      user,
       postId,
       commentId,
       body,
@@ -80,33 +80,33 @@ export class CommentsController {
   @ApiOperation({ summary: 'Delete a comment' })
   @Delete(':postId/:commentId')
   async removeComment(
-    @CurrentUserId() userId: string,
+    @CurrentUserId() user: string,
     @Param('postId') postId: string,
     @Param('commentId') commentId: string,
   ): Promise<UpdateResult> {
-    return await this.commentsService.removeComment(userId, postId, commentId);
+    return await this.commentsService.removeComment(user, postId, commentId);
   }
 
   @ApiOperation({ summary: 'Restore a deleted comment' })
   @Patch('restore/:postId/:commentId')
   async restoreComment(
-    @CurrentUserId() userId: string,
+    @CurrentUserId() user: string,
     @Param('postId') postId: string,
     @Param('commentId') commentId: string,
   ): Promise<UpdateResult> {
-    return await this.commentsService.restoreComment(userId, postId, commentId);
+    return await this.commentsService.restoreComment(user, postId, commentId);
   }
 
   @ApiOperation({ summary: 'React to a comment' })
   @Patch('reactions/:postId/:commentId')
   async reactionComment(
     @Body() reaction: Reaction,
-    @CurrentUserId() userId: string,
+    @CurrentUserId() user: string,
     @Param('postId') postId: string,
     @Param('commentId') commentId: string,
   ): Promise<Comment> {
     return await this.commentsService.reactionComment(
-      userId,
+      user,
       postId,
       commentId,
       reaction,

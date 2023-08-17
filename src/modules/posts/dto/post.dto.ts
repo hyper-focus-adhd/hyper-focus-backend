@@ -26,5 +26,5 @@ export class PostDto {
 
   @Type(() => UserDto)
   @Expose()
-  userId: UserDto;
+  user: UserDto;
 }
