@@ -15,7 +15,9 @@ import { CurrentUserId } from '../../common/decorators/current-user-id.decorator
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { PublicRoute } from '../../common/decorators/public.decorator';
 import { RefreshTokenGuard } from '../../common/guards/refresh-token.guard';
+import { Serialize } from '../../common/interceptors/serialize.interceptor';
 import { CreateUserDto } from '../users/dtos/create-user.dto';
+import { UserDto } from '../users/dtos/user.dto';
 
 import { AuthService } from './auth.service';
 import { LoginDto } from './dtos/login.dto';
@@ -29,19 +31,21 @@ export class AuthController {
   @ApiOperation({ summary: 'Sign Up' })
   @Post('signup')
   @PublicRoute()
-  @UseInterceptors(FileInterceptor('image'))
+  @Serialize(UserDto)
+  @UseInterceptors(FileInterceptor('profile_image'))
   async signUp(
     @Body() body: CreateUserDto,
-    @UploadedFile() image: Express.Multer.File,
+    @UploadedFile() profile_image: Express.Multer.File,
   ): Promise<CreateUserType> {
-    return await this.authService.signUp(body, image);
+    return await this.authService.signUp(body, profile_image);
   }
 
   @ApiOperation({ summary: 'Login' })
   @HttpCode(HttpStatus.OK)
   @Post('login')
   @PublicRoute()
-  async login(@Body() body: LoginDto): Promise<CreateUserType> {
+  @Serialize(UserDto)
+  async login(@Body() body: LoginDto): Promise<object> {
     return await this.authService.login(body);
   }
 
@@ -62,7 +66,9 @@ export class AuthController {
   async refreshTokens(
     @CurrentUserId() userId: string,
     @CurrentUser('refreshToken') refreshToken: string,
-  ): Promise<{ accessToken: string }> {
+  ): Promise<{
+    accessToken: string;
+  }> {
     return await this.authService.refreshTokens(userId, refreshToken);
   }
 }

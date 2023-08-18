@@ -13,7 +13,7 @@ import {
 } from 'typeorm';
 import { ulid } from 'ulid';
 
-import { Status } from '../../../enums/task.enum';
+import { Status } from '../../../common/enums/task.enum';
 import { User } from '../../users/entities/user.entity';
 
 @Entity()
@@ -46,8 +46,8 @@ export class Task {
   deleted_at: Date;
 
   @JoinColumn({ name: 'user_id' })
-  @ManyToOne(() => User, (userId) => userId.tasks, { onDelete: 'CASCADE' })
-  userId: User;
+  @ManyToOne(() => User, (user) => user.tasks, { onDelete: 'CASCADE' })
+  user: User;
 
   constructor() {
     if (!this.id) {

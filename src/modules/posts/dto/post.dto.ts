@@ -1,6 +1,6 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 
-import { User } from '../../users/entities/user.entity';
+import { UserDto } from '../../users/dtos/user.dto';
 
 export class PostDto {
   @Expose()
@@ -22,5 +22,9 @@ export class PostDto {
   created_at: Date;
 
   @Expose()
-  userId: User;
+  updated_at: Date;
+
+  @Type(() => UserDto)
+  @Expose()
+  user: UserDto;
 }

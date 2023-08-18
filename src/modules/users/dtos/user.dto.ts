@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 
-import { Gender, Language, Role } from '../../../enums/user.enum';
+import { Gender, Language, Role } from '../../../common/enums/user.enum';
 
 export class UserDto {
   @Expose()
@@ -35,4 +35,10 @@ export class UserDto {
 
   @Expose()
   created_at: Date;
+
+  @Expose()
+  accessToken: string;
+
+  @Expose()
+  refreshToken: string;
 }

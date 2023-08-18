@@ -32,7 +32,10 @@ export class Post {
   image: string;
 
   @Column({ type: 'json', default: { like: [], dislike: [] } })
-  reaction: { like: string[]; dislike: string[] };
+  reaction: {
+    like: string[];
+    dislike: string[];
+  };
 
   @CreateDateColumn()
   created_at: Date;
@@ -44,10 +47,10 @@ export class Post {
   deleted_at: Date;
 
   @JoinColumn({ name: 'user_id' })
-  @ManyToOne(() => User, (userId) => userId.posts, { onDelete: 'CASCADE' })
-  userId: User;
+  @ManyToOne(() => User, (user) => user.posts, { onDelete: 'CASCADE' })
+  user: User;
 
-  @OneToMany(() => Comment, (comment) => comment.postId, { cascade: true })
+  @OneToMany(() => Comment, (comment) => comment.post, { cascade: true })
   comments: Comment[];
 
   constructor() {

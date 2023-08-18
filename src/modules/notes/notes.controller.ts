@@ -11,7 +11,7 @@ import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
 
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
-import { Serialize } from '../../interceptors/serialize.interceptor';
+import { Serialize } from '../../common/interceptors/serialize.interceptor';
 
 import { CreateNoteDto } from './dtos/create-note.dto';
 import { NoteDto } from './dtos/note.dto';
@@ -27,52 +27,52 @@ export class NotesController {
   constructor(private readonly notesService: NotesService) {}
 
   @ApiOperation({ summary: 'Create a new note' })
-  @Post(':boardId')
+  @Post(':board')
   async createNote(
     @Body() body: CreateNoteDto,
-    @CurrentUserId() userId: string,
-    @Param('boardId') boardId: string,
+    @CurrentUserId() user: string,
+    @Param('board') board: string,
   ): Promise<Note> {
-    return await this.notesService.createNote(userId, boardId, body);
+    return await this.notesService.createNote(user, board, body);
   }
 
   @ApiOperation({ summary: 'Find all notes by board id' })
-  @Get(':boardId')
+  @Get(':board')
   async findAllNotesByBoardId(
-    @CurrentUserId() userId: string,
-    @Param('boardId') boardId: string,
+    @CurrentUserId() user: string,
+    @Param('board') board: string,
   ): Promise<Note[]> {
-    return await this.notesService.findAllNotesByBoardId(userId, boardId);
+    return await this.notesService.findAllNotesByBoardId(user, board);
   }
 
   @ApiOperation({ summary: 'Update a note' })
-  @Patch(':boardId/:noteId')
+  @Patch(':board/:noteId')
   async updateNote(
     @Body() body: UpdateNoteDto,
-    @CurrentUserId() userId: string,
-    @Param('boardId') boardId: string,
+    @CurrentUserId() user: string,
+    @Param('board') board: string,
     @Param('noteId') noteId: string,
   ): Promise<Note> {
-    return await this.notesService.updateNote(userId, boardId, noteId, body);
+    return await this.notesService.updateNote(user, board, noteId, body);
   }
 
   @ApiOperation({ summary: 'Delete a note' })
-  @Delete(':boardId/:noteId')
+  @Delete(':board/:noteId')
   async removeNote(
-    @CurrentUserId() userId: string,
-    @Param('boardId') boardId: string,
+    @CurrentUserId() user: string,
+    @Param('board') board: string,
     @Param('noteId') noteId: string,
   ): Promise<UpdateResult> {
-    return await this.notesService.removeNote(userId, boardId, noteId);
+    return await this.notesService.removeNote(user, board, noteId);
   }
 
   @ApiOperation({ summary: 'Restore a deleted note' })
-  @Patch('restore/:boardId/:noteId')
+  @Patch('restore/:board/:noteId')
   async restoreNote(
-    @CurrentUserId() userId: string,
-    @Param('boardId') boardId: string,
+    @CurrentUserId() user: string,
+    @Param('board') board: string,
     @Param('noteId') noteId: string,
   ): Promise<UpdateResult> {
-    return await this.notesService.restoreNote(userId, boardId, noteId);
+    return await this.notesService.restoreNote(user, board, noteId);
   }
 }

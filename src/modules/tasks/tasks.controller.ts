@@ -11,7 +11,7 @@ import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
 
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
-import { Serialize } from '../../interceptors/serialize.interceptor';
+import { Serialize } from '../../common/interceptors/serialize.interceptor';
 import { User } from '../users/entities/user.entity';
 
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -27,6 +27,7 @@ import { TasksService } from './tasks.service';
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
+  //TODO: verify why is not returning user on create
   @ApiOperation({ summary: 'Create a new task' })
   @Post()
   async createTask(
@@ -38,35 +39,35 @@ export class TasksController {
 
   @ApiOperation({ summary: 'Find all tasks by user id' })
   @Get()
-  async findAllTasksByUserId(@CurrentUserId() userId: string): Promise<Task[]> {
-    return await this.tasksService.findAllTasksByUserId(userId);
+  async findAllTasksByUserId(@CurrentUserId() user: string): Promise<Task[]> {
+    return await this.tasksService.findAllTasksByUserId(user);
   }
 
   @ApiOperation({ summary: 'Update a task' })
   @Patch(':taskId')
   async updateTask(
     @Body() body: UpdateTaskDto,
-    @CurrentUserId() userId: string,
+    @CurrentUserId() user: string,
     @Param('taskId') taskId: string,
   ): Promise<Task> {
-    return await this.tasksService.updateTask(userId, taskId, body);
+    return await this.tasksService.updateTask(user, taskId, body);
   }
 
   @ApiOperation({ summary: 'Delete a task' })
   @Delete(':taskId')
   async removeTask(
-    @CurrentUserId() userId: string,
+    @CurrentUserId() user: string,
     @Param('taskId') taskId: string,
   ): Promise<UpdateResult> {
-    return await this.tasksService.removeTask(userId, taskId);
+    return await this.tasksService.removeTask(user, taskId);
   }
 
   @ApiOperation({ summary: 'Restore a deleted task' })
   @Patch('restore/:taskId')
   async restoreTask(
-    @CurrentUserId() userId: string,
+    @CurrentUserId() user: string,
     @Param('taskId') taskId: string,
   ): Promise<UpdateResult> {
-    return await this.tasksService.restoreTask(userId, taskId);
+    return await this.tasksService.restoreTask(user, taskId);
   }
 }

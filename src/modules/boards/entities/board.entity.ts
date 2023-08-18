@@ -38,10 +38,10 @@ export class Board {
   deleted_at: Date;
 
   @JoinColumn({ name: 'user_id' })
-  @ManyToOne(() => User, (userId) => userId.boards, { onDelete: 'CASCADE' })
-  userId: User;
+  @ManyToOne(() => User, (user) => user.boards, { onDelete: 'CASCADE' })
+  user: User;
 
-  @OneToMany(() => Note, (note) => note.boardId, { cascade: true })
+  @OneToMany(() => Note, (note) => note.board, { cascade: true })
   notes: Note[];
 
   constructor() {

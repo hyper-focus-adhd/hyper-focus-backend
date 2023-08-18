@@ -10,9 +10,9 @@ import * as bcrypt from 'bcryptjs';
 import { Repository, UpdateResult } from 'typeorm';
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
+import { messagesHelper } from '../../common/helpers/messages-helper';
 import { jwtConfig } from '../../config/jwt.config';
 import { sendgridConfig } from '../../config/sendgrid.config';
-import { messagesHelper } from '../../helpers/messages-helper';
 import { JwtPayload } from '../auth/types';
 import { FileStorageService } from '../file-storage/file-storage.service';
 import { MailerService } from '../mailer/mailer.service';
@@ -78,7 +78,7 @@ export class UsersService {
   async updateUser(
     userId: string,
     updateUserDto: UpdateUserDto,
-    image?: Express.Multer.File,
+    profile_image?: Express.Multer.File,
   ): Promise<User> {
     if (updateUserDto.username || updateUserDto.email) {
       await this.verifyExistingUser(
@@ -94,8 +94,11 @@ export class UsersService {
       updateUserDto.password = await bcrypt.hash(updateUserDto.password, salt);
     }
 
-    if (image) {
-      user.profile_image = await this.uploadProfileImage(user.id, image);
+    if (profile_image) {
+      user.profile_image = await this.uploadProfileImage(
+        user.id,
+        profile_image,
+      );
     }
 
     this.userRepository.merge(user, updateUserDto);

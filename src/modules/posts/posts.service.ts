@@ -3,9 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
+import { messagesHelper } from '../../common/helpers/messages-helper';
+import { reactionHelper } from '../../common/helpers/reaction-helper';
 import { Reaction } from '../../common/types';
-import { messagesHelper } from '../../helpers/messages-helper';
-import { reactionHelper } from '../../helpers/reaction-helper';
 import { FileStorageService } from '../file-storage/file-storage.service';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
@@ -31,7 +31,7 @@ export class PostsService {
       title: createPostDto.title,
       content: createPostDto.content,
       reaction: createPostDto.reaction,
-      userId: user,
+      user: user,
     });
 
     const userId = JSON.parse(JSON.stringify(user));
@@ -40,11 +40,13 @@ export class PostsService {
       post.image = await this.uploadPostImage(userId, post.id, image);
     }
 
-    return await this.postRepository.save(post);
+    const foundPost = await this.postRepository.save(post);
+
+    return await this.findPostByPostId(foundPost.id);
   }
 
   async findAllPosts(): Promise<Post[]> {
-    const posts = await this.postRepository.find();
+    const posts = await this.postRepository.find({ relations: ['user'] });
 
     if (!posts.length) {
       throw new NotFoundException(messagesHelper.POST_NOT_FOUND);
@@ -53,9 +55,10 @@ export class PostsService {
     return posts;
   }
 
-  async findAllPostsByUserId(userId: string): Promise<Post[]> {
+  async findAllPostsByUserId(user: string): Promise<Post[]> {
     const posts = await this.postRepository.find({
-      where: { userId: { id: userId } },
+      where: { user: { id: user } },
+      relations: ['user'],
     });
 
     if (!posts.length) {
@@ -65,13 +68,21 @@ export class PostsService {
     return posts;
   }
 
-  async findAllFriendsPostsByUserId(userId: string): Promise<Post[][]> {
-    const user = await this.usersService.findOneUserOrFail({
-      where: { id: userId },
+  async findPostByPostId(postId: string): Promise<Post> {
+    return await this.findOnePostOrFail({
+      where: { id: postId },
+      relations: ['user'],
+    });
+  }
+
+  async findAllFriendsPostsByUserId(user: string): Promise<Post[][]> {
+    const foundUser = await this.usersService.findOneUserOrFail({
+      where: { id: user },
     });
 
+    // //TODO: must be a transaction
     const friendsPosts: Post[][] = [];
-    for (const friend of user.friends) {
+    for (const friend of foundUser.friends) {
       const friendData = await this.usersService.findOneUserOrFail({
         where: { id: friend },
       });
@@ -92,21 +103,22 @@ export class PostsService {
   }
 
   async updatePost(
-    userId: string,
+    user: string,
     postId: string,
     updatePostDto: UpdatePostDto,
     image: Express.Multer.File,
   ): Promise<Post> {
     const post = await this.findOnePostOrFail({
-      where: { id: postId, userId: { id: userId } },
+      where: { id: postId, user: { id: user } },
+      relations: ['user'],
     });
 
     if (image) {
-      post.image = await this.uploadPostImage(userId, postId, image);
+      post.image = await this.uploadPostImage(user, postId, image);
     }
 
     if (updatePostDto.image === null) {
-      await this.removePostImage(userId, postId);
+      await this.removePostImage(user, postId);
     }
 
     this.postRepository.merge(post, updatePostDto);
@@ -114,18 +126,17 @@ export class PostsService {
     return await this.postRepository.save(post);
   }
 
-  async removePost(userId: string, postId: string): Promise<Post> {
+  async removePost(user: string, postId: string): Promise<Post> {
     const post = await this.findOnePostOrFail({
-      where: { id: postId, userId: { id: userId } },
-      relations: ['comments'],
+      where: { id: postId, user: { id: user } },
     });
 
     return await this.postRepository.softRemove(post);
   }
 
-  async restorePost(userId: string, postId: string): Promise<UpdateResult> {
+  async restorePost(user: string, postId: string): Promise<UpdateResult> {
     const post = await this.findOnePostOrFail({
-      where: { id: postId, userId: { id: userId } },
+      where: { id: postId, user: { id: user } },
       withDeleted: true,
     });
 
@@ -133,7 +144,7 @@ export class PostsService {
   }
 
   async reactionPost(
-    userId: string,
+    user: string,
     postId: string,
     reaction: Reaction,
   ): Promise<Post> {
@@ -141,23 +152,23 @@ export class PostsService {
       where: { id: postId },
     });
 
-    reactionHelper(userId, post.reaction.like, post.reaction.dislike, reaction);
+    reactionHelper(user, post.reaction.like, post.reaction.dislike, reaction);
 
     return await this.postRepository.save(post);
   }
 
   async uploadPostImage(
-    userId: string,
+    user: string,
     postId: string,
     image: Express.Multer.File,
   ): Promise<string> {
-    const folderName = `users/${userId}/posts/${postId}/post-image`;
+    const folderName = `users/${user}/posts/${postId}/post-image`;
 
     return await this.fileStorageService.uploadImage(image, folderName);
   }
 
-  async removePostImage(userId: string, postId: string): Promise<void> {
-    const folderName = `users/${userId}/posts/${postId}/post-image`;
+  async removePostImage(user: string, postId: string): Promise<void> {
+    const folderName = `users/${user}/posts/${postId}/post-image`;
 
     return await this.fileStorageService.cleanBucket(folderName);
   }

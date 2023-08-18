@@ -7,7 +7,7 @@ import {
 } from 'class-validator';
 import * as moment from 'moment';
 
-import { messagesHelper } from '../../helpers/messages-helper';
+import { messagesHelper } from '../helpers/messages-helper';
 
 interface DateRange {
   date: {

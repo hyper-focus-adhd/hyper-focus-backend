@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
-import { messagesHelper } from '../../helpers/messages-helper';
+import { messagesHelper } from '../../common/helpers/messages-helper';
 import { User } from '../users/entities/user.entity';
 
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -24,15 +24,21 @@ export class BoardsService {
     const board = this.boardRepository.create({
       title: createBoardDto.title,
       color: createBoardDto.color,
-      userId: user,
+      user: user,
     });
 
-    return await this.boardRepository.save(board);
+    const foundBoard = await this.boardRepository.save(board);
+
+    return this.findOneBoardOrFail({
+      where: { id: foundBoard.id },
+      relations: ['user'],
+    });
   }
 
-  async findAllBoardsByUserId(userId: string): Promise<Board[]> {
+  async findAllBoardsByUserId(user: string): Promise<Board[]> {
     const boards = await this.boardRepository.find({
-      where: { userId: { id: userId } },
+      where: { user: { id: user } },
+      relations: ['user'],
     });
 
     if (!boards.length) {
@@ -51,12 +57,13 @@ export class BoardsService {
   }
 
   async updateBoard(
-    userId: string,
+    user: string,
     boardId: string,
     updateBoardDto: UpdateBoardDto,
   ): Promise<Board> {
     const board = await this.findOneBoardOrFail({
-      where: { id: boardId, userId: { id: userId } },
+      where: { id: boardId, user: { id: user } },
+      relations: ['user'],
     });
 
     this.boardRepository.merge(board, updateBoardDto);
@@ -64,18 +71,17 @@ export class BoardsService {
     return await this.boardRepository.save(board);
   }
 
-  async removeBoard(userId: string, boardId: string): Promise<Board> {
+  async removeBoard(user: string, boardId: string): Promise<Board> {
     const board = await this.findOneBoardOrFail({
-      where: { id: boardId, userId: { id: userId } },
-      relations: ['notes'],
+      where: { id: boardId, user: { id: user } },
     });
 
     return await this.boardRepository.softRemove(board);
   }
 
-  async restoreBoard(userId: string, boardId: string): Promise<UpdateResult> {
+  async restoreBoard(user: string, boardId: string): Promise<UpdateResult> {
     const board = await this.findOneBoardOrFail({
-      where: { id: boardId, userId: { id: userId } },
+      where: { id: boardId, user: { id: user } },
       withDeleted: true,
     });
 

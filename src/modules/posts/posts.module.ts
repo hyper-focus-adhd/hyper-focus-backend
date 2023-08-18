@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { storageDataHelper } from '../../helpers/storage-data-helper';
+import { storageDataHelper } from '../../common/helpers/storage-data-helper';
 import { FileStorageService } from '../file-storage/file-storage.service';
 import { MailerService } from '../mailer/mailer.service';
 import { User } from '../users/entities/user.entity';

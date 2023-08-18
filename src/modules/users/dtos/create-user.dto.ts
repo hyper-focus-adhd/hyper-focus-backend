@@ -12,9 +12,9 @@ import {
 } from 'class-validator';
 import * as moment from 'moment';
 
-import { Gender, Language } from '../../../enums/user.enum';
-import { messagesHelper } from '../../../helpers/messages-helper';
-import { regexHelper } from '../../../helpers/regex-helper';
+import { Gender, Language } from '../../../common/enums/user.enum';
+import { messagesHelper } from '../../../common/helpers/messages-helper';
+import { passwordHelper } from '../../../common/helpers/password-helper';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -39,7 +39,7 @@ export class CreateUserDto {
   })
   @IsNotEmpty()
   @IsString()
-  @Matches(regexHelper.password, {
+  @Matches(passwordHelper.password, {
     message: messagesHelper.PASSWORD_VALID,
   })
   password: string;

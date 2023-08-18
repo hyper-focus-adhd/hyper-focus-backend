@@ -1,7 +1,7 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 
-import { Post } from '../../posts/entities/post.entity';
-import { User } from '../../users/entities/user.entity';
+import { PostDto } from '../../posts/dto/post.dto';
+import { UserDto } from '../../users/dtos/user.dto';
 
 export class CommentDto {
   @Expose()
@@ -17,11 +17,17 @@ export class CommentDto {
   created_at: Date;
 
   @Expose()
-  userId: User;
+  updated_at: Date;
 
+  @Type(() => UserDto)
   @Expose()
-  postId: Post;
+  user: UserDto;
 
+  @Type(() => PostDto)
   @Expose()
-  parentCommentId: string;
+  post: PostDto;
+
+  @Type(() => CommentDto)
+  @Expose()
+  parentComment: CommentDto;
 }

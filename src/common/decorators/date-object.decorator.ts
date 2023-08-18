@@ -6,7 +6,7 @@ import {
 } from 'class-validator';
 import * as moment from 'moment';
 
-import { messagesHelper } from '../../helpers/messages-helper';
+import { messagesHelper } from '../helpers/messages-helper';
 
 @ValidatorConstraint({ async: false })
 export class ValidDatesValidator implements ValidatorConstraintInterface {

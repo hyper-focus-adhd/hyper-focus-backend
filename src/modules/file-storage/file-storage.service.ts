@@ -4,7 +4,7 @@ import { Storage } from '@google-cloud/storage';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ulid } from 'ulid';
 
-import { messagesHelper } from '../../helpers/messages-helper';
+import { messagesHelper } from '../../common/helpers/messages-helper';
 
 //TODO: think about transforming it into a helper function
 @Injectable()

@@ -11,12 +11,14 @@ $ yarn install
 ## Running the app
 
 ```bash
-# development
+# development mode
 $ yarn run start
-
+```
+```bash
 # watch mode
 $ yarn run start:dev
-
+```
+```bash
 # production mode
 $ yarn run start:prod
 ```
@@ -26,10 +28,12 @@ $ yarn run start:prod
 ```bash
 # unit tests
 $ yarn run test
-
+```
+```bash
 # e2e tests
 $ yarn run test:e2e
-
+```
+```bash
 # test coverage
 $ yarn run test:cov
 ```
@@ -37,13 +41,15 @@ $ yarn run test:cov
 ## Migrations
 
 ```bash
-# generate a migration
+# generates a migration
 $ yarn migration:generate "src/database/migrations/MigrationName"
-
-# run a migration
+```
+```bash
+# runs a migration
 $ yarn migration:run
-
-# revert a migration
+```
+```bash
+# reverts a migration
 $ yarn migration:revert
 ```
 

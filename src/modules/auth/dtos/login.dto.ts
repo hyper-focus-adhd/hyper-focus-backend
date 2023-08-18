@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, Matches } from 'class-validator';
 
-import { messagesHelper } from '../../../helpers/messages-helper';
-import { regexHelper } from '../../../helpers/regex-helper';
+import { messagesHelper } from '../../../common/helpers/messages-helper';
+import { passwordHelper } from '../../../common/helpers/password-helper';
 
 export class LoginDto {
   @ApiProperty({
@@ -19,7 +19,7 @@ export class LoginDto {
   })
   @IsNotEmpty()
   @IsString()
-  @Matches(regexHelper.password, {
+  @Matches(passwordHelper.password, {
     message: messagesHelper.PASSWORD_VALID,
   })
   password: string;

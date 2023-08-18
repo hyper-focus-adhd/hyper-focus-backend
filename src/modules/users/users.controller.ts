@@ -16,7 +16,7 @@ import { UpdateResult } from 'typeorm';
 
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
 import { PublicRoute } from '../../common/decorators/public.decorator';
-import { Serialize } from '../../interceptors/serialize.interceptor';
+import { Serialize } from '../../common/interceptors/serialize.interceptor';
 
 import { RecoverUserCredentialsDto } from './dtos/recover-user-credential.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
@@ -38,6 +38,13 @@ export class UsersController {
     return await this.usersService.findAllUsers();
   }
 
+  @ApiOperation({ summary: 'Find current user' })
+  @ApiSecurity('Access Token')
+  @Get()
+  async findCurrentUser(@CurrentUserId() userId: string): Promise<User> {
+    return await this.usersService.findOneUser({ where: { id: userId } });
+  }
+
   @ApiOperation({ summary: 'Find a user by id' })
   @ApiSecurity('Access Token')
   @Get(':id')
@@ -48,13 +55,13 @@ export class UsersController {
   @ApiOperation({ summary: 'Update a user' })
   @ApiSecurity('Access Token')
   @Patch()
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(FileInterceptor('profile_image'))
   async updateUser(
     @Body() body: UpdateUserDto,
     @CurrentUserId() userId: string,
-    @UploadedFile() image: Express.Multer.File,
+    @UploadedFile() profile_image: Express.Multer.File,
   ): Promise<User> {
-    return await this.usersService.updateUser(userId, body, image);
+    return await this.usersService.updateUser(userId, body, profile_image);
   }
 
   @ApiOperation({ summary: 'Delete a user' })

@@ -12,7 +12,7 @@ import {
 } from 'typeorm';
 import { ulid } from 'ulid';
 
-import { Gender, Language, Role } from '../../../enums/user.enum';
+import { Gender, Language, Role } from '../../../common/enums/user.enum';
 import { Board } from '../../boards/entities/board.entity';
 import { Comment } from '../../comments/entities/comment.entity';
 import { Post } from '../../posts/entities/post.entity';
@@ -65,16 +65,16 @@ export class User {
   @DeleteDateColumn()
   deleted_at: Date;
 
-  @OneToMany(() => Board, (board) => board.userId, { cascade: true })
+  @OneToMany(() => Board, (board) => board.user, { cascade: true })
   boards: Board[];
 
-  @OneToMany(() => Task, (task) => task.userId, { cascade: true })
+  @OneToMany(() => Task, (task) => task.user, { cascade: true })
   tasks: Task[];
 
-  @OneToMany(() => Post, (post) => post.userId, { cascade: true })
+  @OneToMany(() => Post, (post) => post.user, { cascade: true })
   posts: Post[];
 
-  @OneToMany(() => Comment, (comment) => comment.userId, { cascade: true })
+  @OneToMany(() => Comment, (comment) => comment.user, { cascade: true })
   comments: Comment[];
 
   constructor() {
