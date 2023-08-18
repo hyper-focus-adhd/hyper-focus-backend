@@ -27,7 +27,7 @@ export class NotesController {
   constructor(private readonly notesService: NotesService) {}
 
   @ApiOperation({ summary: 'Create a new note' })
-  @Post(':boardId')
+  @Post(':board')
   async createNote(
     @Body() body: CreateNoteDto,
     @CurrentUserId() user: string,
@@ -37,7 +37,7 @@ export class NotesController {
   }
 
   @ApiOperation({ summary: 'Find all notes by board id' })
-  @Get(':boardId')
+  @Get(':board')
   async findAllNotesByBoardId(
     @CurrentUserId() user: string,
     @Param('board') board: string,
@@ -46,7 +46,7 @@ export class NotesController {
   }
 
   @ApiOperation({ summary: 'Update a note' })
-  @Patch(':boardId/:noteId')
+  @Patch(':board/:noteId')
   async updateNote(
     @Body() body: UpdateNoteDto,
     @CurrentUserId() user: string,
@@ -57,7 +57,7 @@ export class NotesController {
   }
 
   @ApiOperation({ summary: 'Delete a note' })
-  @Delete(':boardId/:noteId')
+  @Delete(':board/:noteId')
   async removeNote(
     @CurrentUserId() user: string,
     @Param('board') board: string,
@@ -67,7 +67,7 @@ export class NotesController {
   }
 
   @ApiOperation({ summary: 'Restore a deleted note' })
-  @Patch('restore/:boardId/:noteId')
+  @Patch('restore/:board/:noteId')
   async restoreNote(
     @CurrentUserId() user: string,
     @Param('board') board: string,

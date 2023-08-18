@@ -27,7 +27,12 @@ export class BoardsService {
       user: user,
     });
 
-    return await this.boardRepository.save(board);
+    const foundBoard = await this.boardRepository.save(board);
+
+    return this.findOneBoardOrFail({
+      where: { id: foundBoard.id },
+      relations: ['user'],
+    });
   }
 
   async findAllBoardsByUserId(user: string): Promise<Board[]> {
@@ -69,7 +74,6 @@ export class BoardsService {
   async removeBoard(user: string, boardId: string): Promise<Board> {
     const board = await this.findOneBoardOrFail({
       where: { id: boardId, user: { id: user } },
-      relations: ['notes'],
     });
 
     return await this.boardRepository.softRemove(board);

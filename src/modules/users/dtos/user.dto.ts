@@ -35,4 +35,10 @@ export class UserDto {
 
   @Expose()
   created_at: Date;
+
+  @Expose()
+  accessToken: string;
+
+  @Expose()
+  refreshToken: string;
 }

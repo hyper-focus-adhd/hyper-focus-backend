@@ -1,5 +1,6 @@
-import { Expose, Transform, Type } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 
+import { PostDto } from '../../posts/dto/post.dto';
 import { UserDto } from '../../users/dtos/user.dto';
 
 export class CommentDto {
@@ -22,11 +23,11 @@ export class CommentDto {
   @Expose()
   user: UserDto;
 
-  @Transform(({ obj }) => obj.postId?.id)
+  @Type(() => PostDto)
   @Expose()
-  postId: string;
+  post: PostDto;
 
-  @Transform(({ obj }) => obj.parentCommentId?.id)
+  @Type(() => CommentDto)
   @Expose()
-  parentCommentId: string;
+  parentComment: CommentDto;
 }

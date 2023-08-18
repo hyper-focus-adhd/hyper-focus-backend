@@ -42,44 +42,19 @@ export class AuthService {
       profile_image,
     );
 
-    const user = await this.validateUser(
+    return await this.validateUser(
       createUserDto.username,
       createUserDto.password,
     );
-
-    return {
-      id: user.id,
-      username: user.username,
-      role: user.role,
-      email: user.email,
-      birthdate: user.birthdate,
-      gender: user.gender,
-      nationality: user.nationality,
-      language: user.language,
-      profile_image: user.profile_image,
-      created_at: user.created_at,
-    };
   }
 
-  async login(loginDto: LoginDto): Promise<CreateUserType> {
+  async login(loginDto: LoginDto): Promise<object> {
     const user = await this.validateUser(loginDto.username, loginDto.password);
 
     const tokens = await this.generateToken(user);
     await this.updateRefreshTokenHash(user.id, tokens.refreshToken);
 
-    return {
-      id: user.id,
-      username: user.username,
-      role: user.role,
-      email: user.email,
-      birthdate: user.birthdate,
-      gender: user.gender,
-      nationality: user.nationality,
-      language: user.language,
-      profile_image: user.profile_image,
-      created_at: user.created_at,
-      ...tokens,
-    };
+    return { ...user, ...tokens };
   }
 
   async logout(userId: string): Promise<boolean> {
@@ -129,7 +104,9 @@ export class AuthService {
   async refreshTokens(
     userId: string,
     refreshToken: string,
-  ): Promise<{ accessToken: string }> {
+  ): Promise<{
+    accessToken: string;
+  }> {
     const user = await this.usersService.findOneUser({ where: { id: userId } });
     if (!user || !user.hashedRefreshToken) {
       throw new ForbiddenException(messagesHelper.ACCESS_DENIED);

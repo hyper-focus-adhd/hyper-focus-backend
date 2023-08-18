@@ -35,7 +35,12 @@ export class NotesService {
       board: boardId,
     });
 
-    return await this.noteRepository.save(note);
+    const foundNote = await this.noteRepository.save(note);
+
+    return this.findOneNoteOrFail({
+      where: { id: foundNote.id },
+      relations: ['board'],
+    });
   }
 
   async findAllNotesByBoardId(user: string, board: string): Promise<Note[]> {

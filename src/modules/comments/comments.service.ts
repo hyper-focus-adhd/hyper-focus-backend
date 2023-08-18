@@ -37,20 +37,25 @@ export class CommentsService {
       content: createCommentDto.content,
       reaction: createCommentDto.reaction,
       user: user,
-      postId: postId,
+      post: postId,
     });
 
     if (parentComment) {
-      comment.parentCommentId = parentComment;
+      comment.parentComment = parentComment;
     }
 
-    return await this.commentRepository.save(comment);
+    const foundComment = await this.commentRepository.save(comment);
+
+    return this.findOneCommentOrFail({
+      where: { id: foundComment.id },
+      relations: ['user', 'post', 'parentComment'],
+    });
   }
 
-  async findAllCommentsByPostId(postId: string): Promise<Comment[]> {
+  async findAllCommentsByPostId(post: string): Promise<Comment[]> {
     const comments = await this.commentRepository.find({
-      where: { postId: { id: postId } },
-      relations: ['user', 'postId', 'parentCommentId'],
+      where: { post: { id: post } },
+      relations: ['user', 'post', 'parentComment'],
     });
 
     if (!comments.length) {
@@ -63,7 +68,7 @@ export class CommentsService {
   async findAllCommentsByUserId(user: string): Promise<Comment[]> {
     const comments = await this.commentRepository.find({
       where: { user: { id: user } },
-      relations: ['user', 'postId', 'parentCommentId'],
+      relations: ['user', 'post', 'parentComment'],
     });
 
     if (!comments.length) {
@@ -85,17 +90,17 @@ export class CommentsService {
 
   async updateComment(
     user: string,
-    postId: string,
+    post: string,
     commentId: string,
     updateCommentDto: UpdateCommentDto,
   ): Promise<Comment> {
     await this.postsService.findOnePostOrFail({
-      where: { id: postId },
+      where: { id: post },
     });
 
     const comment = await this.findOneCommentOrFail({
       where: { id: commentId, user: { id: user } },
-      relations: ['user', 'postId', 'parentCommentId'],
+      relations: ['user', 'post', 'parentComment'],
     });
     this.commentRepository.merge(comment, updateCommentDto);
 
@@ -104,11 +109,11 @@ export class CommentsService {
 
   async removeComment(
     user: string,
-    postId: string,
+    post: string,
     commentId: string,
   ): Promise<UpdateResult> {
     await this.postsService.findOnePostOrFail({
-      where: { id: postId },
+      where: { id: post },
     });
 
     const comment = await this.findOneCommentOrFail({
@@ -120,11 +125,11 @@ export class CommentsService {
 
   async restoreComment(
     user: string,
-    postId: string,
+    post: string,
     commentId: string,
   ): Promise<UpdateResult> {
     await this.postsService.findOnePostOrFail({
-      where: { id: postId },
+      where: { id: post },
     });
 
     const comment = await this.findOneCommentOrFail({
@@ -137,12 +142,12 @@ export class CommentsService {
 
   async reactionComment(
     user: string,
-    postId: string,
+    post: string,
     commentId: string,
     reaction: Reaction,
   ): Promise<Comment> {
     await this.postsService.findOnePostOrFail({
-      where: { id: postId },
+      where: { id: post },
     });
 
     const comment = await this.findOneCommentOrFail({

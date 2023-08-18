@@ -26,7 +26,10 @@ export class Comment {
   content: string;
 
   @Column({ type: 'json', default: { like: [], dislike: [] } })
-  reaction: { like: string[]; dislike: string[] };
+  reaction: {
+    like: string[];
+    dislike: string[];
+  };
 
   @CreateDateColumn()
   created_at: Date;
@@ -42,16 +45,16 @@ export class Comment {
   user: User;
 
   @JoinColumn({ name: 'post_id' })
-  @ManyToOne(() => Post, (postId) => postId.comments, { onDelete: 'CASCADE' })
-  postId: Post;
+  @ManyToOne(() => Post, (post) => post.comments, { onDelete: 'CASCADE' })
+  post: Post;
 
   @JoinColumn({ name: 'parent_comment_id' })
   @ManyToOne(() => Comment, (comment) => comment.replies, {
     onDelete: 'CASCADE',
   })
-  parentCommentId: string;
+  parentComment: string;
 
-  @OneToMany(() => Comment, (comment) => comment.parentCommentId, {
+  @OneToMany(() => Comment, (comment) => comment.parentComment, {
     cascade: true,
   })
   replies: Comment[];

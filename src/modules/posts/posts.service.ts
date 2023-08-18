@@ -40,7 +40,9 @@ export class PostsService {
       post.image = await this.uploadPostImage(userId, post.id, image);
     }
 
-    return await this.postRepository.save(post);
+    const foundPost = await this.postRepository.save(post);
+
+    return await this.findPostByPostId(foundPost.id);
   }
 
   async findAllPosts(): Promise<Post[]> {
@@ -67,15 +69,10 @@ export class PostsService {
   }
 
   async findPostByPostId(postId: string): Promise<Post> {
-    const post = await this.postRepository.findOne({
+    return await this.findOnePostOrFail({
       where: { id: postId },
       relations: ['user'],
     });
-
-    if (!post) {
-      throw new NotFoundException(messagesHelper.POST_NOT_FOUND);
-    }
-    return post;
   }
 
   async findAllFriendsPostsByUserId(user: string): Promise<Post[][]> {
@@ -132,7 +129,6 @@ export class PostsService {
   async removePost(user: string, postId: string): Promise<Post> {
     const post = await this.findOnePostOrFail({
       where: { id: postId, user: { id: user } },
-      relations: ['comments'],
     });
 
     return await this.postRepository.softRemove(post);
