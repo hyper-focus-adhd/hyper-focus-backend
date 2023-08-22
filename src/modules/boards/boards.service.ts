@@ -22,8 +22,7 @@ export class BoardsService {
     createBoardDto: CreateBoardDto,
   ): Promise<Board> {
     const board = this.boardRepository.create({
-      title: createBoardDto.title,
-      color: createBoardDto.color,
+      ...createBoardDto,
       user: user,
     });
 

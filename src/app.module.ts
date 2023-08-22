@@ -7,6 +7,7 @@ import { dataSourceOptions } from './database/data-source';
 import { AuthModule } from './modules/auth/auth.module';
 import { BoardsModule } from './modules/boards/boards.module';
 import { CommentsModule } from './modules/comments/comments.module';
+import { CommunitiesModule } from './modules/communities/communities.module';
 import { FileStorageModule } from './modules/file-storage/file-storage.module';
 import { MailerModule } from './modules/mailer/mailer.module';
 import { NotesModule } from './modules/notes/notes.module';
@@ -26,6 +27,7 @@ import { UsersModule } from './modules/users/users.module';
     BoardsModule,
     PostsModule,
     CommentsModule,
+    CommunitiesModule,
   ],
   controllers: [],
   providers: [

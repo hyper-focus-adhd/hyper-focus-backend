@@ -114,4 +114,13 @@ export class UsersController {
   ): Promise<User> {
     return await this.usersService.followUser(userId, followUserId);
   }
+
+  @ApiOperation({ summary: 'Follow a community' })
+  @Patch('follow/:followCommunityId')
+  async followCommunity(
+    @CurrentUserId() userId: string,
+    @Param('followCommunityId') followUserId: string,
+  ): Promise<User> {
+    return await this.usersService.followCommunity(userId, followUserId);
+  }
 }

@@ -29,9 +29,7 @@ export class NotesService {
     });
 
     const note = this.noteRepository.create({
-      text: createNoteDto.text,
-      color: createNoteDto.color,
-      placement: createNoteDto.placement,
+      ...createNoteDto,
       board: boardId,
     });
 

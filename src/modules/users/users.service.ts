@@ -36,14 +36,8 @@ export class UsersService {
     image: Express.Multer.File,
   ): Promise<User> {
     const user = this.userRepository.create({
-      username: createUserDto.username,
-      email: createUserDto.email,
+      ...createUserDto,
       password: hashedPassword,
-      birthdate: createUserDto.birthdate,
-      gender: createUserDto.gender,
-      nationality: createUserDto.nationality,
-      language: createUserDto.language,
-      friends: createUserDto.friends,
     });
 
     if (image) {
@@ -239,12 +233,35 @@ export class UsersService {
 
     await this.findOneUserOrFail({ where: { id: followUserId } });
 
-    const followIndex = user.friends.indexOf(followUserId);
+    const followIndex = user.following.indexOf(followUserId);
 
     if (followIndex === -1) {
-      user.friends.push(followUserId);
+      user.following.push(followUserId);
     } else {
-      user.friends.splice(followIndex, 1);
+      user.following.splice(followIndex, 1);
+    }
+
+    return await this.userRepository.save(user);
+  }
+
+  async followCommunity(
+    userId: string,
+    followCommunityId: string,
+  ): Promise<User> {
+    const user = await this.findOneUserOrFail({
+      where: { id: userId },
+    });
+
+    await this.findOneUserOrFail({
+      where: { id: followCommunityId },
+    });
+
+    const followIndex = user.following.indexOf(followCommunityId);
+
+    if (followIndex === -1) {
+      user.following.push(followCommunityId);
+    } else {
+      user.following.splice(followIndex, 1);
     }
 
     return await this.userRepository.save(user);

@@ -2,23 +2,22 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { storageDataHelper } from '../../common/helpers/storage-data-helper';
-import { FileStorageService } from '../file-storage/file-storage.service';
-import { MailerService } from '../mailer/mailer.service';
+import { FileStorageModule } from '../file-storage/file-storage.module';
+import { MailerModule } from '../mailer/mailer.module';
 
 import { User } from './entities/user.entity';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), JwtModule.register({})],
-  controllers: [UsersController],
-  providers: [
-    UsersService,
-    FileStorageService,
-    storageDataHelper,
-    MailerService,
+  imports: [
+    TypeOrmModule.forFeature([User]),
+    JwtModule.register({}),
+    FileStorageModule,
+    MailerModule,
   ],
+  controllers: [UsersController],
+  providers: [UsersService],
   exports: [UsersService],
 })
 export class UsersModule {}

@@ -13,28 +13,37 @@ import {
 } from 'typeorm';
 import { ulid } from 'ulid';
 
-import { StatusEnum } from '../../../common/enums/task.enum';
+import { CategoryEnum } from '../../../common/enums/community.enum';
 import { User } from '../../users/entities/user.entity';
 
 @Entity()
-export class Task {
+export class Community {
   @PrimaryColumn()
   id: string;
+
+  @Column({ unique: true })
+  name: string;
 
   @Column()
   title: string;
 
-  @Column({ nullable: true })
+  @Column()
   description: string;
 
   @Column()
-  status: StatusEnum;
+  rules: string;
 
-  @Column({ type: 'json' })
-  date: { start: Date; end: Date };
+  @Column()
+  category: CategoryEnum;
 
-  @Column({ type: 'json', nullable: true })
-  time: { start: Date; end: Date };
+  @Column({ type: 'text', array: true, default: [] })
+  moderators: string[];
+
+  @Column({ type: 'text', array: true, default: [] })
+  followers: string[];
+
+  @Column({ type: 'text', array: true, default: [] })
+  banned_users: string[];
 
   @CreateDateColumn()
   created_at: Date;
@@ -46,7 +55,7 @@ export class Task {
   deleted_at: Date;
 
   @JoinColumn({ name: 'user_id' })
-  @ManyToOne(() => User, (user) => user.tasks, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.communities, { onDelete: 'CASCADE' })
   user: User;
 
   constructor() {
@@ -57,16 +66,16 @@ export class Task {
 
   @AfterInsert()
   logInsert(): void {
-    console.log('Inserted Task with id', this.id);
+    console.log('Inserted Community with id', this.id);
   }
 
   @AfterUpdate()
   logUpdate(): void {
-    console.log('Updated Task with id', this.id);
+    console.log('Updated Community with id', this.id);
   }
 
   @AfterRemove()
   logRemove(): void {
-    console.log('Removed Task with id', this.id);
+    console.log('Removed Community with id', this.id);
   }
 }

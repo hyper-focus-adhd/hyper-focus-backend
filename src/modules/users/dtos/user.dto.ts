@@ -1,6 +1,10 @@
 import { Expose } from 'class-transformer';
 
-import { Gender, Language, Role } from '../../../common/enums/user.enum';
+import {
+  GenderEnum,
+  LanguageEnum,
+  RoleEnum,
+} from '../../../common/enums/user.enum';
 
 export class UserDto {
   @Expose()
@@ -10,7 +14,7 @@ export class UserDto {
   username: string;
 
   @Expose()
-  role: Role;
+  role: RoleEnum;
 
   @Expose()
   email: string;
@@ -19,13 +23,13 @@ export class UserDto {
   birthdate: Date;
 
   @Expose()
-  gender: Gender;
+  gender: GenderEnum;
 
   @Expose()
   nationality: string;
 
   @Expose()
-  language: Language;
+  language: LanguageEnum;
 
   @Expose()
   profile_image: string;

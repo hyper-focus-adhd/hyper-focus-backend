@@ -12,9 +12,14 @@ import {
 } from 'typeorm';
 import { ulid } from 'ulid';
 
-import { Gender, Language, Role } from '../../../common/enums/user.enum';
+import {
+  GenderEnum,
+  LanguageEnum,
+  RoleEnum,
+} from '../../../common/enums/user.enum';
 import { Board } from '../../boards/entities/board.entity';
 import { Comment } from '../../comments/entities/comment.entity';
+import { Community } from '../../communities/entities/community.entity';
 import { Post } from '../../posts/entities/post.entity';
 import { Task } from '../../tasks/entities/task.entity';
 
@@ -26,8 +31,8 @@ export class User {
   @Column({ unique: true })
   username: string;
 
-  @Column({ default: Role.USER })
-  role: Role;
+  @Column({ default: RoleEnum.USER })
+  role: RoleEnum;
 
   @Column({ unique: true })
   email: string;
@@ -39,22 +44,25 @@ export class User {
   birthdate: Date;
 
   @Column({ nullable: true })
-  gender: Gender;
+  gender: GenderEnum;
 
   @Column({ nullable: true })
   nationality: string;
 
-  @Column({ default: Language.ENGLISH })
-  language: Language;
+  @Column({ default: LanguageEnum.ENGLISH })
+  language: LanguageEnum;
 
   @Column({ nullable: true })
   profile_image: string;
 
-  @Column('text', { array: true, default: [] })
-  friends: string[];
+  @Column({ type: 'text', array: true, default: [] })
+  following: string[];
+
+  @Column({ type: 'text', array: true, default: [] })
+  followers: string[];
 
   @Column({ nullable: true })
-  hashedRefreshToken: string;
+  hashed_refresh_token: string;
 
   @CreateDateColumn()
   created_at: Date;
@@ -76,6 +84,9 @@ export class User {
 
   @OneToMany(() => Comment, (comment) => comment.user, { cascade: true })
   comments: Comment[];
+
+  @OneToMany(() => Community, (community) => community.user, { cascade: true })
+  communities: Community[];
 
   constructor() {
     if (!this.id) {

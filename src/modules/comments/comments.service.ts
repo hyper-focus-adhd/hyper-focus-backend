@@ -34,8 +34,7 @@ export class CommentsService {
     });
 
     const comment = this.commentRepository.create({
-      content: createCommentDto.content,
-      reaction: createCommentDto.reaction,
+      ...createCommentDto,
       user: user,
       post: postId,
     });

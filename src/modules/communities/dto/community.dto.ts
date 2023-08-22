@@ -1,11 +1,11 @@
 import { Expose, Type } from 'class-transformer';
 
-import { StatusEnum } from '../../../common/enums/task.enum';
+import { CategoryEnum } from '../../../common/enums/community.enum';
 import { UserDto } from '../../users/dtos/user.dto';
 
-export class TaskDto {
+export class CommunityDto {
   @Expose()
-  id: string;
+  name: string;
 
   @Expose()
   title: string;
@@ -14,13 +14,19 @@ export class TaskDto {
   description: string;
 
   @Expose()
-  status: StatusEnum;
+  rules: string;
 
   @Expose()
-  date: object;
+  category: CategoryEnum;
 
   @Expose()
-  time: object;
+  moderators: string[];
+
+  @Expose()
+  followers: string[];
+
+  @Expose()
+  banned_users: string[];
 
   @Expose()
   created_at: Date;

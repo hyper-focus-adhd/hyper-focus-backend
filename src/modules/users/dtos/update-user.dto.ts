@@ -14,7 +14,11 @@ import {
 } from 'class-validator';
 import * as moment from 'moment/moment';
 
-import { Gender, Language, Role } from '../../../common/enums/user.enum';
+import {
+  GenderEnum,
+  LanguageEnum,
+  RoleEnum,
+} from '../../../common/enums/user.enum';
 import { messagesHelper } from '../../../common/helpers/messages-helper';
 import { passwordHelper } from '../../../common/helpers/password-helper';
 
@@ -36,8 +40,8 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   })
   @IsNotEmpty()
   @IsOptional()
-  @IsEnum(Role)
-  role?: Role;
+  @IsEnum(RoleEnum)
+  role?: RoleEnum;
 
   @ApiProperty({
     description: 'The updated email of the user',
@@ -76,8 +80,8 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     example: 'Male, Female or Other',
   })
   @IsOptional()
-  @IsEnum(Gender)
-  gender?: Gender;
+  @IsEnum(GenderEnum)
+  gender?: GenderEnum;
 
   @ApiProperty({
     description: 'The updated nationality of the user',
@@ -93,8 +97,8 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   })
   @IsOptional()
   @IsNotEmpty()
-  @IsEnum(Language)
-  language?: Language;
+  @IsEnum(LanguageEnum)
+  language?: LanguageEnum;
 
   @ApiProperty({
     description: 'The updated profile image of the user',

@@ -59,7 +59,7 @@ export class AuthService {
 
   async logout(userId: string): Promise<boolean> {
     const user = await this.usersService.findOneUser({ where: { id: userId } });
-    if (!user || !user.hashedRefreshToken) {
+    if (!user || !user.hashed_refresh_token) {
       return false;
     }
     await this.usersService.updateUser(userId, { hashedRefreshToken: null });
@@ -108,12 +108,12 @@ export class AuthService {
     accessToken: string;
   }> {
     const user = await this.usersService.findOneUser({ where: { id: userId } });
-    if (!user || !user.hashedRefreshToken) {
+    if (!user || !user.hashed_refresh_token) {
       throw new ForbiddenException(messagesHelper.ACCESS_DENIED);
     }
 
     const refreshTokenMatches = await argon2.verify(
-      user.hashedRefreshToken,
+      user.hashed_refresh_token,
       refreshToken,
     );
     if (!refreshTokenMatches)

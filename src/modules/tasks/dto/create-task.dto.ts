@@ -3,7 +3,7 @@ import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 import { IsDateObject } from '../../../common/decorators/date-object.decorator';
 import { IsTimeObject } from '../../../common/decorators/time-object.decorator';
-import { Status } from '../../../common/enums/task.enum';
+import { StatusEnum } from '../../../common/enums/task.enum';
 
 export class CreateTaskDto {
   @ApiProperty({
@@ -27,8 +27,8 @@ export class CreateTaskDto {
     example: 'To Do, In Progress or Done',
   })
   @IsNotEmpty()
-  @IsEnum(Status)
-  status: Status;
+  @IsEnum(StatusEnum)
+  status: StatusEnum;
 
   @ApiProperty({
     description: 'The date of the task',

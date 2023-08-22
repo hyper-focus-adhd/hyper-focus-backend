@@ -7,6 +7,6 @@ import { FileStorageService } from './file-storage.service';
 
 @Module({
   providers: [FileStorageService, storageDataHelper],
-  exports: [Storage],
+  exports: [Storage, FileStorageService, storageDataHelper],
 })
 export class FileStorageModule {}

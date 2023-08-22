@@ -1,14 +1,18 @@
-import { Gender, Language, Role } from '../../../common/enums/user.enum';
+import {
+  GenderEnum,
+  LanguageEnum,
+  RoleEnum,
+} from '../../../common/enums/user.enum';
 
 export type CreateUserType = {
   id: string;
   username: string;
-  role: Role;
+  role: RoleEnum;
   email: string;
   birthdate: Date;
-  gender: Gender;
+  gender: GenderEnum;
   nationality: string;
-  language: Language;
+  language: LanguageEnum;
   profile_image: string;
   accessToken?: string;
   refreshToken?: string;

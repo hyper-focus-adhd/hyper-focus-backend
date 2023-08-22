@@ -12,7 +12,7 @@ import {
 } from 'class-validator';
 import * as moment from 'moment';
 
-import { Gender, Language } from '../../../common/enums/user.enum';
+import { GenderEnum, LanguageEnum } from '../../../common/enums/user.enum';
 import { messagesHelper } from '../../../common/helpers/messages-helper';
 import { passwordHelper } from '../../../common/helpers/password-helper';
 
@@ -60,8 +60,8 @@ export class CreateUserDto {
     example: 'Male, Female or Other',
   })
   @IsOptional()
-  @IsEnum(Gender)
-  gender: Gender;
+  @IsEnum(GenderEnum)
+  gender: GenderEnum;
 
   @ApiProperty({
     description: 'The nationality of the user',
@@ -77,8 +77,8 @@ export class CreateUserDto {
   })
   @IsNotEmpty()
   @IsOptional()
-  @IsEnum(Language)
-  language: Language;
+  @IsEnum(LanguageEnum)
+  language: LanguageEnum;
 
   @ApiProperty({
     description: 'The profile image of the user',

@@ -4,7 +4,7 @@ import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 import { IsDateObject } from '../../../common/decorators/date-object.decorator';
 import { IsTimeObject } from '../../../common/decorators/time-object.decorator';
-import { Status } from '../../../common/enums/task.enum';
+import { StatusEnum } from '../../../common/enums/task.enum';
 
 import { CreateTaskDto } from './create-task.dto';
 
@@ -32,8 +32,8 @@ export class UpdateTaskDto extends PartialType(CreateTaskDto) {
   })
   @IsNotEmpty()
   @IsOptional()
-  @IsEnum(Status)
-  status: Status;
+  @IsEnum(StatusEnum)
+  status: StatusEnum;
 
   @ApiProperty({
     description: 'The updated date of the task',

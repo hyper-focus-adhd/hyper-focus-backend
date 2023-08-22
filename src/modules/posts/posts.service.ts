@@ -28,9 +28,7 @@ export class PostsService {
     image: Express.Multer.File,
   ): Promise<Post> {
     const post = this.postRepository.create({
-      title: createPostDto.title,
-      content: createPostDto.content,
-      reaction: createPostDto.reaction,
+      ...createPostDto,
       user: user,
     });
 
@@ -82,7 +80,7 @@ export class PostsService {
 
     // //TODO: must be a transaction
     const friendsPosts: Post[][] = [];
-    for (const friend of foundUser.friends) {
+    for (const friend of foundUser.following) {
       const friendData = await this.usersService.findOneUserOrFail({
         where: { id: friend },
       });
