@@ -1,4 +1,4 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 
 import {
   GenderEnum,
@@ -35,7 +35,10 @@ export class UserDto {
   profile_image: string;
 
   @Expose()
-  friends: string[];
+  following: string[];
+
+  @Expose()
+  followers: string[];
 
   @Expose()
   created_at: Date;
@@ -45,4 +48,12 @@ export class UserDto {
 
   @Expose()
   refreshToken: string;
+
+  @Type(() => UserDto)
+  @Expose()
+  user: UserDto;
+
+  @Type(() => UserDto)
+  @Expose()
+  followed_user: UserDto;
 }

@@ -62,7 +62,7 @@ export class AuthService {
     if (!user || !user.hashed_refresh_token) {
       return false;
     }
-    await this.usersService.updateUser(userId, { hashedRefreshToken: null });
+    await this.usersService.updateUser(userId, { hashed_refresh_token: null });
     return true;
   }
 
@@ -81,8 +81,8 @@ export class AuthService {
 
   async generateToken(user: User): Promise<Tokens> {
     const jwtPayload: JwtPayload = {
-      username: user.username,
       sub: user.id,
+      username: user.username,
     };
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(jwtPayload, {
@@ -130,7 +130,7 @@ export class AuthService {
   ): Promise<void> {
     const hashRefreshToken = await argon2.hash(refreshToken);
     await this.usersService.updateUser(userId, {
-      hashedRefreshToken: hashRefreshToken,
+      hashed_refresh_token: hashRefreshToken,
     });
   }
 }

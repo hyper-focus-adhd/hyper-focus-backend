@@ -109,14 +109,24 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   profile_image?: string;
 
   @ApiProperty({
-    description: 'The updated friends of the user',
+    description: 'The updated people the user is following',
     example: ['TGH6C5APTWQFKN46BPFFCNJ345', 'LOP6C5APTWQFKN46BPFFCNJ342'],
   })
   @ArrayNotEmpty()
   @IsArray()
   @IsOptional()
   @IsString({ each: true })
-  friends?: string[];
+  following?: string[];
+
+  @ApiProperty({
+    description: 'The updated followers of the user',
+    example: ['TGH6C5APTWQFKN46BPFFCNJ345', 'LOP6C5APTWQFKN46BPFFCNJ342'],
+  })
+  @ArrayNotEmpty()
+  @IsArray()
+  @IsOptional()
+  @IsString({ each: true })
+  followers?: string[];
 
   @ApiProperty({
     description: 'The updated hashed refresh token of the user',
@@ -125,5 +135,5 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsOptional()
   @IsNotEmpty()
   @IsString()
-  hashedRefreshToken?: string;
+  hashed_refresh_token?: string;
 }

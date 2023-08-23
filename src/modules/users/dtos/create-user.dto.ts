@@ -89,7 +89,7 @@ export class CreateUserDto {
   profile_image: string;
 
   @ApiProperty({
-    description: 'The friends of the user',
+    description: 'The people the user is following',
     example: [
       'TGH6C5APTWQFKN46BPFFCNJ345',
       'HJU6C5APTWQFKN46BPFFCNJ555',
@@ -99,5 +99,18 @@ export class CreateUserDto {
   @IsArray()
   @IsOptional()
   @IsString({ each: true })
-  friends: string[];
+  following: string[];
+
+  @ApiProperty({
+    description: 'The followers of the user',
+    example: [
+      'TGH6C5APTWQFKN46BPFFCNJ342',
+      'HJU6C5APTWQFKN46BPFFCNJ535',
+      'LOP6C5APTWQFKN46BPFFCNJ328',
+    ],
+  })
+  @IsArray()
+  @IsOptional()
+  @IsString({ each: true })
+  followers: string[];
 }

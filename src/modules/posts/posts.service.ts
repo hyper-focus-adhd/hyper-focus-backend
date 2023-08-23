@@ -73,23 +73,23 @@ export class PostsService {
     });
   }
 
-  async findAllFriendsPostsByUserId(user: string): Promise<Post[][]> {
+  async findAllFollowingPostsByUserId(user: string): Promise<Post[][]> {
     const foundUser = await this.usersService.findOneUserOrFail({
       where: { id: user },
     });
 
     // //TODO: must be a transaction
-    const friendsPosts: Post[][] = [];
+    const followingPosts: Post[][] = [];
     for (const friend of foundUser.following) {
       const friendData = await this.usersService.findOneUserOrFail({
         where: { id: friend },
       });
 
       const friendPosts = await this.findAllPostsByUserId(friendData.id);
-      friendsPosts.push(friendPosts);
+      followingPosts.push(friendPosts);
     }
 
-    return friendsPosts;
+    return followingPosts;
   }
 
   async findOnePostOrFail(options: FindOneOptions<Post>): Promise<Post> {

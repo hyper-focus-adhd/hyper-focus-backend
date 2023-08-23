@@ -5,6 +5,9 @@ import { UserDto } from '../../users/dtos/user.dto';
 
 export class CommunityDto {
   @Expose()
+  id: string;
+
+  @Expose()
   name: string;
 
   @Expose()

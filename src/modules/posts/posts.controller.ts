@@ -48,12 +48,12 @@ export class PostsController {
     return await this.postsService.findAllPosts();
   }
 
-  @ApiOperation({ summary: 'Find all friends posts by user id' })
-  @Get('friends-posts')
-  async findAllFriendsPostsByUserId(
+  @ApiOperation({ summary: 'Find all following posts by user id' })
+  @Get('following-posts')
+  async findAllFollowingPostsByUserId(
     @CurrentUserId() user: string,
   ): Promise<PostEntity[][]> {
-    return await this.postsService.findAllFriendsPostsByUserId(user);
+    return await this.postsService.findAllFollowingPostsByUserId(user);
   }
 
   @ApiOperation({ summary: 'Find all posts by user id' })

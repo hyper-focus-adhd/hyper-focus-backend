@@ -19,7 +19,7 @@ export class UpdateCommunityDto extends PartialType(CreateCommunityDto) {
   @IsNotEmpty()
   @IsOptional()
   @IsString()
-  name: string;
+  name?: string;
 
   @ApiProperty({
     description: 'The updated title of the community',
@@ -28,7 +28,7 @@ export class UpdateCommunityDto extends PartialType(CreateCommunityDto) {
   @IsNotEmpty()
   @IsOptional()
   @IsString()
-  title: string;
+  title?: string;
 
   @ApiProperty({
     description: 'The updated description of the community',
@@ -36,7 +36,7 @@ export class UpdateCommunityDto extends PartialType(CreateCommunityDto) {
   })
   @IsOptional()
   @IsString()
-  description: string;
+  description?: string;
 
   @ApiProperty({
     description: 'The updated rules of the community',
@@ -44,7 +44,7 @@ export class UpdateCommunityDto extends PartialType(CreateCommunityDto) {
   })
   @IsOptional()
   @IsString()
-  rules: string;
+  rules?: string;
 
   @ApiProperty({
     description: 'The updated category of the community',
@@ -53,7 +53,7 @@ export class UpdateCommunityDto extends PartialType(CreateCommunityDto) {
   @IsNotEmpty()
   @IsOptional()
   @IsEnum(CategoryEnum)
-  category: CategoryEnum;
+  category?: CategoryEnum;
 
   //TODO VERIFY NOT EMPTY
   @ApiProperty({
@@ -67,7 +67,7 @@ export class UpdateCommunityDto extends PartialType(CreateCommunityDto) {
   @IsArray()
   @IsOptional()
   @IsString({ each: true })
-  moderators: string[];
+  moderators?: string[];
 
   @ApiProperty({
     description: 'The updated followers of the community',
@@ -80,7 +80,7 @@ export class UpdateCommunityDto extends PartialType(CreateCommunityDto) {
   @IsArray()
   @IsOptional()
   @IsString({ each: true })
-  followers: string[];
+  followers?: string[];
 
   @ApiProperty({
     description: 'The updated banned users of the community',
@@ -93,5 +93,5 @@ export class UpdateCommunityDto extends PartialType(CreateCommunityDto) {
   @IsArray()
   @IsOptional()
   @IsString({ each: true })
-  banned_users: string[];
+  banned_users?: string[];
 }

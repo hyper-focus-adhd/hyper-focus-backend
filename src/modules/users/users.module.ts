@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { CommunitiesModule } from '../communities/communities.module';
 import { FileStorageModule } from '../file-storage/file-storage.module';
 import { MailerModule } from '../mailer/mailer.module';
 
@@ -15,6 +16,7 @@ import { UsersService } from './users.service';
     JwtModule.register({}),
     FileStorageModule,
     MailerModule,
+    CommunitiesModule,
   ],
   controllers: [UsersController],
   providers: [UsersService],

@@ -14,6 +14,8 @@ import { messagesHelper } from '../../common/helpers/messages-helper';
 import { jwtConfig } from '../../config/jwt.config';
 import { sendgridConfig } from '../../config/sendgrid.config';
 import { JwtPayload } from '../auth/types';
+import { CommunitiesService } from '../communities/communities.service';
+import { Community } from '../communities/entities/community.entity';
 import { FileStorageService } from '../file-storage/file-storage.service';
 import { MailerService } from '../mailer/mailer.service';
 
@@ -28,6 +30,7 @@ export class UsersService {
     private readonly jwtService: JwtService,
     private readonly fileStorageService: FileStorageService,
     private readonly mailerService: MailerService,
+    private readonly communitiesService: CommunitiesService,
   ) {}
 
   async createUser(
@@ -228,42 +231,54 @@ export class UsersService {
     return await this.fileStorageService.uploadImage(image, folderName);
   }
 
-  async followUser(userId: string, followUserId: string): Promise<User> {
+  async followUser(
+    userId: string,
+    followUserId: string,
+  ): Promise<{ user: User; followed_user: User }> {
     const user = await this.findOneUserOrFail({ where: { id: userId } });
-
-    await this.findOneUserOrFail({ where: { id: followUserId } });
+    const followedUser = await this.findOneUserOrFail({
+      where: { id: followUserId },
+    });
 
     const followIndex = user.following.indexOf(followUserId);
+    const followedIndex = followedUser.followers.indexOf(user.id);
 
     if (followIndex === -1) {
       user.following.push(followUserId);
+      followedUser.followers.push(user.id);
     } else {
       user.following.splice(followIndex, 1);
+      followedUser.followers.splice(followedIndex, 1);
     }
 
-    return await this.userRepository.save(user);
+    await this.userRepository.save(followedUser);
+    await this.userRepository.save(user);
+    return { user, followed_user: followedUser };
   }
 
   async followCommunity(
     userId: string,
     followCommunityId: string,
-  ): Promise<User> {
+  ): Promise<Community> {
     const user = await this.findOneUserOrFail({
       where: { id: userId },
     });
 
-    await this.findOneUserOrFail({
+    const community = await this.communitiesService.findOneCommunityOrFail({
       where: { id: followCommunityId },
     });
 
-    const followIndex = user.following.indexOf(followCommunityId);
+    const followIndex = community.followers.indexOf(user.id);
 
     if (followIndex === -1) {
-      user.following.push(followCommunityId);
+      community.followers.push(user.id);
     } else {
-      user.following.splice(followIndex, 1);
+      community.followers.splice(followIndex, 1);
     }
 
-    return await this.userRepository.save(user);
+    await this.communitiesService.updateCommunity(user.id, community.id, {
+      followers: community.followers,
+    });
+    return community;
   }
 }

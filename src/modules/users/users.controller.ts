@@ -17,6 +17,7 @@ import { UpdateResult } from 'typeorm';
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
 import { PublicRoute } from '../../common/decorators/public.decorator';
 import { Serialize } from '../../common/interceptors/serialize.interceptor';
+import { Community } from '../communities/entities/community.entity';
 
 import { RecoverUserCredentialsDto } from './dtos/recover-user-credential.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
@@ -107,20 +108,20 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: 'Follow a user' })
-  @Patch('follow/:followUserId')
+  @Patch('follow/user/:followUserId')
   async followUser(
     @CurrentUserId() userId: string,
     @Param('followUserId') followUserId: string,
-  ): Promise<User> {
+  ): Promise<{ user: User; followed_user: User }> {
     return await this.usersService.followUser(userId, followUserId);
   }
 
   @ApiOperation({ summary: 'Follow a community' })
-  @Patch('follow/:followCommunityId')
+  @Patch('follow/community/:followCommunityId')
   async followCommunity(
     @CurrentUserId() userId: string,
-    @Param('followCommunityId') followUserId: string,
-  ): Promise<User> {
-    return await this.usersService.followCommunity(userId, followUserId);
+    @Param('followCommunityId') followCommunityId: string,
+  ): Promise<Community> {
+    return await this.usersService.followCommunity(userId, followCommunityId);
   }
 }
