@@ -45,7 +45,6 @@ export class CommunitiesController {
   }
 
   @ApiOperation({ summary: 'Find a community by community name' })
-  @ApiSecurity('Access Token')
   @Get('community/:communityName')
   async findUserByUsername(
     @Param('communityName') communityName: string,

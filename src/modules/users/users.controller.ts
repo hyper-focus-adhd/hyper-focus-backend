@@ -115,6 +115,7 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: 'Follow a user' })
+  @ApiSecurity('Access Token')
   @Patch('follow/user/:followUserId')
   async followUser(
     @CurrentUserId() userId: string,
@@ -124,6 +125,7 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: 'Follow a community' })
+  @ApiSecurity('Access Token')
   @Patch('follow/community/:followCommunityId')
   async followCommunity(
     @CurrentUserId() userId: string,
