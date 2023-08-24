@@ -1,5 +1,6 @@
 import { Expose, Type } from 'class-transformer';
 
+import { CommunityDto } from '../../communities/dto/community.dto';
 import { UserDto } from '../../users/dtos/user.dto';
 
 export class PostDto {
@@ -27,4 +28,8 @@ export class PostDto {
   @Type(() => UserDto)
   @Expose()
   user: UserDto;
+
+  @Type(() => CommunityDto)
+  @Expose()
+  community: CommunityDto;
 }

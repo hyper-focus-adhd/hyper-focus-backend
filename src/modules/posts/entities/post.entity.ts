@@ -15,6 +15,7 @@ import {
 import { ulid } from 'ulid';
 
 import { Comment } from '../../comments/entities/comment.entity';
+import { Community } from '../../communities/entities/community.entity';
 import { User } from '../../users/entities/user.entity';
 
 @Entity()
@@ -49,6 +50,12 @@ export class Post {
   @JoinColumn({ name: 'user_id' })
   @ManyToOne(() => User, (user) => user.posts, { onDelete: 'CASCADE' })
   user: User;
+
+  @JoinColumn({ name: 'community_id' })
+  @ManyToOne(() => Community, (community) => community.posts, {
+    onDelete: 'CASCADE',
+  })
+  community: Community;
 
   @OneToMany(() => Comment, (comment) => comment.post, { cascade: true })
   comments: Comment[];

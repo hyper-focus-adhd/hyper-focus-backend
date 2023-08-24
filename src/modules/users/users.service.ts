@@ -200,6 +200,7 @@ export class UsersService {
       username: user.username,
       sub: user.id,
     };
+
     return await this.jwtService.signAsync(jwtPayload, {
       secret: jwtConfig.passwordRecoverySecret,
       expiresIn: jwtConfig.passwordRecoveryExpiresIn,
@@ -236,6 +237,7 @@ export class UsersService {
     followUserId: string,
   ): Promise<{ user: User; followed_user: User }> {
     const user = await this.findOneUserOrFail({ where: { id: userId } });
+
     const followedUser = await this.findOneUserOrFail({
       where: { id: followUserId },
     });

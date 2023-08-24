@@ -8,12 +8,14 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { ulid } from 'ulid';
 
 import { CategoryEnum } from '../../../common/enums/community.enum';
+import { Post } from '../../posts/entities/post.entity';
 import { User } from '../../users/entities/user.entity';
 
 @Entity()
@@ -57,6 +59,9 @@ export class Community {
   @JoinColumn({ name: 'user_id' })
   @ManyToOne(() => User, (user) => user.communities, { onDelete: 'CASCADE' })
   user: User;
+
+  @OneToMany(() => Post, (post) => post.community, { cascade: true })
+  posts: Post[];
 
   constructor() {
     if (!this.id) {

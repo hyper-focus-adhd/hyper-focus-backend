@@ -10,7 +10,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
 
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
@@ -32,14 +32,16 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @ApiOperation({ summary: 'Create a new post' })
-  @Post()
+  @ApiParam({ name: 'community', required: false })
+  @Post(':community?')
   @UseInterceptors(FileInterceptor('image'))
   async createPost(
     @Body() body: CreatePostDto,
     @CurrentUserId() user: User,
+    @Param('community') community: string,
     @UploadedFile() image: Express.Multer.File,
   ): Promise<PostEntity> {
-    return await this.postsService.createPost(user, body, image);
+    return await this.postsService.createPost(user, community, body, image);
   }
 
   @ApiOperation({ summary: 'Find all posts' })

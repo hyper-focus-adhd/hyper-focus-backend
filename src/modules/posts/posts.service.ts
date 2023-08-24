@@ -24,6 +24,7 @@ export class PostsService {
 
   async createPost(
     user: User,
+    community: string,
     createPostDto: CreatePostDto,
     image: Express.Multer.File,
   ): Promise<Post> {
@@ -36,6 +37,12 @@ export class PostsService {
 
     if (image) {
       post.image = await this.uploadPostImage(userId, post.id, image);
+    }
+
+    const communityId = JSON.parse(JSON.stringify(community));
+
+    if (community) {
+      post.community = communityId;
     }
 
     const foundPost = await this.postRepository.save(post);
@@ -56,7 +63,7 @@ export class PostsService {
   async findAllPostsByUserId(user: string): Promise<Post[]> {
     const posts = await this.postRepository.find({
       where: { user: { id: user } },
-      relations: ['user'],
+      relations: ['user', 'community'],
     });
 
     if (!posts.length) {
@@ -69,7 +76,7 @@ export class PostsService {
   async findPostByPostId(postId: string): Promise<Post> {
     return await this.findOnePostOrFail({
       where: { id: postId },
-      relations: ['user'],
+      relations: ['user', 'community'],
     });
   }
 
@@ -108,7 +115,7 @@ export class PostsService {
   ): Promise<Post> {
     const post = await this.findOnePostOrFail({
       where: { id: postId, user: { id: user } },
-      relations: ['user'],
+      relations: ['user', 'community'],
     });
 
     if (image) {
