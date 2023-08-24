@@ -39,10 +39,8 @@ export class PostsService {
       post.image = await this.uploadPostImage(userId, post.id, image);
     }
 
-    const communityId = JSON.parse(JSON.stringify(community));
-
     if (community) {
-      post.community = communityId;
+      post.community = JSON.parse(JSON.stringify(community));
     }
 
     const foundPost = await this.postRepository.save(post);

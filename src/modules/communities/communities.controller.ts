@@ -44,6 +44,17 @@ export class CommunitiesController {
     return await this.communitiesService.findAllCommunitiesByUserId(user);
   }
 
+  @ApiOperation({ summary: 'Find a community by community name' })
+  @ApiSecurity('Access Token')
+  @Get('community/:communityName')
+  async findUserByUsername(
+    @Param('communityName') communityName: string,
+  ): Promise<Community> {
+    return await this.communitiesService.findOneCommunityOrFail({
+      where: { name: communityName },
+    });
+  }
+
   @ApiOperation({ summary: 'Update a community' })
   @Patch(':communityId')
   async updateCommunity(

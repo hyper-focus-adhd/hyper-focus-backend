@@ -53,6 +53,13 @@ export class UsersController {
     return await this.usersService.findOneUserOrFail({ where: { id } });
   }
 
+  @ApiOperation({ summary: 'Find a user by username' })
+  @ApiSecurity('Access Token')
+  @Get('username/:username')
+  async findUserByUsername(@Param('username') username: string): Promise<User> {
+    return await this.usersService.findOneUserOrFail({ where: { username } });
+  }
+
   @ApiOperation({ summary: 'Update a user' })
   @ApiSecurity('Access Token')
   @Patch()
