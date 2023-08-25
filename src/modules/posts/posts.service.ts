@@ -77,7 +77,6 @@ export class PostsService {
       where: { id: user },
     });
 
-    // //TODO: must be a transaction
     const followingPosts: Post[] = [];
     for (const friend of foundUser.following) {
       const friendData = await this.usersService.findOneUserOrFail({
