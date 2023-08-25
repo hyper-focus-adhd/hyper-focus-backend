@@ -59,16 +59,10 @@ export class PostsService {
   }
 
   async findAllPostsByUserId(user: string): Promise<Post[]> {
-    const posts = await this.postRepository.find({
+    return await this.postRepository.find({
       where: { user: { id: user } },
       relations: ['user', 'community'],
     });
-
-    if (!posts.length) {
-      throw new NotFoundException(messagesHelper.POST_NOT_FOUND);
-    }
-
-    return posts;
   }
 
   async findPostByPostId(postId: string): Promise<Post> {
@@ -78,20 +72,21 @@ export class PostsService {
     });
   }
 
-  async findAllFollowingPostsByUserId(user: string): Promise<Post[][]> {
+  async findAllFollowingPostsByUserId(user: string): Promise<Post[]> {
     const foundUser = await this.usersService.findOneUserOrFail({
       where: { id: user },
     });
 
     // //TODO: must be a transaction
-    const followingPosts: Post[][] = [];
+    const followingPosts: Post[] = [];
     for (const friend of foundUser.following) {
       const friendData = await this.usersService.findOneUserOrFail({
         where: { id: friend },
       });
 
       const friendPosts = await this.findAllPostsByUserId(friendData.id);
-      followingPosts.push(friendPosts);
+
+      followingPosts.push(...friendPosts);
     }
 
     return followingPosts;

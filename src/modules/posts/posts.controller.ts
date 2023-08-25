@@ -54,7 +54,7 @@ export class PostsController {
   @Get('following-posts')
   async findAllFollowingPostsByUserId(
     @CurrentUserId() user: string,
-  ): Promise<PostEntity[][]> {
+  ): Promise<PostEntity[]> {
     return await this.postsService.findAllFollowingPostsByUserId(user);
   }
 
