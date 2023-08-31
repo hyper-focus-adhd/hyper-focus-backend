@@ -1,6 +1,7 @@
-import { Expose, Type } from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 
 import { StatusEnum } from '../../../common/enums/task.enum';
+import { currentTimeZone } from '../../../common/functions/timezone.function';
 import { UserDto } from '../../users/dtos/user.dto';
 
 export class TaskDto {
@@ -22,6 +23,7 @@ export class TaskDto {
   @Expose()
   time: object;
 
+  @Transform(({ value }) => currentTimeZone(value))
   @Expose()
   created_at: Date;
 

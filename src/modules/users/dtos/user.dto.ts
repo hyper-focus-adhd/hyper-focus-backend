@@ -1,10 +1,11 @@
-import { Expose, Type } from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 
 import {
   GenderEnum,
   LanguageEnum,
   RoleEnum,
 } from '../../../common/enums/user.enum';
+import { currentTimeZone } from '../../../common/functions/timezone.function';
 
 export class UserDto {
   @Expose()
@@ -40,6 +41,7 @@ export class UserDto {
   @Expose()
   followers: string[];
 
+  @Transform(({ value }) => currentTimeZone(value))
   @Expose()
   created_at: Date;
 

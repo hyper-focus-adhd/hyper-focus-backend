@@ -1,5 +1,6 @@
-import { Expose, Type } from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 
+import { currentTimeZone } from '../../../common/functions/timezone.function';
 import { UserDto } from '../../users/dtos/user.dto';
 
 export class BoardDto {
@@ -12,6 +13,7 @@ export class BoardDto {
   @Expose()
   color: string;
 
+  @Transform(({ value }) => currentTimeZone(value))
   @Expose()
   created_at: Date;
 
