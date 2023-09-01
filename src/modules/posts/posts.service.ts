@@ -78,6 +78,10 @@ export class PostsService {
     });
 
     const followingPosts: Post[] = [];
+
+    const userPosts = await this.findAllPostsByUserId(foundUser.id);
+    followingPosts.push(...userPosts);
+
     for (const friend of foundUser.following) {
       const friendData = await this.usersService.findOneUserOrFail({
         where: { id: friend },
