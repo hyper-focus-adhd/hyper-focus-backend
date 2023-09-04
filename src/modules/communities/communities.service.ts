@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
@@ -21,6 +25,8 @@ export class CommunitiesService {
     user: User,
     createCommunityDto: CreateCommunityDto,
   ): Promise<Community> {
+    await this.verifyExistingCommunity(createCommunityDto.name);
+
     const community = this.communityRepository.create({
       ...createCommunityDto,
       user: user,
@@ -45,6 +51,12 @@ export class CommunitiesService {
     }
 
     return communities;
+  }
+
+  async findOneCommunity(
+    options: FindOneOptions<Community>,
+  ): Promise<Community> {
+    return await this.communityRepository.findOne(options);
   }
 
   async findOneCommunityOrFail(
@@ -93,5 +105,18 @@ export class CommunitiesService {
     });
 
     return await this.communityRepository.restore(community.id);
+  }
+
+  async verifyExistingCommunity(communityName: string): Promise<void> {
+    const existingCommunity = await this.findOneCommunity({
+      where: { name: communityName },
+      withDeleted: true,
+    });
+
+    if (existingCommunity) {
+      if (existingCommunity.name === communityName) {
+        throw new ConflictException(messagesHelper.COMMUNITY_EXISTS);
+      }
+    }
   }
 }

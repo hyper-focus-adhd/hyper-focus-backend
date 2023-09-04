@@ -6,6 +6,7 @@ import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 import { messagesHelper } from '../../common/helpers/messages-helper';
 import { reactionHelper } from '../../common/helpers/reaction-helper';
 import { Reaction } from '../../common/types';
+import { CommunitiesService } from '../communities/communities.service';
 import { FileStorageService } from '../file-storage/file-storage.service';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
@@ -20,11 +21,12 @@ export class PostsService {
     @InjectRepository(Post) private readonly postRepository: Repository<Post>,
     private readonly fileStorageService: FileStorageService,
     private readonly usersService: UsersService,
+    private readonly communitiesService: CommunitiesService,
   ) {}
 
   async createPost(
     user: User,
-    community: string,
+    communityId: string,
     createPostDto: CreatePostDto,
     image: Express.Multer.File,
   ): Promise<Post> {
@@ -39,8 +41,8 @@ export class PostsService {
       post.image = await this.uploadPostImage(userId, post.id, image);
     }
 
-    if (community) {
-      post.community = JSON.parse(JSON.stringify(community));
+    if (communityId) {
+      post.community = JSON.parse(JSON.stringify(communityId));
     }
 
     const foundPost = await this.postRepository.save(post);
@@ -65,11 +67,36 @@ export class PostsService {
     });
   }
 
+  async findAllPostsByCommunityId(community: string): Promise<Post[]> {
+    return await this.postRepository.find({
+      where: { community: { id: community } },
+      relations: ['user', 'community'],
+    });
+  }
+
   async findPostByPostId(postId: string): Promise<Post> {
     return await this.findOnePostOrFail({
       where: { id: postId },
       relations: ['user', 'community'],
     });
+  }
+
+  async findAllPostsByUserName(username: string): Promise<Post[]> {
+    const foundUser = await this.usersService.findOneUserOrFail({
+      where: { username: username },
+    });
+
+    return this.findAllPostsByUserId(foundUser.id);
+  }
+
+  async findAllPostsByCommunityName(communityName: string): Promise<Post[]> {
+    const foundCommunity = await this.communitiesService.findOneCommunityOrFail(
+      {
+        where: { name: communityName },
+      },
+    );
+
+    return this.findAllPostsByCommunityId(foundCommunity.id);
   }
 
   async findAllFollowingPostsByUserId(user: string): Promise<Post[]> {

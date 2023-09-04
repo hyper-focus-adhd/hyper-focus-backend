@@ -32,16 +32,16 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @ApiOperation({ summary: 'Create a new post' })
-  @ApiParam({ name: 'community', required: false })
-  @Post(':community?')
+  @ApiParam({ name: 'communityId', required: false })
+  @Post(':communityId?')
   @UseInterceptors(FileInterceptor('image'))
   async createPost(
     @Body() body: CreatePostDto,
     @CurrentUserId() user: User,
-    @Param('community') community: string,
+    @Param('communityId') communityId: string,
     @UploadedFile() image: Express.Multer.File,
   ): Promise<PostEntity> {
-    return await this.postsService.createPost(user, community, body, image);
+    return await this.postsService.createPost(user, communityId, body, image);
   }
 
   @ApiOperation({ summary: 'Find all posts' })
@@ -58,7 +58,7 @@ export class PostsController {
     return await this.postsService.findAllFollowingPostsByUserId(user);
   }
 
-  @ApiOperation({ summary: 'Find all posts by user id' })
+  @ApiOperation({ summary: 'Find all posts by an user id' })
   @Get()
   async findAllPostsByUserId(
     @CurrentUserId() user: string,
@@ -70,6 +70,22 @@ export class PostsController {
   @Get(':postId')
   async findPostByPostId(@Param('postId') postId: string): Promise<PostEntity> {
     return await this.postsService.findPostByPostId(postId);
+  }
+
+  @ApiOperation({ summary: 'Find all posts by an username' })
+  @Get('username/:username')
+  async findAllPostsByUserName(
+    @Param('username') username: string,
+  ): Promise<PostEntity[]> {
+    return await this.postsService.findAllPostsByUserName(username);
+  }
+
+  @ApiOperation({ summary: 'Find all posts by a communityName' })
+  @Get('community-name/:communityName')
+  async findAllPostsByCommunityName(
+    @Param('communityName') communityName: string,
+  ): Promise<PostEntity[]> {
+    return await this.postsService.findAllPostsByCommunityName(communityName);
   }
 
   @ApiOperation({ summary: 'Update a post' })

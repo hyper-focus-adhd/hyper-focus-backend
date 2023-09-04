@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { CommunitiesModule } from '../communities/communities.module';
 import { FileStorageModule } from '../file-storage/file-storage.module';
 import { UsersModule } from '../users/users.module';
 
@@ -9,7 +10,12 @@ import { PostsController } from './posts.controller';
 import { PostsService } from './posts.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Post]), UsersModule, FileStorageModule],
+  imports: [
+    TypeOrmModule.forFeature([Post]),
+    UsersModule,
+    CommunitiesModule,
+    FileStorageModule,
+  ],
   controllers: [PostsController],
   providers: [PostsService],
   exports: [PostsService],

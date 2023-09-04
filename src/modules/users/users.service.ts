@@ -106,7 +106,6 @@ export class UsersService {
   async removeUser(userId: string): Promise<User> {
     const user = await this.findOneUserOrFail({
       where: { id: userId },
-      relations: ['boards', 'tasks', 'posts'],
     });
 
     return await this.userRepository.softRemove(user);
