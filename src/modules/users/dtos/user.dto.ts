@@ -5,7 +5,7 @@ import {
   LanguageEnum,
   RoleEnum,
 } from '../../../common/enums/user.enum';
-import { currentTimeZone } from '../../../common/functions/timezone.function';
+import { currentTimeZone } from '../../../common/helpers/timezone.helper';
 
 export class UserDto {
   @Expose()

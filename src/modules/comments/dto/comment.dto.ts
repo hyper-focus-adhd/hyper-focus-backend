@@ -1,6 +1,6 @@
 import { Expose, Transform, Type } from 'class-transformer';
 
-import { currentTimeZone } from '../../../common/functions/timezone.function';
+import { currentTimeZone } from '../../../common/helpers/timezone.helper';
 import { PostDto } from '../../posts/dto/post.dto';
 import { UserDto } from '../../users/dtos/user.dto';
 

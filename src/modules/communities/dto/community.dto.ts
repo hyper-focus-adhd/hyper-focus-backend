@@ -1,7 +1,7 @@
 import { Expose, Transform, Type } from 'class-transformer';
 
 import { CategoryEnum } from '../../../common/enums/community.enum';
-import { currentTimeZone } from '../../../common/functions/timezone.function';
+import { currentTimeZone } from '../../../common/helpers/timezone.helper';
 import { UserDto } from '../../users/dtos/user.dto';
 
 export class CommunityDto {
