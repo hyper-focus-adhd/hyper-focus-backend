@@ -267,6 +267,7 @@ export class UsersService {
 
     const community = await this.communitiesService.findOneCommunityOrFail({
       where: { id: followCommunityId },
+      relations: ['user'],
     });
 
     const followIndex = community.followers.indexOf(user.id);
@@ -277,9 +278,13 @@ export class UsersService {
       community.followers.splice(followIndex, 1);
     }
 
-    await this.communitiesService.updateCommunity(user.id, community.id, {
-      followers: community.followers,
-    });
+    await this.communitiesService.updateCommunity(
+      community.user.id,
+      community.id,
+      {
+        followers: community.followers,
+      },
+    );
     return community;
   }
 }
