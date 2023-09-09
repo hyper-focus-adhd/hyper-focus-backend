@@ -51,6 +51,7 @@ export class CommunitiesController {
   ): Promise<Community> {
     return await this.communitiesService.findOneCommunityOrFail({
       where: { name: communityName },
+      relations: ['user'],
     });
   }
 
