@@ -55,6 +55,15 @@ export class CommunitiesController {
     });
   }
 
+  @ApiOperation({ summary: 'Find a following community' })
+  @ApiSecurity('Access Token')
+  @Get('following-communities')
+  async findFollowingCommunities(
+    @CurrentUserId() userId: string,
+  ): Promise<Community[]> {
+    return await this.communitiesService.findFollowingCommunities(userId);
+  }
+
   @ApiOperation({ summary: 'Update a community' })
   @Patch(':communityId')
   async updateCommunity(

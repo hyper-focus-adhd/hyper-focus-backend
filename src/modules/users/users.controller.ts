@@ -48,7 +48,7 @@ export class UsersController {
 
   @ApiOperation({ summary: 'Find a user by id' })
   @ApiSecurity('Access Token')
-  @Get(':id')
+  @Get('user-by-id/:id')
   async findUserById(@Param('id') id: string): Promise<User> {
     return await this.usersService.findOneUserOrFail({ where: { id } });
   }
