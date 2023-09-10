@@ -72,6 +72,7 @@ export class CommunitiesService {
   async findFollowingCommunities(userId: string): Promise<Community[]> {
     return await this.communityRepository
       .createQueryBuilder('community')
+      .leftJoinAndSelect('community.user', 'user')
       .where(':userId = ANY(community.followers)', { userId })
       .getMany();
   }
