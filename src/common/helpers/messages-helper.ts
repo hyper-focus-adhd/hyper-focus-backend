@@ -3,6 +3,8 @@ export const messagesHelper = {
   BOARD_NOT_FOUND: 'Board not found.',
   CLEAN_BUCKET_ERROR: 'An error occurred while cleaning the bucket.',
   COMMENT_NOT_FOUND: 'Comment not found.',
+  COMMUNITY_EXISTS: 'Community name already exists.',
+  COMMUNITY_NOT_FOUND: 'Community not found.',
   CREDENTIALS_INVALID: 'Invalid credentials.',
   DATE_FORMAT:
     'Invalid date format. Please provide a valid date in DD-MM-YYYY or MM-DD-YYYY format.',
