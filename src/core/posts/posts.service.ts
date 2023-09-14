@@ -119,7 +119,26 @@ export class PostsService {
       followingPosts.push(...friendPosts);
     }
 
-    return followingPosts;
+    const foundFollowingCommunities =
+      await this.communitiesService.findFollowingCommunities(user);
+    for (const community of foundFollowingCommunities) {
+      const foundPosts = await this.postRepository.find({
+        where: { community: { id: community.id } },
+        relations: ['user', 'community'],
+      });
+      followingPosts.push(...foundPosts);
+    }
+
+    const uniqueFollowingPosts: Post[] | PromiseLike<Post[]> = [];
+    const uniqueIds = new Set();
+
+    followingPosts.forEach((post) => {
+      if (!uniqueIds.has(post.id)) {
+        uniqueIds.add(post.id);
+        uniqueFollowingPosts.push(post);
+      }
+    });
+    return uniqueFollowingPosts;
   }
 
   async findOnePostOrFail(options: FindOneOptions<Post>): Promise<Post> {
