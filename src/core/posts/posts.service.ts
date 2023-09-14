@@ -129,7 +129,7 @@ export class PostsService {
       followingPosts.push(...foundPosts);
     }
 
-    const uniqueFollowingPosts: Post[] | PromiseLike<Post[]> = [];
+    const uniqueFollowingPosts: Post[] = [];
     const uniqueIds = new Set();
 
     followingPosts.forEach((post) => {
