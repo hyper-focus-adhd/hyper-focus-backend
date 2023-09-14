@@ -51,7 +51,9 @@ export class PostsService {
   }
 
   async findAllPosts(): Promise<Post[]> {
-    const posts = await this.postRepository.find({ relations: ['user'] });
+    const posts = await this.postRepository.find({
+      relations: ['user', 'community'],
+    });
 
     if (!posts.length) {
       throw new NotFoundException(messagesHelper.POST_NOT_FOUND);
