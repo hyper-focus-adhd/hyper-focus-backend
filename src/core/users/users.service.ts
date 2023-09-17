@@ -72,6 +72,22 @@ export class UsersService {
     }
   }
 
+  async getFollowing(userId: string): Promise<User[]> {
+    const user = await this.findOneUserOrFail({ where: { id: userId } });
+
+    const followingUsers: User[] = [];
+
+    for (const friend of user.following) {
+      const friendData = await this.findOneUserOrFail({
+        where: { id: friend },
+      });
+
+      followingUsers.push(friendData);
+    }
+
+    return followingUsers;
+  }
+
   async updateUser(
     userId: string,
     updateUserDto: UpdateUserDto,
