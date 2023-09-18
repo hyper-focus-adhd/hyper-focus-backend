@@ -60,7 +60,7 @@ export class UsersController {
     return await this.usersService.findOneUserOrFail({ where: { username } });
   }
 
-  @ApiOperation({ summary: 'Get user following users' })
+  @ApiOperation({ summary: 'Get following users' })
   @ApiSecurity('Access Token')
   @Get('get-following')
   async getFollowing(@CurrentUserId() userId: string): Promise<User[]> {
