@@ -62,7 +62,7 @@ export class UsersController {
 
   @ApiOperation({ summary: 'Get user following users' })
   @ApiSecurity('Access Token')
-  @Get('get-following-users')
+  @Get('get-following')
   async getFollowing(@CurrentUserId() userId: string): Promise<User[]> {
     return this.usersService.getFollowing(userId);
   }
