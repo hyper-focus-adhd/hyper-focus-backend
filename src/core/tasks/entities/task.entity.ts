@@ -13,8 +13,8 @@ import {
 } from 'typeorm';
 import { ulid } from 'ulid';
 
-import { StatusEnum } from '../../../common/enums/task.enum';
 import { User } from '../../users/entities/user.entity';
+import { StatusEnum } from '../enums/task.enum';
 
 @Entity()
 export class Task {

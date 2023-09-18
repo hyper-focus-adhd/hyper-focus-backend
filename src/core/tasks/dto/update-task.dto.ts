@@ -4,7 +4,7 @@ import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 import { IsDateObject } from '../../../common/decorators/date-object.decorator';
 import { IsTimeObject } from '../../../common/decorators/time-object.decorator';
-import { StatusEnum } from '../../../common/enums/task.enum';
+import { StatusEnum } from '../enums/task.enum';
 
 import { CreateTaskDto } from './create-task.dto';
 

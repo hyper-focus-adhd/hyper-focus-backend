@@ -12,16 +12,13 @@ import {
 } from 'typeorm';
 import { ulid } from 'ulid';
 
-import {
-  GenderEnum,
-  LanguageEnum,
-  RoleEnum,
-} from '../../../common/enums/user.enum';
 import { Board } from '../../boards/entities/board.entity';
 import { Comment } from '../../comments/entities/comment.entity';
 import { Community } from '../../communities/entities/community.entity';
 import { Post } from '../../posts/entities/post.entity';
 import { Task } from '../../tasks/entities/task.entity';
+import { Test } from '../../tests/entities/test.entity';
+import { GenderEnum, LanguageEnum, RoleEnum } from '../enums/user.enum';
 
 @Entity()
 export class User {
@@ -87,6 +84,9 @@ export class User {
 
   @OneToMany(() => Community, (community) => community.user, { cascade: true })
   communities: Community[];
+
+  @OneToMany(() => Test, (test) => test.user, { cascade: true })
+  tests: Test[];
 
   constructor() {
     if (!this.id) {

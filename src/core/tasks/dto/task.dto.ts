@@ -1,8 +1,8 @@
 import { Expose, Transform, Type } from 'class-transformer';
 
-import { StatusEnum } from '../../../common/enums/task.enum';
 import { currentTimeZone } from '../../../common/helpers/timezone.helper';
 import { UserDto } from '../../users/dtos/user.dto';
+import { StatusEnum } from '../enums/task.enum';
 
 export class TaskDto {
   @Expose()
