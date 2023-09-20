@@ -17,7 +17,6 @@ export class TestsService {
   ) {}
 
   async createTest(user: User, createTestDto: CreateTestDto): Promise<Test> {
-    console.log(createTestDto);
     const test = this.testRepository.create({
       ...createTestDto,
       user: user,

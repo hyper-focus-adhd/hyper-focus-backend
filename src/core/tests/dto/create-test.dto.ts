@@ -5,12 +5,16 @@ import {
   IsArray,
   IsEnum,
   IsNotEmpty,
-  IsString,
   ValidateNested,
 } from 'class-validator';
 
 import { IsEnumInTwoEnums } from '../../../common/decorators/double-enums.decorator';
-import { AnswerEnum, TestAEnum, TestBEnum } from '../enums/test.enum';
+import {
+  AnswerEnum,
+  ResultEnum,
+  TestAEnum,
+  TestBEnum,
+} from '../enums/test.enum';
 
 export class QuestionEntity {
   @IsEnumInTwoEnums(TestAEnum, TestBEnum)
@@ -68,9 +72,9 @@ export class CreateTestDto {
 
   @ApiProperty({
     description: 'The result of the test',
-    example: 'Sample result',
+    example: ResultEnum.Result_2,
   })
+  @IsEnum(ResultEnum)
   @IsNotEmpty()
-  @IsString()
-  result: string;
+  result: ResultEnum;
 }

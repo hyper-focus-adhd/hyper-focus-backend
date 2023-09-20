@@ -29,3 +29,8 @@ export enum TestBEnum {
   QUESTION_11 = 'How often do you have difficulty waiting your turn in situations when turn taking is required?',
   QUESTION_12 = 'How often do you interrupt others when they are busy?',
 }
+
+export enum ResultEnum {
+  Result_1 = 'The symptoms do not align with any specific diagnosis; however, consulting with a doctor for a comprehensive evaluation is recommended.',
+  Result_2 = 'The symptoms are highly compatible with a diagnosis, and therefore a more precise investigation with a doctor should be conducted.',
+}

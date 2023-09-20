@@ -15,6 +15,7 @@ import { ulid } from 'ulid';
 
 import { User } from '../../users/entities/user.entity';
 import { QuestionEntity } from '../dto/create-test.dto';
+import { ResultEnum } from '../enums/test.enum';
 
 @Entity()
 export class Test {
@@ -28,7 +29,7 @@ export class Test {
   test_b: QuestionEntity[];
 
   @Column()
-  result: string;
+  result: ResultEnum;
 
   @CreateDateColumn()
   created_at: Date;

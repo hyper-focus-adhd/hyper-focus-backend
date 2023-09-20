@@ -3,13 +3,18 @@ import { Type } from 'class-transformer';
 import {
   ArrayMinSize,
   IsArray,
+  IsEnum,
   IsNotEmpty,
   IsOptional,
-  IsString,
   ValidateNested,
 } from 'class-validator';
 
-import { AnswerEnum, TestAEnum, TestBEnum } from '../enums/test.enum';
+import {
+  AnswerEnum,
+  ResultEnum,
+  TestAEnum,
+  TestBEnum,
+} from '../enums/test.enum';
 
 import { CreateTestDto, QuestionEntity } from './create-test.dto';
 
@@ -41,12 +46,12 @@ export class UpdateTestDto extends PartialType(CreateTestDto) {
       test_b: [
         { question: TestBEnum.QUESTION_1, answers: AnswerEnum.NEVER },
         { question: TestBEnum.QUESTION_2, answers: AnswerEnum.RARELY },
-        { question: TestBEnum.QUESTION_3, answers: AnswerEnum.VERY_OFTEN },
+        { question: TestBEnum.QUESTION_3, answers: AnswerEnum.RARELY },
         { question: TestBEnum.QUESTION_4, answers: AnswerEnum.OFTEN },
         { question: TestBEnum.QUESTION_5, answers: AnswerEnum.OFTEN },
         { question: TestBEnum.QUESTION_6, answers: AnswerEnum.NEVER },
-        { question: TestBEnum.QUESTION_7, answers: AnswerEnum.VERY_OFTEN },
-        { question: TestBEnum.QUESTION_8, answers: AnswerEnum.VERY_OFTEN },
+        { question: TestBEnum.QUESTION_7, answers: AnswerEnum.RARELY },
+        { question: TestBEnum.QUESTION_8, answers: AnswerEnum.RARELY },
         { question: TestBEnum.QUESTION_9, answers: AnswerEnum.OFTEN },
         { question: TestBEnum.QUESTION_10, answers: AnswerEnum.OFTEN },
         { question: TestBEnum.QUESTION_11, answers: AnswerEnum.VERY_OFTEN },
@@ -64,10 +69,10 @@ export class UpdateTestDto extends PartialType(CreateTestDto) {
 
   @ApiProperty({
     description: 'The updated result of the test',
-    example: 'Sample updated result',
+    example: ResultEnum.Result_1,
   })
+  @IsEnum(ResultEnum)
   @IsNotEmpty()
   @IsOptional()
-  @IsString()
-  result: string;
+  result: ResultEnum;
 }
