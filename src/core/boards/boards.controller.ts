@@ -30,10 +30,10 @@ export class BoardsController {
   @ApiOperation({ summary: 'Create a new board' })
   @Post()
   async createBoard(
-    @Body() body: CreateBoardDto,
+    @Body() createBoardDto: CreateBoardDto,
     @CurrentUserId() user: User,
   ): Promise<Board> {
-    return await this.boardsService.createBoard(user, body);
+    return await this.boardsService.createBoard(user, createBoardDto);
   }
 
   @ApiOperation({ summary: 'Find all boards by user id' })
@@ -45,11 +45,11 @@ export class BoardsController {
   @ApiOperation({ summary: 'Update a board' })
   @Patch(':boardId')
   async updateBoard(
-    @Body() body: UpdateBoardDto,
+    @Body() updateBoardDto: UpdateBoardDto,
     @CurrentUserId() user: string,
     @Param('boardId') boardId: string,
   ): Promise<Board> {
-    return await this.boardsService.updateBoard(user, boardId, body);
+    return await this.boardsService.updateBoard(user, boardId, updateBoardDto);
   }
 
   @ApiOperation({ summary: 'Delete a board' })

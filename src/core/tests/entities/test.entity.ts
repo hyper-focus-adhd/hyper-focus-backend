@@ -14,12 +14,7 @@ import {
 import { ulid } from 'ulid';
 
 import { User } from '../../users/entities/user.entity';
-import { AnswerEnum, TestAEnum, TestBEnum } from '../enums/test.enum';
-
-export class QuestionEntity {
-  question: TestAEnum | TestBEnum;
-  answers: AnswerEnum[];
-}
+import { QuestionEntity } from '../dto/create-test.dto';
 
 @Entity()
 export class Test {

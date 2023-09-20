@@ -30,10 +30,13 @@ export class CommunitiesController {
   @ApiOperation({ summary: 'Create a new community' })
   @Post()
   async createCommunity(
-    @Body() body: CreateCommunityDto,
+    @Body() createCommunityDto: CreateCommunityDto,
     @CurrentUserId() user: User,
   ): Promise<Community> {
-    return await this.communitiesService.createCommunity(user, body);
+    return await this.communitiesService.createCommunity(
+      user,
+      createCommunityDto,
+    );
   }
 
   @ApiOperation({ summary: 'Find all communities by user id' })
@@ -67,14 +70,14 @@ export class CommunitiesController {
   @ApiOperation({ summary: 'Update a community' })
   @Patch(':communityId')
   async updateCommunity(
-    @Body() body: UpdateCommunityDto,
+    @Body() updateCommunityDto: UpdateCommunityDto,
     @CurrentUserId() user: string,
     @Param('communityId') communityId: string,
   ): Promise<Community> {
     return await this.communitiesService.updateCommunity(
       user,
       communityId,
-      body,
+      updateCommunityDto,
     );
   }
 
