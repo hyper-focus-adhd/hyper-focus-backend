@@ -14,8 +14,7 @@ import {
 import { ulid } from 'ulid';
 
 import { User } from '../../users/entities/user.entity';
-import { QuestionEntity } from '../dto/create-test.dto';
-import { ResultEnum } from '../enums/test.enum';
+import { QuestionEntity, Score } from '../helper/test-helper';
 
 @Entity()
 export class Test {
@@ -29,7 +28,10 @@ export class Test {
   test_b: QuestionEntity[];
 
   @Column()
-  result: ResultEnum;
+  result: boolean;
+
+  @Column({ type: 'json' })
+  score: Score;
 
   @CreateDateColumn()
   created_at: Date;

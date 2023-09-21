@@ -2,9 +2,7 @@ import { Expose, Transform, Type } from 'class-transformer';
 
 import { currentTimeZone } from '../../../common/helpers/timezone.helper';
 import { UserDto } from '../../users/dtos/user.dto';
-import { ResultEnum } from '../enums/test.enum';
-
-import { QuestionEntity } from './create-test.dto';
+import { QuestionEntity, Score } from '../helper/test-helper';
 
 export class TestDto {
   @Expose()
@@ -17,7 +15,10 @@ export class TestDto {
   test_b: QuestionEntity[];
 
   @Expose()
-  result: ResultEnum;
+  result: boolean;
+
+  @Expose()
+  score: Score;
 
   @Transform(({ value }) => currentTimeZone(value))
   @Expose()

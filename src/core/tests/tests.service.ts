@@ -9,6 +9,7 @@ import { User } from '../users/entities/user.entity';
 import { CreateTestDto } from './dto/create-test.dto';
 import { UpdateTestDto } from './dto/update-test.dto';
 import { Test } from './entities/test.entity';
+import { numberObject, testData } from './helper/test-helper';
 
 @Injectable()
 export class TestsService {
@@ -17,8 +18,69 @@ export class TestsService {
   ) {}
 
   async createTest(user: User, createTestDto: CreateTestDto): Promise<Test> {
+    const foundTestData = testData(createTestDto);
+    let result = false;
+
+    let score = 0;
+
+    let scoreA = 0;
+    const myArrayA = [
+      [1, 2, 3],
+      [4, 5, 6],
+    ];
+
+    let scoreB = 0;
+    const myArrayB = [
+      [3, 6, 10, 12],
+      [1, 2, 4, 5, 7, 8, 9, 11],
+    ];
+
+    for (let i = 0; i < foundTestData.test_a.length; i++) {
+      score = 0;
+      for (const key in numberObject) {
+        if (foundTestData.test_a[i].answer === key) {
+          score = numberObject[key];
+        }
+      }
+      if (myArrayA[0].includes(i + 1)) {
+        if (score > 2) {
+          scoreA++;
+        }
+      }
+      if (myArrayA[1].includes(i + 1)) {
+        if (score > 3) {
+          scoreA++;
+        }
+      }
+    }
+    for (let i = 0; i < foundTestData.test_b.length; i++) {
+      score = 0;
+      for (const key in numberObject) {
+        if (foundTestData.test_b[i].answer === key) {
+          score = numberObject[key];
+        }
+      }
+      if (myArrayB[0].includes(i + 1)) {
+        if (score > 2) {
+          scoreB++;
+        }
+      }
+      if (myArrayB[1].includes(i + 1)) {
+        if (score > 3) {
+          scoreB++;
+        }
+      }
+    }
+
+    if (scoreA > 3) {
+      result = true;
+    }
+
     const test = this.testRepository.create({
-      ...createTestDto,
+      test_a: foundTestData.test_a,
+      test_b: foundTestData.test_b,
+      result,
+      score: { test_a: scoreA, test_b: scoreB },
       user: user,
     });
 
