@@ -8,7 +8,6 @@ export class CreateNoteDto {
   text: string;
 
   @ApiProperty({ description: 'The color of the note', example: 'Blue' })
-  @IsNotEmpty()
   @IsString()
   color: string;
 
