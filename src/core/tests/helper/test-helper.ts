@@ -19,7 +19,7 @@ export type Score = {
   test_b: number;
 };
 
-type TestData = {
+export type TestData = {
   test_a: QuestionEntity[];
   test_b: QuestionEntity[];
 };

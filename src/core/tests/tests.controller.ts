@@ -17,7 +17,6 @@ import { User } from '../users/entities/user.entity';
 
 import { CreateTestDto } from './dto/create-test.dto';
 import { TestDto } from './dto/test.dto';
-import { UpdateTestDto } from './dto/update-test.dto';
 import { TestsService } from './tests.service';
 
 @ApiTags('Test')
@@ -40,16 +39,6 @@ export class TestsController {
   @Get()
   async findAllTestsByUserId(@CurrentUserId() user: string): Promise<Test[]> {
     return await this.testsService.findAllTestsByUserId(user);
-  }
-
-  @ApiOperation({ summary: 'Update a test' })
-  @Patch(':testId')
-  async updateTest(
-    @Body() updateTestDto: UpdateTestDto,
-    @CurrentUserId() user: string,
-    @Param('testId') testId: string,
-  ): Promise<Test> {
-    return await this.testsService.updateTest(user, testId, updateTestDto);
   }
 
   @ApiOperation({ summary: 'Delete a test' })

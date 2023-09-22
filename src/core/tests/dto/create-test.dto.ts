@@ -13,16 +13,14 @@ import { AnswerEntity } from '../helper/test-helper';
 export class CreateTestDto {
   @ApiProperty({
     description: 'The answers of the test A',
-    example: {
-      test_a: [
-        { answer: AnswerEnum.NEVER },
-        { answer: AnswerEnum.RARELY },
-        { answer: AnswerEnum.VERY_OFTEN },
-        { answer: AnswerEnum.SOMETIMES },
-        { answer: AnswerEnum.RARELY },
-        { answer: AnswerEnum.SOMETIMES },
-      ],
-    },
+    example: [
+      { answer: AnswerEnum.NEVER },
+      { answer: AnswerEnum.RARELY },
+      { answer: AnswerEnum.VERY_OFTEN },
+      { answer: AnswerEnum.SOMETIMES },
+      { answer: AnswerEnum.RARELY },
+      { answer: AnswerEnum.SOMETIMES },
+    ],
   })
   @ArrayMinSize(6)
   @IsArray()
@@ -33,22 +31,20 @@ export class CreateTestDto {
 
   @ApiProperty({
     description: 'The answers of the test B',
-    example: {
-      test_b: [
-        { answer: AnswerEnum.NEVER },
-        { answer: AnswerEnum.RARELY },
-        { answer: AnswerEnum.VERY_OFTEN },
-        { answer: AnswerEnum.OFTEN },
-        { answer: AnswerEnum.OFTEN },
-        { answer: AnswerEnum.NEVER },
-        { answer: AnswerEnum.VERY_OFTEN },
-        { answer: AnswerEnum.VERY_OFTEN },
-        { answer: AnswerEnum.OFTEN },
-        { answer: AnswerEnum.OFTEN },
-        { answer: AnswerEnum.VERY_OFTEN },
-        { answer: AnswerEnum.VERY_OFTEN },
-      ],
-    },
+    example: [
+      { answer: AnswerEnum.NEVER },
+      { answer: AnswerEnum.RARELY },
+      { answer: AnswerEnum.VERY_OFTEN },
+      { answer: AnswerEnum.OFTEN },
+      { answer: AnswerEnum.OFTEN },
+      { answer: AnswerEnum.NEVER },
+      { answer: AnswerEnum.VERY_OFTEN },
+      { answer: AnswerEnum.VERY_OFTEN },
+      { answer: AnswerEnum.OFTEN },
+      { answer: AnswerEnum.OFTEN },
+      { answer: AnswerEnum.VERY_OFTEN },
+      { answer: AnswerEnum.VERY_OFTEN },
+    ],
   })
   @ArrayMinSize(12)
   @IsArray()
