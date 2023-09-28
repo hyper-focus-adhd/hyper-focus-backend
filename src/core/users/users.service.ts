@@ -13,11 +13,11 @@ import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 import { messagesHelper } from '../../common/helpers/messages-helper';
 import { jwtConfig } from '../../config/jwt.config';
 import { sendgridConfig } from '../../config/sendgrid.config';
+import { FileStorageService } from '../../integration/file-storage/file-storage.service';
+import { MailerService } from '../../integration/mailer/mailer.service';
 import { JwtPayload } from '../auth/types';
 import { CommunitiesService } from '../communities/communities.service';
 import { Community } from '../communities/entities/community.entity';
-import { FileStorageService } from '../file-storage/file-storage.service';
-import { MailerService } from '../mailer/mailer.service';
 
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';

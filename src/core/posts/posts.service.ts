@@ -6,8 +6,8 @@ import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 import { messagesHelper } from '../../common/helpers/messages-helper';
 import { reactionHelper } from '../../common/helpers/reaction-helper';
 import { Reaction } from '../../common/types';
+import { FileStorageService } from '../../integration/file-storage/file-storage.service';
 import { CommunitiesService } from '../communities/communities.service';
-import { FileStorageService } from '../file-storage/file-storage.service';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 

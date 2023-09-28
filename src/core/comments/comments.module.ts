@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { FileStorageModule } from '../file-storage/file-storage.module';
+import { FileStorageModule } from '../../integration/file-storage/file-storage.module';
 import { PostsModule } from '../posts/posts.module';
 import { UsersModule } from '../users/users.module';
 
