@@ -14,9 +14,9 @@ import {
 } from 'typeorm';
 import { ulid } from 'ulid';
 
-import { CategoryEnum } from '../../../common/enums/community.enum';
 import { Post } from '../../posts/entities/post.entity';
 import { User } from '../../users/entities/user.entity';
+import { CategoryEnum } from '../enums/community.enum';
 
 @Entity()
 export class Community {

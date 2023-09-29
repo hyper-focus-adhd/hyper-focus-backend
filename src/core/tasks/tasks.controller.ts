@@ -30,10 +30,10 @@ export class TasksController {
   @ApiOperation({ summary: 'Create a new task' })
   @Post()
   async createTask(
-    @Body() body: CreateTaskDto,
+    @Body() createTaskDto: CreateTaskDto,
     @CurrentUserId() user: User,
   ): Promise<Task> {
-    return await this.tasksService.createTask(user, body);
+    return await this.tasksService.createTask(user, createTaskDto);
   }
 
   @ApiOperation({ summary: 'Find all tasks by user id' })
@@ -45,11 +45,11 @@ export class TasksController {
   @ApiOperation({ summary: 'Update a task' })
   @Patch(':taskId')
   async updateTask(
-    @Body() body: UpdateTaskDto,
+    @Body() updateTaskDto: UpdateTaskDto,
     @CurrentUserId() user: string,
     @Param('taskId') taskId: string,
   ): Promise<Task> {
-    return await this.tasksService.updateTask(user, taskId, body);
+    return await this.tasksService.updateTask(user, taskId, updateTaskDto);
   }
 
   @ApiOperation({ summary: 'Delete a task' })

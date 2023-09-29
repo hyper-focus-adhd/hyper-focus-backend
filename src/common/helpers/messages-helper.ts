@@ -29,6 +29,7 @@ export const messagesHelper = {
   SUBJECT_PASSWORD_RECOVERY: 'Password recovery.',
   SUBJECT_USERNAME_RECOVERY: 'Username recovery.',
   TASK_NOT_FOUND: 'Task not found.',
+  TEST_NOT_FOUND: 'Test not found.',
   TIME_FORMAT_END:
     'Invalid end time format. Please provide a valid time in HH:mm:ss or hh:mm:ss a format.',
   TIME_FORMAT_START:

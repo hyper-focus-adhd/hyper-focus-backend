@@ -1,11 +1,7 @@
 import { Expose, Transform, Type } from 'class-transformer';
 
-import {
-  GenderEnum,
-  LanguageEnum,
-  RoleEnum,
-} from '../../../common/enums/user.enum';
 import { currentTimeZone } from '../../../common/helpers/timezone.helper';
+import { GenderEnum, LanguageEnum, RoleEnum } from '../enums/user.enum';
 
 export class UserDto {
   @Expose()

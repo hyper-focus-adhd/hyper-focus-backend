@@ -72,11 +72,15 @@ export class UsersController {
   @Patch()
   @UseInterceptors(FileInterceptor('profile_image'))
   async updateUser(
-    @Body() body: UpdateUserDto,
+    @Body() updateUserDto: UpdateUserDto,
     @CurrentUserId() userId: string,
     @UploadedFile() profile_image: Express.Multer.File,
   ): Promise<User> {
-    return await this.usersService.updateUser(userId, body, profile_image);
+    return await this.usersService.updateUser(
+      userId,
+      updateUserDto,
+      profile_image,
+    );
   }
 
   @ApiOperation({ summary: 'Delete a user' })
@@ -96,10 +100,12 @@ export class UsersController {
   @ApiOperation({ summary: 'Change a lost password' })
   @PublicRoute()
   @Put('password-change')
-  async passwordChange(@Body() body: UserPasswordChangeDto): Promise<User> {
+  async passwordChange(
+    @Body() userPasswordChangeDto: UserPasswordChangeDto,
+  ): Promise<User> {
     return await this.usersService.passwordChange(
-      body.password,
-      body.passwordRecoveryToken,
+      userPasswordChangeDto.password,
+      userPasswordChangeDto.passwordRecoveryToken,
     );
   }
 
@@ -107,18 +113,22 @@ export class UsersController {
   @Post('recover-username')
   @PublicRoute()
   async recoverUsername(
-    @Body() body: RecoverUserCredentialsDto,
+    @Body() recoverUserCredentialsDto: RecoverUserCredentialsDto,
   ): Promise<void> {
-    return await this.usersService.mailUsername(body.email);
+    return await this.usersService.mailUsername(
+      recoverUserCredentialsDto.email,
+    );
   }
 
   @ApiOperation({ summary: 'Mail a password link' })
   @Post('mail-password-link')
   @PublicRoute()
   async mailPasswordLink(
-    @Body() body: RecoverUserCredentialsDto,
+    @Body() recoverUserCredentialsDto: RecoverUserCredentialsDto,
   ): Promise<void> {
-    return await this.usersService.mailPasswordLink(body.email);
+    return await this.usersService.mailPasswordLink(
+      recoverUserCredentialsDto.email,
+    );
   }
 
   @ApiOperation({ summary: 'Follow a user' })

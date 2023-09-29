@@ -36,12 +36,17 @@ export class PostsController {
   @Post(':communityId?')
   @UseInterceptors(FileInterceptor('image'))
   async createPost(
-    @Body() body: CreatePostDto,
+    @Body() createPostDto: CreatePostDto,
     @CurrentUserId() user: User,
     @Param('communityId') communityId: string,
     @UploadedFile() image: Express.Multer.File,
   ): Promise<PostEntity> {
-    return await this.postsService.createPost(user, communityId, body, image);
+    return await this.postsService.createPost(
+      user,
+      communityId,
+      createPostDto,
+      image,
+    );
   }
 
   @ApiOperation({ summary: 'Find all posts' })
@@ -92,12 +97,17 @@ export class PostsController {
   @Patch(':postId')
   @UseInterceptors(FileInterceptor('image'))
   async updatePost(
-    @Body() body: UpdatePostDto,
+    @Body() updatePostDto: UpdatePostDto,
     @CurrentUserId() user: string,
     @Param('postId') postId: string,
     @UploadedFile() image: Express.Multer.File,
   ): Promise<PostEntity> {
-    return await this.postsService.updatePost(user, postId, body, image);
+    return await this.postsService.updatePost(
+      user,
+      postId,
+      updatePostDto,
+      image,
+    );
   }
 
   @ApiOperation({ summary: 'Delete a post' })

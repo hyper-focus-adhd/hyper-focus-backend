@@ -29,11 +29,11 @@ export class NotesController {
   @ApiOperation({ summary: 'Create a new note' })
   @Post(':board')
   async createNote(
-    @Body() body: CreateNoteDto,
+    @Body() createNoteDto: CreateNoteDto,
     @CurrentUserId() user: string,
     @Param('board') board: string,
   ): Promise<Note> {
-    return await this.notesService.createNote(user, board, body);
+    return await this.notesService.createNote(user, board, createNoteDto);
   }
 
   @ApiOperation({ summary: 'Find all notes by board id' })
@@ -48,12 +48,17 @@ export class NotesController {
   @ApiOperation({ summary: 'Update a note' })
   @Patch(':board/:noteId')
   async updateNote(
-    @Body() body: UpdateNoteDto,
+    @Body() updateNoteDto: UpdateNoteDto,
     @CurrentUserId() user: string,
     @Param('board') board: string,
     @Param('noteId') noteId: string,
   ): Promise<Note> {
-    return await this.notesService.updateNote(user, board, noteId, body);
+    return await this.notesService.updateNote(
+      user,
+      board,
+      noteId,
+      updateNoteDto,
+    );
   }
 
   @ApiOperation({ summary: 'Delete a note' })

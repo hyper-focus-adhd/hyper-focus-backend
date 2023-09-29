@@ -22,7 +22,7 @@ module.exports = {
   rules: {
     // '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'warn',
-    // '@typescript-eslint/explicit-module-boundary-types': 'off',
+    // '@typescript-eslint/explicit-module-boundary-enums': 'off',
     // '@typescript-eslint/no-explicit-any': 'off',
     'import/order': [
       'error',

@@ -32,7 +32,7 @@ export class CommentsController {
   @ApiParam({ name: 'parentCommentId', required: false })
   @Post(':post/:parentCommentId?')
   async createComment(
-    @Body() body: CreateCommentDto,
+    @Body() createCommentDto: CreateCommentDto,
     @CurrentUserId() user: User,
     @Param('post') post: string,
     @Param('parentCommentId') parentCommentId: string,
@@ -41,7 +41,7 @@ export class CommentsController {
       user,
       post,
       parentCommentId,
-      body,
+      createCommentDto,
     );
   }
 
@@ -64,7 +64,7 @@ export class CommentsController {
   @ApiOperation({ summary: 'Update a comment' })
   @Patch(':post/:commentId')
   async updateComment(
-    @Body() body: UpdatePostDto,
+    @Body() updatePostDto: UpdatePostDto,
     @CurrentUserId() user: string,
     @Param('post') post: string,
     @Param('commentId') commentId: string,
@@ -73,7 +73,7 @@ export class CommentsController {
       user,
       post,
       commentId,
-      body,
+      updatePostDto,
     );
   }
 

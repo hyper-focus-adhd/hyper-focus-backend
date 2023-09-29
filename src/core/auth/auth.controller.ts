@@ -34,10 +34,10 @@ export class AuthController {
   @Serialize(UserDto)
   @UseInterceptors(FileInterceptor('profile_image'))
   async signUp(
-    @Body() body: CreateUserDto,
+    @Body() createUserDto: CreateUserDto,
     @UploadedFile() profile_image: Express.Multer.File,
   ): Promise<CreateUserType> {
-    return await this.authService.signUp(body, profile_image);
+    return await this.authService.signUp(createUserDto, profile_image);
   }
 
   @ApiOperation({ summary: 'Login' })
@@ -45,8 +45,8 @@ export class AuthController {
   @Post('login')
   @PublicRoute()
   @Serialize(UserDto)
-  async login(@Body() body: LoginDto): Promise<object> {
-    return await this.authService.login(body);
+  async login(@Body() loginDto: LoginDto): Promise<object> {
+    return await this.authService.login(loginDto);
   }
 
   @ApiOperation({ summary: 'Logout' })

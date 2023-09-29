@@ -2,7 +2,7 @@ import {
   GenderEnum,
   LanguageEnum,
   RoleEnum,
-} from '../../../common/enums/user.enum';
+} from '../../users/enums/user.enum';
 
 export type CreateUserType = {
   id: string;
