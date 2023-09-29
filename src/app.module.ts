@@ -12,6 +12,7 @@ import { MailerModule } from './core/mailer/mailer.module';
 import { NotesModule } from './core/notes/notes.module';
 import { PostsModule } from './core/posts/posts.module';
 import { TasksModule } from './core/tasks/tasks.module';
+import { TestsModule } from './core/tests/tests.module';
 import { UsersModule } from './core/users/users.module';
 import { dataSourceOptions } from './database/data-source';
 
@@ -28,6 +29,7 @@ import { dataSourceOptions } from './database/data-source';
     PostsModule,
     CommentsModule,
     CommunitiesModule,
+    TestsModule,
   ],
   controllers: [],
   providers: [

@@ -14,27 +14,24 @@ import {
 import { ulid } from 'ulid';
 
 import { User } from '../../users/entities/user.entity';
-import { StatusEnum } from '../enums/task.enum';
+import { QuestionEntity, Score } from '../helper/test-helper';
 
 @Entity()
-export class Task {
+export class Test {
   @PrimaryColumn()
   id: string;
 
-  @Column()
-  title: string;
-
-  @Column({ nullable: true })
-  description: string;
-
-  @Column()
-  status: StatusEnum;
+  @Column({ type: 'json' })
+  test_a: QuestionEntity[];
 
   @Column({ type: 'json' })
-  date: { start: Date; end: Date };
+  test_b: QuestionEntity[];
 
-  @Column({ type: 'json', nullable: true })
-  time: { start: Date; end: Date };
+  @Column()
+  result: boolean;
+
+  @Column({ type: 'json' })
+  score: Score;
 
   @CreateDateColumn()
   created_at: Date;
@@ -46,7 +43,7 @@ export class Task {
   deleted_at: Date;
 
   @JoinColumn({ name: 'user_id' })
-  @ManyToOne(() => User, (user) => user.tasks, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.tests, { onDelete: 'CASCADE' })
   user: User;
 
   constructor() {
@@ -57,16 +54,16 @@ export class Task {
 
   @AfterInsert()
   logInsert(): void {
-    console.log('Inserted Task with id', this.id);
+    console.log('Inserted Test with id', this.id);
   }
 
   @AfterUpdate()
   logUpdate(): void {
-    console.log('Updated Task with id', this.id);
+    console.log('Updated Test with id', this.id);
   }
 
   @AfterRemove()
   logRemove(): void {
-    console.log('Removed Task with id', this.id);
+    console.log('Removed Test with id', this.id);
   }
 }

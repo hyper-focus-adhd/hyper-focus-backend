@@ -7,7 +7,7 @@ import {
   IsString,
 } from 'class-validator';
 
-import { CategoryEnum } from '../../../common/enums/community.enum';
+import { CategoryEnum } from '../enums/community.enum';
 
 export class CreateCommunityDto {
   @ApiProperty({

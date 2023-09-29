@@ -12,9 +12,9 @@ import {
 } from 'class-validator';
 import * as moment from 'moment';
 
-import { GenderEnum, LanguageEnum } from '../../../common/enums/user.enum';
 import { messagesHelper } from '../../../common/helpers/messages-helper';
 import { passwordHelper } from '../../../common/helpers/password-helper';
+import { GenderEnum, LanguageEnum } from '../enums/user.enum';
 
 export class CreateUserDto {
   @ApiProperty({

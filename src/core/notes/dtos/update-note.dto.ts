@@ -15,7 +15,6 @@ export class UpdateNoteDto extends PartialType(CreateNoteDto) {
   text: string;
 
   @ApiProperty({ description: 'The updated color of the note', example: 'Red' })
-  @IsNotEmpty()
   @IsOptional()
   @IsString()
   color: string;
