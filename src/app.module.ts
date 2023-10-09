@@ -7,6 +7,7 @@ import { AuthModule } from './core/auth/auth.module';
 import { BoardsModule } from './core/boards/boards.module';
 import { CommentsModule } from './core/comments/comments.module';
 import { CommunitiesModule } from './core/communities/communities.module';
+import { MessagesModule } from './core/messages/messages.module';
 import { NotesModule } from './core/notes/notes.module';
 import { PostsModule } from './core/posts/posts.module';
 import { TasksModule } from './core/tasks/tasks.module';
@@ -30,6 +31,7 @@ import { MailerModule } from './integration/mailer/mailer.module';
     CommentsModule,
     CommunitiesModule,
     TestsModule,
+    MessagesModule,
   ],
   controllers: [],
   providers: [

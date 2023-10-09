@@ -16,7 +16,6 @@ import { ulid } from 'ulid';
 
 import { Post } from '../../posts/entities/post.entity';
 import { User } from '../../users/entities/user.entity';
-import { CategoryEnum } from '../enums/community.enum';
 
 @Entity()
 export class Community {
@@ -36,7 +35,7 @@ export class Community {
   rules: string;
 
   @Column()
-  category: CategoryEnum;
+  category: string;
 
   @Column({ type: 'text', array: true, default: [] })
   moderators: string[];

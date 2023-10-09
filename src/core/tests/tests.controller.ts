@@ -8,7 +8,6 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
-import { Test } from '@nestjs/testing';
 import { UpdateResult } from 'typeorm';
 
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
@@ -17,6 +16,7 @@ import { User } from '../users/entities/user.entity';
 
 import { CreateTestDto } from './dto/create-test.dto';
 import { TestDto } from './dto/test.dto';
+import { Test } from './entities/test.entity';
 import { TestsService } from './tests.service';
 
 @ApiTags('Test')
@@ -28,11 +28,11 @@ export class TestsController {
 
   @ApiOperation({ summary: 'Create a new test' })
   @Post()
-  createTest(
+  async createTest(
     @Body() createTestDto: CreateTestDto,
     @CurrentUserId() user: User,
   ): Promise<Test> {
-    return this.testsService.createTest(user, createTestDto);
+    return await this.testsService.createTest(user, createTestDto);
   }
 
   @ApiOperation({ summary: 'Find all tests by user id' })

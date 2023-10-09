@@ -22,6 +22,7 @@ export class UpdateTaskDto extends PartialType(CreateTaskDto) {
     description: 'The updated description of the task',
     example: 'Updated description',
   })
+  @IsNotEmpty()
   @IsOptional()
   @IsString()
   description: string;
