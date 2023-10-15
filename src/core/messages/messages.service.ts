@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as _ from 'lodash';
 import { Repository } from 'typeorm';
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
@@ -20,12 +21,15 @@ export class MessagesService {
     user: User,
     createMessageDto: CreateMessageDto,
   ): Promise<Message> {
+    const sortedULIDs = _.sortBy([user, createMessageDto.secondUserId]);
+    const chatId = sortedULIDs.join('');
+
     const message = this.messageRepository.create({
-      ...createMessageDto,
+      chat_id: chatId,
+      text: createMessageDto.text,
       user: user,
     });
 
-    console.log(message);
     const foundMessage = await this.messageRepository.save(message);
 
     return this.findOneMessageOrFail({
@@ -44,17 +48,28 @@ export class MessagesService {
     }
   }
 
-  // async identify(name: string, clientId: string) {}
+  async findAllMessages(): Promise<Message[]> {
+    const messages = await this.messageRepository.find({
+      relations: ['user'],
+    });
 
-  // findOne(id: number) {
-  //   return `This action returns a #${id} message`;
-  // }
-  //
-  // update(id: number, updateMessageDto: UpdateMessageDto) {
-  //   return `This action updates a #${id} message`;
-  // }
-  //
-  // remove(id: number) {
-  //   return `This action removes a #${id} message`;
-  // }
+    if (!messages.length) {
+      throw new NotFoundException(messagesHelper.POST_NOT_FOUND);
+    }
+
+    return messages;
+  }
+
+  async findAllMessagesByChatId(
+    user: User,
+    secondUserId: string,
+  ): Promise<Message[]> {
+    const sortedULIDs = _.sortBy([user, secondUserId]);
+    const chatId = sortedULIDs.join('');
+
+    return await this.messageRepository.find({
+      where: { chat_id: chatId },
+      relations: ['user'],
+    });
+  }
 }

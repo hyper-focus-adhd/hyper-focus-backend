@@ -1,7 +1,7 @@
 import { verify } from 'jsonwebtoken';
 import { Socket } from 'socket.io';
 
-import { jwtConfig } from '../../config/jwt.config';
+import { jwtConfig } from '../../../config/jwt.config';
 
 export const SocketAuthMiddleware = () => {
   return (client: Socket, next: (err?: unknown) => void): void => {

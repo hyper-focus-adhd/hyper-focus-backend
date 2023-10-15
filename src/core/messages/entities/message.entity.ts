@@ -21,6 +21,9 @@ export class Message {
   id: string;
 
   @Column()
+  chat_id: string;
+
+  @Column()
   text: string;
 
   @CreateDateColumn()

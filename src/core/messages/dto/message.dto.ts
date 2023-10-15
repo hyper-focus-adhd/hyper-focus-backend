@@ -8,6 +8,9 @@ export class MessageDto {
   id: string;
 
   @Expose()
+  chat_id: string;
+
+  @Expose()
   username: string;
 
   @Expose()
