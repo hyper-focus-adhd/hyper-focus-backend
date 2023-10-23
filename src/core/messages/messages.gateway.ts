@@ -54,6 +54,7 @@ export class MessagesGateway {
     return message;
   }
 
+  @ApiOperation({ summary: 'Join a chat' })
   @SubscribeMessage('joinChat')
   handleJoinChat(
     @CurrentUserId() user: User,
@@ -68,11 +69,7 @@ export class MessagesGateway {
   @ApiOperation({ summary: 'Find all messages' })
   @SubscribeMessage('findAllMessages')
   async findAllMessages(): Promise<Message[]> {
-    const allMessages = await this.messagesService.findAllMessages();
-
-    this.server.emit('findAllMessages', allMessages);
-
-    return allMessages;
+    return await this.messagesService.findAllMessages();
   }
 
   @ApiOperation({ summary: 'Find all messages by chat id' })
