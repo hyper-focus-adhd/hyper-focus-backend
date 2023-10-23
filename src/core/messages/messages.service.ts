@@ -21,8 +21,7 @@ export class MessagesService {
     user: User,
     createMessageDto: CreateMessageDto,
   ): Promise<Message> {
-    const sortedULIDs = _.sortBy([user, createMessageDto.secondUserId]);
-    const chatId = sortedULIDs.join('');
+    const chatId = this.findChatId(user, createMessageDto.secondUserId);
 
     const message = this.messageRepository.create({
       chat_id: chatId,
@@ -64,12 +63,16 @@ export class MessagesService {
     user: User,
     secondUserId: string,
   ): Promise<Message[]> {
-    const sortedULIDs = _.sortBy([user, secondUserId]);
-    const chatId = sortedULIDs.join('');
+    const chatId = this.findChatId(user, secondUserId);
 
     return await this.messageRepository.find({
       where: { chat_id: chatId },
       relations: ['user'],
     });
+  }
+
+  findChatId(user: User, secondUserId: string): string {
+    const sortedULIDs = _.sortBy([user, secondUserId]);
+    return sortedULIDs.join('');
   }
 }

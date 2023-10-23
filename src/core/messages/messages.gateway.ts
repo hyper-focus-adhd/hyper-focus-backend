@@ -49,9 +49,20 @@ export class MessagesGateway {
       createMessageDto,
     );
 
-    this.server.emit('message', message);
+    this.server.to(message.chat_id).emit('message', message);
 
     return message;
+  }
+
+  @SubscribeMessage('joinChat')
+  handleJoinChat(
+    @CurrentUserId() user: User,
+    @ConnectedSocket() client: Socket,
+    @MessageBody() secondUserId: string,
+  ): void {
+    const chatId = this.messagesService.findChatId(user, secondUserId);
+
+    client.join(chatId);
   }
 
   @ApiOperation({ summary: 'Find all messages' })
@@ -68,14 +79,11 @@ export class MessagesGateway {
   @SubscribeMessage('findAllMessagesByChatId')
   async findAllMessagesByChatId(
     @CurrentUserId() user: User,
-    @ConnectedSocket() client: Socket,
     @MessageBody() secondUserId: string,
   ): Promise<Message[]> {
-    const allMessagesByChatId =
-      await this.messagesService.findAllMessagesByChatId(user, secondUserId);
-
-    client.emit('findAllMessagesByChatId', allMessagesByChatId);
-
-    return allMessagesByChatId;
+    return await this.messagesService.findAllMessagesByChatId(
+      user,
+      secondUserId,
+    );
   }
 }

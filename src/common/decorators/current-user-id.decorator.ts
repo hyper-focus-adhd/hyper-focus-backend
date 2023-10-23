@@ -10,14 +10,10 @@ export const CurrentUserId = createParamDecorator(
     if (context.getType() === 'ws') {
       const client = context.switchToWs().getClient<Socket>();
 
-      // to test with postman
       const { authorization } = client.handshake.headers;
 
-      // TODO verify if it's really needed
-      // to use with a real client
-      // const { authorization } = client.handshake.auth;
-
       const token: string = authorization.split(' ')[1];
+
       const payload = verify(token, jwtConfig.accessTokenSecret);
 
       return <string>payload.sub;
