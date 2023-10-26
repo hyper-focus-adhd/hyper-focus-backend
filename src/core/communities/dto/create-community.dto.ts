@@ -1,13 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsArray,
-  IsEnum,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-} from 'class-validator';
-
-import { CategoryEnum } from '../enums/community.enum';
+import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateCommunityDto {
   @ApiProperty({
@@ -46,12 +38,12 @@ export class CreateCommunityDto {
 
   @ApiProperty({
     description: 'The category of the community',
-    example: 'Furry...',
+    example: 'Sample category',
   })
   @IsNotEmpty()
   @IsOptional()
-  @IsEnum(CategoryEnum)
-  category: CategoryEnum;
+  @IsString()
+  category: string;
 
   @ApiProperty({
     description: 'The moderators of the community',

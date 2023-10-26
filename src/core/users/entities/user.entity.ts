@@ -15,6 +15,7 @@ import { ulid } from 'ulid';
 import { Board } from '../../boards/entities/board.entity';
 import { Comment } from '../../comments/entities/comment.entity';
 import { Community } from '../../communities/entities/community.entity';
+import { Message } from '../../messages/entities/message.entity';
 import { Post } from '../../posts/entities/post.entity';
 import { Task } from '../../tasks/entities/task.entity';
 import { Test } from '../../tests/entities/test.entity';
@@ -87,6 +88,9 @@ export class User {
 
   @OneToMany(() => Test, (test) => test.user, { cascade: true })
   tests: Test[];
+
+  @OneToMany(() => Message, (message) => message.user, { cascade: true })
+  messages: Message[];
 
   constructor() {
     if (!this.id) {

@@ -1,13 +1,5 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import {
-  IsArray,
-  IsEnum,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-} from 'class-validator';
-
-import { CategoryEnum } from '../enums/community.enum';
+import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 import { CreateCommunityDto } from './create-community.dto';
 
@@ -48,12 +40,12 @@ export class UpdateCommunityDto extends PartialType(CreateCommunityDto) {
 
   @ApiProperty({
     description: 'The updated category of the community',
-    example: 'Furry...',
+    example: 'Updated category',
   })
   @IsNotEmpty()
   @IsOptional()
-  @IsEnum(CategoryEnum)
-  category?: CategoryEnum;
+  @IsString()
+  category?: string;
 
   //TODO VERIFY NOT EMPTY
   @ApiProperty({

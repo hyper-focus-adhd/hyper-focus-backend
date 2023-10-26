@@ -18,12 +18,12 @@ export class MailerService {
   ): Promise<void> {
     await sendgridMail.send({
       from: sendgridConfig.sendgridFrom,
-      to: to,
-      templateId: templateId,
+      to,
+      templateId,
       dynamicTemplateData: {
-        subject: subject,
-        username: username,
-        link: link,
+        subject,
+        username,
+        link,
       },
     });
   }

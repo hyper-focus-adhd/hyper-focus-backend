@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { FileStorageModule } from '../../integration/file-storage/file-storage.module';
+import { MailerModule } from '../../integration/mailer/mailer.module';
 import { CommunitiesModule } from '../communities/communities.module';
-import { FileStorageModule } from '../file-storage/file-storage.module';
-import { MailerModule } from '../mailer/mailer.module';
 
 import { User } from './entities/user.entity';
 import { UsersController } from './users.controller';

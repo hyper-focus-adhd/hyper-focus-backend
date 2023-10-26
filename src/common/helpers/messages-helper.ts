@@ -22,6 +22,7 @@ export const messagesHelper = {
   IMAGE_FILE_TYPE_INVALID:
     'Invalid image file type. Only JPEG and PNG image files are allowed.',
   IMAGE_FILE_UPLOAD_ERROR: 'An error occurred while uploading the image.',
+  MESSAGE_NOT_FOUND: 'Message not found.',
   NOTE_NOT_FOUND: 'Note not found.',
   PASSWORD_VALID:
     'Password must contain: At least one upper case letter, one lower case letter, one digit, one special character or space.',
