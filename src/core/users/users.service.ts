@@ -72,8 +72,10 @@ export class UsersService {
     }
   }
 
-  async getFollowing(userId: string): Promise<User[]> {
-    const user = await this.findOneUserOrFail({ where: { id: userId } });
+  async getFollowingByUsername(username: string): Promise<User[]> {
+    const user = await this.findOneUserOrFail({
+      where: { username: username },
+    });
 
     const followingUsers: User[] = [];
 
@@ -88,8 +90,10 @@ export class UsersService {
     return followingUsers;
   }
 
-  async getFollowedByUserId(userId: string): Promise<User[]> {
-    const user = await this.findOneUserOrFail({ where: { id: userId } });
+  async getFollowedByUsername(username: string): Promise<User[]> {
+    const user = await this.findOneUserOrFail({
+      where: { username: username },
+    });
 
     const followedUsers: User[] = [];
 
