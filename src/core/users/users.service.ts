@@ -88,7 +88,7 @@ export class UsersService {
     return followingUsers;
   }
 
-  async getFollowed(userId: string): Promise<User[]> {
+  async getFollowedByUserId(userId: string): Promise<User[]> {
     const user = await this.findOneUserOrFail({ where: { id: userId } });
 
     const followedUsers: User[] = [];
