@@ -179,7 +179,7 @@ export class UsersController {
     return await this.usersService.followCommunity(userId, followCommunityId);
   }
 
-  @ApiOperation({ summary: 'Find all user data by date' })
+  @ApiOperation({ summary: 'Find all user data by date and username' })
   @Get('user-summary/:date/:username')
   @Serialize(GenericUserSummaryDto)
   async getSummaryByDate(
