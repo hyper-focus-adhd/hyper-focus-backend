@@ -98,7 +98,7 @@ export class CommentsService {
     });
 
     const comment = await this.findOneCommentOrFail({
-      where: { id: commentId, user: { id: user } },
+      where: { id: commentId, user: { id: user }, post: { id: post } },
       relations: ['user', 'post', 'parentComment'],
     });
     this.commentRepository.merge(comment, updateCommentDto);
@@ -116,7 +116,7 @@ export class CommentsService {
     });
 
     const comment = await this.findOneCommentOrFail({
-      where: { id: commentId, user: { id: user } },
+      where: { id: commentId, user: { id: user }, post: { id: post } },
     });
 
     return await this.commentRepository.softDelete(comment.id);
@@ -132,7 +132,7 @@ export class CommentsService {
     });
 
     const comment = await this.findOneCommentOrFail({
-      where: { id: commentId, user: { id: user } },
+      where: { id: commentId, user: { id: user }, post: { id: post } },
       withDeleted: true,
     });
 
@@ -150,7 +150,7 @@ export class CommentsService {
     });
 
     const comment = await this.findOneCommentOrFail({
-      where: { id: commentId },
+      where: { id: commentId, user: { id: user }, post: { id: post } },
     });
 
     reactionHelper(
