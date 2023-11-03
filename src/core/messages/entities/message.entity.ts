@@ -36,7 +36,7 @@ export class Message {
   deleted_at: Date;
 
   @JoinColumn({ name: 'user_id' })
-  @ManyToOne(() => User, (user) => user.tests, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.messages, { onDelete: 'CASCADE' })
   user: User;
 
   constructor() {
