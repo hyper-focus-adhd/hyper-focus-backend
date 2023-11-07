@@ -14,9 +14,10 @@ export class ValidDatesValidator implements ValidatorConstraintInterface {
 
   validate(date: { start: Date; end: Date }): boolean {
     const { start, end } = date;
-
     // Validate date format
     const dateFormat = ['DD-MM-YYYY', 'MM-DD-YYYY'];
+    const startDate = moment(start, dateFormat);
+    const endDate = moment(end, dateFormat);
     const startIsValid = moment(start, dateFormat, true).isValid();
     const endIsValid = moment(end, dateFormat, true).isValid();
     if (!startIsValid) {
@@ -26,20 +27,18 @@ export class ValidDatesValidator implements ValidatorConstraintInterface {
       this.constraints.push(2); // Set the flag to indicate invalid end date format
       return false;
     }
-
     // Validate if the start date is before the end date
-    if (start > end) {
+    if (startDate.isAfter(endDate)) {
       this.constraints.push(3); // Set the flag to indicate start date validation failure
+      console.log(this.constraints);
       return false;
     }
-
     return true;
   }
 
   defaultMessage(): string {
     const startValidationFailed = this.constraints.includes(1);
     const endValidationFailed = this.constraints.includes(2);
-
     if (startValidationFailed) {
       this.constraints.pop();
       return messagesHelper.DATE_FORMAT_START;
@@ -48,7 +47,6 @@ export class ValidDatesValidator implements ValidatorConstraintInterface {
       this.constraints.pop();
       return messagesHelper.DATE_FORMAT_END;
     }
-
     this.constraints.pop();
     return messagesHelper.DATE_RANGE;
   }
