@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -21,12 +22,21 @@ import { Community } from '../communities/entities/community.entity';
 
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
+import { UserSummaryByDay } from './entities/user-summary-by-day.entity';
+import { UserSummaryByMonth } from './entities/user-summary-by-month.entity';
+import { UserSummaryByYear } from './entities/user-summary-by-year.entity';
 import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(UserSummaryByDay)
+    private readonly userSummaryByDayRepository: Repository<UserSummaryByDay>,
+    @InjectRepository(UserSummaryByMonth)
+    private readonly userSummaryByMonthRepository: Repository<UserSummaryByMonth>,
+    @InjectRepository(UserSummaryByYear)
+    private readonly userSummaryByYearRepository: Repository<UserSummaryByYear>,
     private readonly jwtService: JwtService,
     private readonly fileStorageService: FileStorageService,
     private readonly mailerService: MailerService,
@@ -322,5 +332,27 @@ export class UsersService {
       },
     );
     return community;
+  }
+
+  async getSummaryByDate(
+    date: string,
+    username: string,
+  ): Promise<UserSummaryByDay[] | UserSummaryByMonth[] | UserSummaryByYear[]> {
+    const user = await this.findOneUserOrFail({
+      where: { username },
+    });
+    let summaryRepository;
+    if (date === 'day') {
+      summaryRepository = this.userSummaryByDayRepository;
+    } else if (date === 'month') {
+      summaryRepository = this.userSummaryByMonthRepository;
+    } else if (date === 'year') {
+      summaryRepository = this.userSummaryByYearRepository;
+    } else {
+      throw new BadRequestException(messagesHelper.DATE_INVALID);
+    }
+    return summaryRepository.find({
+      where: { user_id: user.id },
+    });
   }
 }

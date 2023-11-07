@@ -12,6 +12,7 @@ import { UpdateResult } from 'typeorm';
 
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
 import { Serialize } from '../../common/interceptors/serialize.interceptor';
+import { User } from '../users/entities/user.entity';
 
 import { CreateNoteDto } from './dtos/create-note.dto';
 import { NoteDto } from './dtos/note.dto';
@@ -30,7 +31,7 @@ export class NotesController {
   @Post(':board')
   async createNote(
     @Body() createNoteDto: CreateNoteDto,
-    @CurrentUserId() user: string,
+    @CurrentUserId() user: User,
     @Param('board') board: string,
   ): Promise<Note> {
     return await this.notesService.createNote(user, board, createNoteDto);

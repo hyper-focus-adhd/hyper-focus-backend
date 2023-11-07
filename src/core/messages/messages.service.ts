@@ -6,6 +6,7 @@ import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
 import { messagesHelper } from '../../common/helpers/messages-helper';
 import { User } from '../users/entities/user.entity';
+import { UsersService } from '../users/users.service';
 
 import { CreateMessageDto } from './dto/create-message.dto';
 import { Message } from './entities/message.entity';
@@ -15,13 +16,14 @@ export class MessagesService {
   constructor(
     @InjectRepository(Message)
     private readonly messageRepository: Repository<Message>,
+    private readonly usersService: UsersService,
   ) {}
 
   async createMessage(
     user: User,
     createMessageDto: CreateMessageDto,
   ): Promise<Message> {
-    const chatId = this.findChatId(user, createMessageDto.secondUserId);
+    const chatId = await this.findChatId(user, createMessageDto.secondUserId);
 
     const message = this.messageRepository.create({
       chat_id: chatId,
@@ -63,7 +65,7 @@ export class MessagesService {
     user: User,
     secondUserId: string,
   ): Promise<Message[]> {
-    const chatId = this.findChatId(user, secondUserId);
+    const chatId = await this.findChatId(user, secondUserId);
 
     return await this.messageRepository.find({
       where: { chat_id: chatId },
@@ -71,8 +73,11 @@ export class MessagesService {
     });
   }
 
-  findChatId(user: User, secondUserId: string): string {
-    const sortedULIDs = _.sortBy([user, secondUserId]);
+  async findChatId(user: User, secondUserId: string): Promise<string> {
+    const foundSecondUser = await this.usersService.findOneUserOrFail({
+      where: { id: secondUserId },
+    });
+    const sortedULIDs = _.sortBy([user, foundSecondUser.id]);
     return sortedULIDs.join('');
   }
 }

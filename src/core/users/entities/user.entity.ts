@@ -16,6 +16,7 @@ import { Board } from '../../boards/entities/board.entity';
 import { Comment } from '../../comments/entities/comment.entity';
 import { Community } from '../../communities/entities/community.entity';
 import { Message } from '../../messages/entities/message.entity';
+import { Note } from '../../notes/entities/note.entity';
 import { Post } from '../../posts/entities/post.entity';
 import { Task } from '../../tasks/entities/task.entity';
 import { Test } from '../../tests/entities/test.entity';
@@ -82,6 +83,9 @@ export class User {
 
   @OneToMany(() => Comment, (comment) => comment.user, { cascade: true })
   comments: Comment[];
+
+  @OneToMany(() => Note, (note) => note.user, { cascade: true })
+  notes: Note[];
 
   @OneToMany(() => Community, (community) => community.user, { cascade: true })
   communities: Community[];

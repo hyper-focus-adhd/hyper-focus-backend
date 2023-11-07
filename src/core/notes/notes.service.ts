@@ -5,6 +5,7 @@ import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
 import { messagesHelper } from '../../common/helpers/messages-helper';
 import { BoardsService } from '../boards/boards.service';
+import { User } from '../users/entities/user.entity';
 
 import { CreateNoteDto } from './dtos/create-note.dto';
 import { UpdateNoteDto } from './dtos/update-note.dto';
@@ -18,18 +19,19 @@ export class NotesService {
   ) {}
 
   async createNote(
-    user: string,
+    user: User,
     board: string,
     createNoteDto: CreateNoteDto,
   ): Promise<Note> {
     const boardId = JSON.parse(JSON.stringify(board));
 
     await this.boardsService.findOneBoardOrFail({
-      where: { id: board, user: { id: user } },
+      where: { id: board, user: { id: user.id } },
     });
 
     const note = this.noteRepository.create({
       ...createNoteDto,
+      user: user,
       board: boardId,
     });
 
@@ -37,7 +39,7 @@ export class NotesService {
 
     return this.findOneNoteOrFail({
       where: { id: foundNote.id },
-      relations: ['board'],
+      relations: ['user', 'board'],
     });
   }
 
@@ -53,7 +55,7 @@ export class NotesService {
       where: {
         board: { id: foundBoard.id },
       },
-      relations: ['board'],
+      relations: ['user', 'board'],
     });
   }
 
@@ -76,8 +78,8 @@ export class NotesService {
     });
 
     const note = await this.findOneNoteOrFail({
-      where: { id: noteId, board: { id: board } },
-      relations: ['board'],
+      where: { id: noteId, user: { id: user }, board: { id: board } },
+      relations: ['user', 'board'],
     });
 
     this.noteRepository.merge(note, updateNoteDto);
@@ -95,7 +97,7 @@ export class NotesService {
     });
 
     const note = await this.findOneNoteOrFail({
-      where: { id: noteId, board: { id: board } },
+      where: { id: noteId, user: { id: user }, board: { id: board } },
     });
 
     return await this.noteRepository.softDelete(note.id);
@@ -111,7 +113,7 @@ export class NotesService {
     });
 
     const note = await this.findOneNoteOrFail({
-      where: { id: noteId, board: { id: board } },
+      where: { id: noteId, user: { id: user }, board: { id: board } },
       withDeleted: true,
     });
 

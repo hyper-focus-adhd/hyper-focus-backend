@@ -56,12 +56,12 @@ export class MessagesGateway {
 
   @ApiOperation({ summary: 'Join a chat' })
   @SubscribeMessage('joinChat')
-  handleJoinChat(
+  async handleJoinChat(
     @CurrentUserId() user: User,
     @ConnectedSocket() client: Socket,
     @MessageBody() secondUserId: string,
-  ): void {
-    const chatId = this.messagesService.findChatId(user, secondUserId);
+  ): Promise<void> {
+    const chatId = await this.messagesService.findChatId(user, secondUserId);
 
     client.join(chatId);
   }

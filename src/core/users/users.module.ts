@@ -6,13 +6,21 @@ import { FileStorageModule } from '../../integration/file-storage/file-storage.m
 import { MailerModule } from '../../integration/mailer/mailer.module';
 import { CommunitiesModule } from '../communities/communities.module';
 
+import { UserSummaryByDay } from './entities/user-summary-by-day.entity';
+import { UserSummaryByMonth } from './entities/user-summary-by-month.entity';
+import { UserSummaryByYear } from './entities/user-summary-by-year.entity';
 import { User } from './entities/user.entity';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([
+      User,
+      UserSummaryByDay,
+      UserSummaryByMonth,
+      UserSummaryByYear,
+    ]),
     JwtModule.register({}),
     FileStorageModule,
     MailerModule,

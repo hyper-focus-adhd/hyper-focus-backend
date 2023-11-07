@@ -14,6 +14,7 @@ import {
 import { ulid } from 'ulid';
 
 import { Board } from '../../boards/entities/board.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity()
 export class Note {
@@ -40,6 +41,10 @@ export class Note {
 
   @DeleteDateColumn()
   deleted_at: Date;
+
+  @JoinColumn({ name: 'user_id' })
+  @ManyToOne(() => User, (user) => user.notes, { onDelete: 'CASCADE' })
+  user: User;
 
   @JoinColumn({ name: 'board_id' })
   @ManyToOne(() => Board, (board) => board.notes, { onDelete: 'CASCADE' })

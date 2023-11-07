@@ -12,6 +12,7 @@ export const messagesHelper = {
     'Invalid end date format. Please provide a valid date in DD-MM-YYYY or MM-DD-YYYY format.',
   DATE_FORMAT_START:
     'Invalid start date format. Please provide a valid date in DD-MM-YYYY or MM-DD-YYYY format.',
+  DATE_INVALID: 'Invalid date parameter. Allowed values: day, month, year.',
   DATE_RANGE:
     'Invalid date range format. Start date must be before or equal the end date.',
   EMAIL_EXISTS: 'Email already exists.',
