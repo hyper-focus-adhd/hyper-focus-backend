@@ -6,12 +6,15 @@ import { ulid } from 'ulid';
 
 import { messagesHelper } from '../../common/helpers/messages-helper';
 
-//TODO: think about transforming it into a helper function
 @Injectable()
 export class FileStorageService {
   bucketName = 'hyper-focus';
 
-  constructor(private readonly storage: Storage) {}
+  private readonly storage;
+
+  constructor() {
+    this.storage = new Storage();
+  }
 
   async uploadImage(
     image: Express.Multer.File,
