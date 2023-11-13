@@ -150,7 +150,7 @@ export class CommentsService {
     });
 
     const comment = await this.findOneCommentOrFail({
-      where: { id: commentId, user: { id: user }, post: { id: post } },
+      where: { id: commentId, post: { id: post } },
     });
 
     reactionHelper(
