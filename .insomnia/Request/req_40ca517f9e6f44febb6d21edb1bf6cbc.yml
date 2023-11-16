@@ -1,0 +1,24 @@
+_id: req_40ca517f9e6f44febb6d21edb1bf6cbc
+type: Request
+parentId: fld_b645e6b841174278a30ad9d1f9eb09a5
+modified: 1694650653073
+created: 1690837900829
+url: "{{ _.base_url }}/{{ _.api_v1 }}/users/follow/user/{{ _.follow_user_id }}"
+name: FollowUser
+description: ""
+method: PATCH
+body: {}
+parameters: []
+headers: []
+authentication:
+  type: bearer
+  token: "{% response 'body', 'req_1c76b46f87e14bec98a50e6a2aef95f7',
+    'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 86400 %}"
+metaSortKey: -1680918245010.6875
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

@@ -1,0 +1,42 @@
+_id: env_20ae830d065405019403c1dd01418a0131f57315
+type: Environment
+parentId: wrk_dd93aac646ac422c8816b7a8f054b474
+modified: 1699924566681
+created: 1680109548961
+name: Base Environment
+data:
+  api_v1: api/v1
+  user_id: 01HA2HEC6X246MG44YBZH91ZTP
+  username: baki
+  follow_user_id: 01HAJQRMX1X3M8CHMVVK4EY2RM
+  board_id: 01HDYGER1G3V3PG0YZ36PPZAF9
+  note_id: 01HDYH13GAG2N9CS5X5FCZQFRT
+  post_id: 01HDYA35VHB1XVN618REHSEFZR
+  comment_id: 01HAA2KKRDFZD9AVN4WYG2539R
+  parent_comment_id: 01H7GX3NDD0F1QX0WMZDXNB59C
+  task_id: 01H82Y270MXHCK4YRNCAQW72M1
+  test_id: 01HAT3A3PEK8NDCQRQQP95E5XD
+  community_id: 01HA9WK283J0SFSV7AMGAT1QYQ
+  community_name: Sample namee
+  follow_community_id: 01HA9WK283J0SFSV7AMGAT1QYQ
+  password_recovery_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJha2kiLCJzdWIiOiIwMUhFOUZYRU5DUFZTMzZIVzMxMVpaVE5LUCIsImlhdCI6MTY5OTkyNDQ3OSwiZXhwIjoxNjk5OTI0Nzc5fQ.KEWtwlxR-aWL2eoz4uBnL2tDPWjDQnYMJ2JvOawHH_0
+dataPropertyOrder:
+  "&":
+    - api_v1
+    - user_id
+    - username
+    - follow_user_id
+    - board_id
+    - note_id
+    - post_id
+    - comment_id
+    - parent_comment_id
+    - task_id
+    - test_id
+    - community_id
+    - community_name
+    - follow_community_id
+    - password_recovery_token
+color: null
+isPrivate: false
+metaSortKey: 1680109548961

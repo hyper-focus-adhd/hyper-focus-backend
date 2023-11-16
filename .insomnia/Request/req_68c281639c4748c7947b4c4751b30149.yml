@@ -1,0 +1,25 @@
+_id: req_68c281639c4748c7947b4c4751b30149
+type: Request
+parentId: fld_1503f992ee33482d8e9a57013468fdd4
+modified: 1692739146866
+created: 1682276415430
+url: "{{ _.base_url }}/{{ _.api_v1 }}/auth/refresh"
+name: RefreshToken
+description: ""
+method: POST
+body: {}
+parameters: []
+headers: []
+authentication:
+  type: bearer
+  disabled: false
+  token: "{% response 'body', 'req_1c76b46f87e14bec98a50e6a2aef95f7',
+    'b64::JC5yZWZyZXNoVG9rZW4=::46b', 'when-expired', 86400 %}"
+metaSortKey: -1681630336363.875
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

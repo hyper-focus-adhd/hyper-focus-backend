@@ -1,0 +1,24 @@
+_id: req_1a5649870a174180a61836e9fa277b34
+type: Request
+parentId: fld_a992df65481e4366816e771948aea2db
+modified: 1692318241080
+created: 1691711470520
+url: "{{ _.base_url }}/{{ _.api_v1 }}/comments/{{ _.post_id }}"
+name: GetAllByPostId
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication:
+  type: bearer
+  token: "{% response 'body', 'req_1c76b46f87e14bec98a50e6a2aef95f7',
+    'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 86400 %}"
+metaSortKey: -1682299446792.75
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

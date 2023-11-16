@@ -1,0 +1,28 @@
+_id: req_f2f8add959e34737a375726b8413bcb5
+type: Request
+parentId: fld_b645e6b841174278a30ad9d1f9eb09a5
+modified: 1698357797363
+created: 1682537747892
+url: "{{ _.base_url }}/{{ _.api_v1 }}/users/mail-password-link"
+name: MailPasswordLink
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |
+    {
+    	"email": "baki8325@gmail.com"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1680918244948.1875
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

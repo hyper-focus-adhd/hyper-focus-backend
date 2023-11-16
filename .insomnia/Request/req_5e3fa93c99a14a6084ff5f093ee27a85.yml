@@ -1,0 +1,21 @@
+_id: req_5e3fa93c99a14a6084ff5f093ee27a85
+type: Request
+parentId: fld_b645e6b841174278a30ad9d1f9eb09a5
+modified: 1694650539709
+created: 1682532304166
+url: "{{ _.base_url }}/{{ _.api_v1 }}/users/recover-username"
+name: RecoverUsername
+description: ""
+method: POST
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1680918244998.1875
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

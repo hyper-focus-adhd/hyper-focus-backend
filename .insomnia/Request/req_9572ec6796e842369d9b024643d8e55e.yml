@@ -1,0 +1,24 @@
+_id: req_9572ec6796e842369d9b024643d8e55e
+type: Request
+parentId: fld_c9bad22edab74c7aaef0fad9577ab356
+modified: 1695251990361
+created: 1695238663055
+url: "{{ _.base_url }}/{{ _.api_v1 }}/tests/restore/{{ _.test_id }}"
+name: Restore
+description: ""
+method: PATCH
+body: {}
+parameters: []
+headers: []
+authentication:
+  type: bearer
+  token: "{% response 'body', 'req_1c76b46f87e14bec98a50e6a2aef95f7',
+    'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 86400 %}"
+metaSortKey: -1682299446649
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

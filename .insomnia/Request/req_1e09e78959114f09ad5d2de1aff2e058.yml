@@ -1,0 +1,46 @@
+_id: req_1e09e78959114f09ad5d2de1aff2e058
+type: Request
+parentId: fld_7015366ed6754f1dabe9fe5a6ca05c61
+modified: 1694696610343
+created: 1690485345173
+url: "{{ _.base_url }}/{{ _.api_v1 }}/posts/{{ _.post_id }}"
+name: Update
+description: ""
+method: PATCH
+body:
+  mimeType: multipart/form-data
+  params:
+    - name: title
+      value: hey!
+      id: pair_6371232f9ffd4b9cb29e70e78b6e3310
+      disabled: false
+    - id: pair_f02558372b274fdbad811ec8d465acd2
+      name: content
+      value: wowww
+      description: ""
+      type: text
+      disabled: false
+      multiline: false
+      fileName: G:\My Drive\Variados\Caminhada.jpg
+    - id: pair_8cd3373bda904303a39cda7742031fd6
+      name: image
+      value: ""
+      description: ""
+      type: file
+      disabled: true
+parameters: []
+headers:
+  - name: Content-Type
+    value: multipart/form-data
+authentication:
+  type: bearer
+  token: "{% response 'body', 'req_1c76b46f87e14bec98a50e6a2aef95f7',
+    'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 86400 %}"
+metaSortKey: -1682299446749
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

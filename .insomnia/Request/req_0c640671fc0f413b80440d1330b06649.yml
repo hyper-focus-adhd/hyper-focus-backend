@@ -1,0 +1,30 @@
+_id: req_0c640671fc0f413b80440d1330b06649
+type: Request
+parentId: fld_b645e6b841174278a30ad9d1f9eb09a5
+modified: 1699836361464
+created: 1692914876260
+url: "{{ _.base_url }}/{{ _.api_v1 }}/users/username/{{ _.username }}"
+name: GetByUsername
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - id: pair_ac13de2ec1e14066a72ec79d5832592b
+    name: Authorization
+    value: Bearer {% response 'body', 'req_68c281639c4748c7947b4c4751b30149',
+      'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 86400 %}
+    description: ""
+    disabled: true
+authentication:
+  type: bearer
+  token: "{% response 'body', 'req_1c76b46f87e14bec98a50e6a2aef95f7',
+    'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 86400 %}"
+metaSortKey: -1681630336407.625
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

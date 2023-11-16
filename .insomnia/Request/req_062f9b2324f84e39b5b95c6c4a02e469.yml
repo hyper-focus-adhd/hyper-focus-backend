@@ -1,0 +1,24 @@
+_id: req_062f9b2324f84e39b5b95c6c4a02e469
+type: Request
+parentId: fld_b645e6b841174278a30ad9d1f9eb09a5
+modified: 1698978524649
+created: 1698514028214
+url: "{{ _.base_url }}/{{ _.api_v1 }}/users/user-summary/year/bakia"
+name: GetSummaryViewByDate
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication:
+  type: bearer
+  token: "{% response 'body', 'req_1c76b46f87e14bec98a50e6a2aef95f7',
+    'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 86400 %}"
+metaSortKey: -1681630336352.1562
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

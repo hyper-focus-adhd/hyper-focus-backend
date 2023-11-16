@@ -1,0 +1,30 @@
+_id: req_8442ffa10235466fac857f0d5f785575
+type: Request
+parentId: fld_9bc875badb0f414ca655fbc711ec2ec2
+modified: 1694378382552
+created: 1694360514166
+url: "{{ _.base_url }}/{{ _.api_v1 }}/communities/following-communities"
+name: GetFollowingCommunities
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - id: pair_ac13de2ec1e14066a72ec79d5832592b
+    name: Authorization
+    value: Bearer {% response 'body', 'req_68c281639c4748c7947b4c4751b30149',
+      'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 86400 %}
+    description: ""
+    disabled: true
+authentication:
+  type: bearer
+  token: "{% response 'body', 'req_1c76b46f87e14bec98a50e6a2aef95f7',
+    'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 86400 %}"
+metaSortKey: -1682299446772.4375
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

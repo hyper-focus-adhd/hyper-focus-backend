@@ -1,0 +1,62 @@
+_id: req_101cf282033341e88e42dba9c56b4a79
+type: Request
+parentId: fld_1503f992ee33482d8e9a57013468fdd4
+modified: 1699452814024
+created: 1680109552804
+url: "{{ _.base_url }}/{{ _.api_v1 }}/auth/signup"
+name: Signup
+description: ""
+method: POST
+body:
+  mimeType: multipart/form-data
+  params:
+    - id: pair_ecb2177e1efc4f82b8684743b81f545c
+      name: username
+      value: baki
+      description: ""
+      type: text
+      multiline: false
+    - id: pair_1e518300265f45e0ada8873c3f064689
+      name: email
+      value: baki8325@gmail.com
+      description: ""
+    - id: pair_507f201a035741b28928a90376dfd0fd
+      name: password
+      value: Aa!123456
+      description: ""
+    - id: pair_93c7d43799344287bfbceeee3f679029
+      name: birthdate
+      value: 22-01-1987
+      description: ""
+    - id: pair_713db9f56ff140d79dc3897cd2acb017
+      name: gender
+      value: Male
+      description: ""
+    - id: pair_dcfec50c10534f1e9f0fbcca7170a3cb
+      name: nationality
+      value: Brazil
+      description: ""
+    - id: pair_aad03e3365d34d64bde396e853578d59
+      name: language
+      value: English
+      description: ""
+    - id: pair_2b763aec6fd74ea0a065032053f00db2
+      name: profile_image
+      value: ""
+      description: ""
+      type: file
+      fileName: E:\Downloads\WhatsApp Image 2023-08-08 at 20.44.21.jpg
+      disabled: true
+parameters: []
+headers:
+  - name: Content-Type
+    value: multipart/form-data
+authentication: {}
+metaSortKey: -1681630336451.375
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

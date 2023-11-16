@@ -1,0 +1,50 @@
+_id: req_6d06566a9d4d4974a6cb300948c8c05d
+type: Request
+parentId: fld_7015366ed6754f1dabe9fe5a6ca05c61
+modified: 1694696605112
+created: 1690485345156
+url: "{{ _.base_url }}/{{ _.api_v1 }}/posts/{{ _.community_id }}"
+name: Create
+description: ""
+method: POST
+body:
+  mimeType: multipart/form-data
+  params:
+    - id: pair_a11efced3c4443509787bb6c9de16984
+      name: title
+      value: title
+      description: ""
+      type: text
+      multiline: false
+      disabled: false
+    - id: pair_cbbbccd7cea64b80914a98c9a570eb93
+      name: content
+      value: content
+      description: ""
+      type: text
+      fileName: G:\My Drive\Variados\Cansado.jpg
+      disabled: false
+      multiline: false
+    - id: pair_1bc9092246374c33b79ad19c4aff6296
+      name: image
+      value: ""
+      description: ""
+      type: file
+      disabled: true
+      fileName: G:\My Drive\Variados\Batalha.jpg
+parameters: []
+headers:
+  - name: Content-Type
+    value: multipart/form-data
+authentication:
+  type: bearer
+  token: "{% response 'body', 'req_1c76b46f87e14bec98a50e6a2aef95f7',
+    'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 86400 %}"
+metaSortKey: -1682299446849
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

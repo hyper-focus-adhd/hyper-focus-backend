@@ -1,0 +1,79 @@
+_id: req_20539af8212e4dd28a89e55cf2b1675c
+type: Request
+parentId: fld_b645e6b841174278a30ad9d1f9eb09a5
+modified: 1699411131195
+created: 1690820223570
+url: "{{ _.base_url }}/{{ _.api_v1 }}/users"
+name: Update
+description: ""
+method: PATCH
+body:
+  mimeType: multipart/form-data
+  params:
+    - id: pair_ecb2177e1efc4f82b8684743b81f545c
+      name: username
+      value: baki
+      description: ""
+      type: text
+      multiline: false
+      disabled: false
+    - id: pair_1e518300265f45e0ada8873c3f064689
+      name: email
+      value: baki8325@gmail.com
+      description: ""
+      disabled: false
+    - id: pair_507f201a035741b28928a90376dfd0fd
+      name: password
+      value: Aa!123456
+      description: ""
+      disabled: false
+    - id: pair_93c7d43799344287bfbceeee3f679029
+      name: birthdate
+      value: 22-01-1987
+      description: ""
+      disabled: false
+    - id: pair_713db9f56ff140d79dc3897cd2acb017
+      name: gender
+      value: Male
+      description: ""
+      disabled: false
+    - id: pair_dcfec50c10534f1e9f0fbcca7170a3cb
+      name: nationality
+      value: Brazil
+      description: ""
+      disabled: false
+    - id: pair_aad03e3365d34d64bde396e853578d59
+      name: language
+      value: English
+      description: ""
+      disabled: false
+    - id: pair_2b763aec6fd74ea0a065032053f00db2
+      name: profile_image
+      value: ""
+      description: ""
+      type: file
+      fileName: G:\My Drive\Envio da câmera\Rick.png
+      disabled: true
+    - id: pair_880e5b9e7a434bebb1d6c1c9fd6200d5
+      name: friends[]
+      value: TGH6C5APTWQFKN46BPFFCNJ345, TGH6C5APTWQFKN46BPFFCNJ312
+      description: ""
+      type: text
+      multiline: false
+      disabled: false
+parameters: []
+headers:
+  - name: Content-Type
+    value: multipart/form-data
+authentication:
+  type: bearer
+  token: "{% response 'body', 'req_1c76b46f87e14bec98a50e6a2aef95f7',
+    'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 86400 %}"
+metaSortKey: -1680918245023.1875
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

@@ -1,0 +1,88 @@
+_id: req_df1ed90614654dad96b5dc2f24ed8c17
+type: Request
+parentId: fld_c9bad22edab74c7aaef0fad9577ab356
+modified: 1695326601159
+created: 1695238663026
+url: "{{ _.base_url }}/{{ _.api_v1 }}/tests"
+name: Create
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"test_a": [
+    		{
+    			"answer": "Very Often"
+    		},
+    		{
+    			"answer": "Sometimes"
+    		},
+    		{
+    			"answer": "Sometimes"
+    		},
+    		{
+    			"answer": "Sometimes"
+    		},
+    		{
+    			"answer": "Rarely"
+    		},
+    		{
+    			"answer": "Often"
+    		}
+    	],
+    	"test_b": [
+    		{
+    			"answer": "Very Often"
+    		},
+    		{
+    			"answer": "Sometimes"
+    		},
+    		{
+    			"answer": "Sometimes"
+    		},
+    		{
+    			"answer": "Never"
+    		},
+    		{
+    			"answer": "Never"
+    		},
+    		{
+    			"answer": "Sometimes"
+    		},
+    		{
+    			"answer": "Never"
+    		},
+    		{
+    			"answer": "Never"
+    		},
+    		{
+    			"answer": "Never"
+    		},
+    		{
+    			"answer": "Never"
+    		},
+    		{
+    			"answer": "Never"
+    		},
+    		{
+    			"answer": "Never"
+    		}
+    	]
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication:
+  type: bearer
+  token: "{% response 'body', 'req_1c76b46f87e14bec98a50e6a2aef95f7',
+    'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 86400 %}"
+metaSortKey: -1682299446849
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

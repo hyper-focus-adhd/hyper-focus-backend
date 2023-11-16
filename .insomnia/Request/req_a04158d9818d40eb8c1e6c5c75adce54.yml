@@ -1,0 +1,25 @@
+_id: req_a04158d9818d40eb8c1e6c5c75adce54
+type: Request
+parentId: fld_1503f992ee33482d8e9a57013468fdd4
+modified: 1692738928735
+created: 1682274731203
+url: "{{ _.base_url }}/{{ _.api_v1 }}/auth/logout"
+name: Logout
+description: ""
+method: POST
+body: {}
+parameters: []
+headers: []
+authentication:
+  type: bearer
+  disabled: false
+  token: "{% response 'body', 'req_1c76b46f87e14bec98a50e6a2aef95f7',
+    'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 86400 %}"
+metaSortKey: -1681630336376.375
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

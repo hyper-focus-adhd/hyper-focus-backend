@@ -1,0 +1,24 @@
+_id: req_8c0fa8e0d28743cea6968ece666c3edb
+type: Request
+parentId: fld_c9bad22edab74c7aaef0fad9577ab356
+modified: 1695251921055
+created: 1695238663036
+url: "{{ _.base_url }}/{{ _.api_v1 }}/tests"
+name: GetAllByUserId
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication:
+  type: bearer
+  token: "{% response 'body', 'req_1c76b46f87e14bec98a50e6a2aef95f7',
+    'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 86400 %}"
+metaSortKey: -1682299446799
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

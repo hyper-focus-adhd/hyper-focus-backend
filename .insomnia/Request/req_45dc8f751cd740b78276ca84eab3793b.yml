@@ -1,0 +1,38 @@
+_id: req_45dc8f751cd740b78276ca84eab3793b
+type: Request
+parentId: fld_4282b37a337b4c909438854a952e62af
+modified: 1697568015082
+created: 1685629582041
+url: "{{ _.base_url }}/{{ _.api_v1 }}/tasks/{{ _.task_id }}"
+name: Update
+description: ""
+method: PATCH
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"date": {
+    		"start": "22-01-1987",
+    		"end": "23-01-1987"
+    	},
+    	"time": {
+    		"start": "12:30:45 PM",
+    		"end": "11:30:45 PM"
+    	}
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication:
+  type: bearer
+  token: "{% response 'body', 'req_1c76b46f87e14bec98a50e6a2aef95f7',
+    'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 86400 %}"
+metaSortKey: -1682299446749
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

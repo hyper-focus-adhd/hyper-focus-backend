@@ -1,0 +1,31 @@
+_id: req_ed317b53bec64d159f9a98a9dbe95a91
+type: Request
+parentId: fld_b645e6b841174278a30ad9d1f9eb09a5
+modified: 1686598534612
+created: 1681679435282
+url: "{{ _.base_url }}/{{ _.api_v1 }}/users"
+name: Delete
+description: ""
+method: DELETE
+body: {}
+parameters: []
+headers:
+  - id: pair_2191fe5071564e609e98d3bdc03dc02b
+    name: Authorization
+    value: Bearer {% response 'body', 'req_68c281639c4748c7947b4c4751b30149',
+      'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 86400 %}
+    description: ""
+    disabled: true
+authentication:
+  type: bearer
+  token: "{% response 'body', 'req_1c76b46f87e14bec98a50e6a2aef95f7',
+    'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 86400 %}"
+  disabled: false
+metaSortKey: -1681630336301.375
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

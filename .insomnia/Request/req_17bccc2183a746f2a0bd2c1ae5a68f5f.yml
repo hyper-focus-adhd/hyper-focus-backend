@@ -1,0 +1,36 @@
+_id: req_17bccc2183a746f2a0bd2c1ae5a68f5f
+type: Request
+parentId: fld_b645e6b841174278a30ad9d1f9eb09a5
+modified: 1699924594280
+created: 1682600969148
+url: "{{ _.base_url }}/{{ _.api_v1 }}/users/password-change"
+name: PasswordChange
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"password": "Aa!123456a",
+    	"passwordRecoveryToken": "{{ _.password_recovery_token }}"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+    id: pair_b51fccf618fb49bc87a2d9faa11678b7
+  - id: pair_b15bbefa2d5744239d569ca745e72bfe
+    name: Authorization
+    value: Bearer {% response 'body', 'req_68c281639c4748c7947b4c4751b30149',
+      'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 86400 %}
+    description: ""
+    disabled: true
+authentication: {}
+metaSortKey: -1680918245048.1875
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

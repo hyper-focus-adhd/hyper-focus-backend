@@ -1,0 +1,32 @@
+_id: req_7895889d249849eab77528fffb35d700
+type: Request
+parentId: fld_1e9ae7f214074678ba0bdac231a77375
+modified: 1692314047856
+created: 1689080992266
+url: "{{ _.base_url }}/{{ _.api_v1 }}/boards/{{ _.board_id }}"
+name: Update
+description: ""
+method: PATCH
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"title": "uuuu",
+    	"color": "aaa"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication:
+  type: bearer
+  token: "{% response 'body', 'req_1c76b46f87e14bec98a50e6a2aef95f7',
+    'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 86400 %}"
+metaSortKey: -1682299446749
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

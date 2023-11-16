@@ -1,0 +1,24 @@
+_id: req_0b1acaabd4d2484b860dd605188b9a42
+type: Request
+parentId: fld_9bc875badb0f414ca655fbc711ec2ec2
+modified: 1692730562236
+created: 1692730453988
+url: "{{ _.base_url }}/{{ _.api_v1 }}/communities/{{ _.community_id }}"
+name: Delete
+description: ""
+method: DELETE
+body: {}
+parameters: []
+headers: []
+authentication:
+  type: bearer
+  token: "{% response 'body', 'req_1c76b46f87e14bec98a50e6a2aef95f7',
+    'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 86400 %}"
+metaSortKey: -1682299446699
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

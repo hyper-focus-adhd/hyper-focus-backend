@@ -1,0 +1,24 @@
+_id: req_291c444ae8a4409c8b5ad063bdeca055
+type: Request
+parentId: fld_4282b37a337b4c909438854a952e62af
+modified: 1686598556626
+created: 1685629582026
+url: "{{ _.base_url }}/{{ _.api_v1 }}/tasks"
+name: GetAllByUserId
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication:
+  type: bearer
+  token: "{% response 'body', 'req_1c76b46f87e14bec98a50e6a2aef95f7',
+    'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 86400 %}"
+metaSortKey: -1682299446799
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

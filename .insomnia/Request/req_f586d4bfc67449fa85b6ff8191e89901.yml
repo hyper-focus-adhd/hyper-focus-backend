@@ -1,0 +1,24 @@
+_id: req_f586d4bfc67449fa85b6ff8191e89901
+type: Request
+parentId: fld_7015366ed6754f1dabe9fe5a6ca05c61
+modified: 1691710329711
+created: 1691710277579
+url: "{{ _.base_url }}/{{ _.api_v1 }}/posts/{{ _.post_id }}"
+name: GetPostByPostId
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication:
+  type: bearer
+  token: "{% response 'body', 'req_1c76b46f87e14bec98a50e6a2aef95f7',
+    'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 86400 %}"
+metaSortKey: -1682299446780.25
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

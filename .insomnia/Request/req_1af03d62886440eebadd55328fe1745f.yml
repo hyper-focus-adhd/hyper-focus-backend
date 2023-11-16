@@ -1,0 +1,24 @@
+_id: req_1af03d62886440eebadd55328fe1745f
+type: Request
+parentId: fld_72b0c043d96d46c697c6d22269e3c1ae
+modified: 1689081558541
+created: 1682390683672
+url: "{{ _.base_url }}/{{ _.api_v1 }}/notes/{{ _.board_id }}/{{ _.note_id }}"
+name: Delete
+description: ""
+method: DELETE
+body: {}
+parameters: []
+headers: []
+authentication:
+  type: bearer
+  token: "{% response 'body', 'req_1c76b46f87e14bec98a50e6a2aef95f7',
+    'b64::JC5hY2Nlc3NUb2tlbg==::46b', 'when-expired', 86400 %}"
+metaSortKey: -1682299446699
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
