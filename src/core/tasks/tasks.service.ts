@@ -12,9 +12,7 @@ import { Task } from './entities/task.entity';
 
 @Injectable()
 export class TasksService {
-  constructor(
-    @InjectRepository(Task) private readonly taskRepository: Repository<Task>,
-  ) {}
+  constructor(@InjectRepository(Task) private readonly taskRepository: Repository<Task>) {}
 
   async createTask(user: User, createTaskDto: CreateTaskDto): Promise<Task> {
     const task = this.taskRepository.create({
@@ -51,11 +49,7 @@ export class TasksService {
     }
   }
 
-  async updateTask(
-    user: string,
-    taskId: string,
-    updateTaskDto: UpdateTaskDto,
-  ): Promise<Task> {
+  async updateTask(user: string, taskId: string, updateTaskDto: UpdateTaskDto): Promise<Task> {
     const task = await this.findOneTaskOrFail({
       where: { id: taskId, user: { id: user } },
       relations: ['user'],

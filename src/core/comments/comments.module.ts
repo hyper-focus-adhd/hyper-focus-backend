@@ -10,12 +10,7 @@ import { CommentsService } from './comments.service';
 import { Comment } from './entities/comment.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Comment]),
-    UsersModule,
-    PostsModule,
-    FileStorageModule,
-  ],
+  imports: [TypeOrmModule.forFeature([Comment]), UsersModule, PostsModule, FileStorageModule],
   controllers: [CommentsController],
   providers: [CommentsService],
 })

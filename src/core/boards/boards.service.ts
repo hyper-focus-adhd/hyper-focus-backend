@@ -17,10 +17,7 @@ export class BoardsService {
     private readonly boardRepository: Repository<Board>,
   ) {}
 
-  async createBoard(
-    user: User,
-    createBoardDto: CreateBoardDto,
-  ): Promise<Board> {
+  async createBoard(user: User, createBoardDto: CreateBoardDto): Promise<Board> {
     const board = this.boardRepository.create({
       ...createBoardDto,
       user: user,
@@ -55,11 +52,7 @@ export class BoardsService {
     }
   }
 
-  async updateBoard(
-    user: string,
-    boardId: string,
-    updateBoardDto: UpdateBoardDto,
-  ): Promise<Board> {
+  async updateBoard(user: string, boardId: string, updateBoardDto: UpdateBoardDto): Promise<Board> {
     const board = await this.findOneBoardOrFail({
       where: { id: boardId, user: { id: user } },
       relations: ['user'],

@@ -19,10 +19,7 @@ export class MessagesService {
     private readonly usersService: UsersService,
   ) {}
 
-  async createMessage(
-    user: User,
-    createMessageDto: CreateMessageDto,
-  ): Promise<Message> {
+  async createMessage(user: User, createMessageDto: CreateMessageDto): Promise<Message> {
     const chatId = await this.findChatId(user, createMessageDto.secondUserId);
 
     const message = this.messageRepository.create({
@@ -39,9 +36,7 @@ export class MessagesService {
     });
   }
 
-  async findOneMessageOrFail(
-    options: FindOneOptions<Message>,
-  ): Promise<Message> {
+  async findOneMessageOrFail(options: FindOneOptions<Message>): Promise<Message> {
     try {
       return await this.messageRepository.findOneOrFail(options);
     } catch (error: unknown) {
@@ -61,10 +56,7 @@ export class MessagesService {
     return messages;
   }
 
-  async findAllMessagesByChatId(
-    user: User,
-    secondUserId: string,
-  ): Promise<Message[]> {
+  async findAllMessagesByChatId(user: User, secondUserId: string): Promise<Message[]> {
     const chatId = await this.findChatId(user, secondUserId);
 
     return await this.messageRepository.find({

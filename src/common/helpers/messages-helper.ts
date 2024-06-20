@@ -13,15 +13,12 @@ export const messagesHelper = {
   DATE_FORMAT_START:
     'Invalid start date format. Please provide a valid date in DD-MM-YYYY or MM-DD-YYYY format.',
   DATE_INVALID: 'Invalid date parameter. Allowed values: day, month, year.',
-  DATE_RANGE:
-    'Invalid date range format. Start date must be before or equal the end date.',
+  DATE_RANGE: 'Invalid date range format. Start date must be before or equal the end date.',
   EMAIL_EXISTS: 'Email already exists.',
   ERROR_OCCURRED: 'Error occurred:',
   IMAGE_FILE_EMPTY: 'No image file provided.',
-  IMAGE_FILE_SIZE_ERROR:
-    'Image file size exceeds the maximum allowed limit (500KB).',
-  IMAGE_FILE_TYPE_INVALID:
-    'Invalid image file type. Only JPEG and PNG image files are allowed.',
+  IMAGE_FILE_SIZE_ERROR: 'Image file size exceeds the maximum allowed limit (500KB).',
+  IMAGE_FILE_TYPE_INVALID: 'Invalid image file type. Only JPEG and PNG image files are allowed.',
   IMAGE_FILE_UPLOAD_ERROR: 'An error occurred while uploading the image.',
   MESSAGE_NOT_FOUND: 'Message not found.',
   NOTE_NOT_FOUND: 'Note not found.',
@@ -36,8 +33,7 @@ export const messagesHelper = {
     'Invalid end time format. Please provide a valid time in HH:mm:ss or hh:mm:ss a format.',
   TIME_FORMAT_START:
     'Invalid start time format. Please provide a valid time in HH:mm:ss or hh:mm:ss a format.',
-  TIME_RANGE:
-    'Invalid time range format. Start time must be before or equal the end time.',
+  TIME_RANGE: 'Invalid time range format. Start time must be before or equal the end time.',
   TOKEN_INVALID: 'Invalid token.',
   USER_EXISTS: 'Username already exists.',
   USER_NOT_FOUND: 'User not found.',

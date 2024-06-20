@@ -71,9 +71,7 @@ export class UsersController {
   @ApiSecurity('Access Token')
   @Get('get-following/:username')
   @Serialize(UserDto)
-  async getFollowingByUsername(
-    @Param('username') username: string,
-  ): Promise<User[]> {
+  async getFollowingByUsername(@Param('username') username: string): Promise<User[]> {
     return this.usersService.getFollowingByUsername(username);
   }
 
@@ -81,9 +79,7 @@ export class UsersController {
   @ApiSecurity('Access Token')
   @Get('get-followed/:username')
   @Serialize(UserDto)
-  async getFollowedByUsername(
-    @Param('username') username: string,
-  ): Promise<User[]> {
+  async getFollowedByUsername(@Param('username') username: string): Promise<User[]> {
     return this.usersService.getFollowedByUsername(username);
   }
 
@@ -97,11 +93,7 @@ export class UsersController {
     @CurrentUserId() userId: string,
     @UploadedFile() profile_image: Express.Multer.File,
   ): Promise<User> {
-    return await this.usersService.updateUser(
-      userId,
-      updateUserDto,
-      profile_image,
-    );
+    return await this.usersService.updateUser(userId, updateUserDto, profile_image);
   }
 
   @ApiOperation({ summary: 'Delete a user' })
@@ -124,9 +116,7 @@ export class UsersController {
   @PublicRoute()
   @Put('password-change')
   @Serialize(UserDto)
-  async passwordChange(
-    @Body() userPasswordChangeDto: UserPasswordChangeDto,
-  ): Promise<User> {
+  async passwordChange(@Body() userPasswordChangeDto: UserPasswordChangeDto): Promise<User> {
     return await this.usersService.passwordChange(
       userPasswordChangeDto.password,
       userPasswordChangeDto.passwordRecoveryToken,
@@ -140,9 +130,7 @@ export class UsersController {
   async recoverUsername(
     @Body() recoverUserCredentialsDto: RecoverUserCredentialsDto,
   ): Promise<void> {
-    return await this.usersService.mailUsername(
-      recoverUserCredentialsDto.email,
-    );
+    return await this.usersService.mailUsername(recoverUserCredentialsDto.email);
   }
 
   @ApiOperation({ summary: 'Mail a password link' })
@@ -152,9 +140,7 @@ export class UsersController {
   async mailPasswordLink(
     @Body() recoverUserCredentialsDto: RecoverUserCredentialsDto,
   ): Promise<void> {
-    return await this.usersService.mailPasswordLink(
-      recoverUserCredentialsDto.email,
-    );
+    return await this.usersService.mailPasswordLink(recoverUserCredentialsDto.email);
   }
 
   @ApiOperation({ summary: 'Follow a user' })

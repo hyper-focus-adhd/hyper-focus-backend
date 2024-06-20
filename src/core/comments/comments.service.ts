@@ -77,9 +77,7 @@ export class CommentsService {
     return comments;
   }
 
-  async findOneCommentOrFail(
-    options: FindOneOptions<Comment>,
-  ): Promise<Comment> {
+  async findOneCommentOrFail(options: FindOneOptions<Comment>): Promise<Comment> {
     try {
       return await this.commentRepository.findOneOrFail(options);
     } catch (error: unknown) {
@@ -106,11 +104,7 @@ export class CommentsService {
     return await this.commentRepository.save(comment);
   }
 
-  async removeComment(
-    user: string,
-    post: string,
-    commentId: string,
-  ): Promise<UpdateResult> {
+  async removeComment(user: string, post: string, commentId: string): Promise<UpdateResult> {
     await this.postsService.findOnePostOrFail({
       where: { id: post },
     });
@@ -122,11 +116,7 @@ export class CommentsService {
     return await this.commentRepository.softDelete(comment.id);
   }
 
-  async restoreComment(
-    user: string,
-    post: string,
-    commentId: string,
-  ): Promise<UpdateResult> {
+  async restoreComment(user: string, post: string, commentId: string): Promise<UpdateResult> {
     await this.postsService.findOnePostOrFail({
       where: { id: post },
     });
@@ -153,12 +143,7 @@ export class CommentsService {
       where: { id: commentId, post: { id: post } },
     });
 
-    reactionHelper(
-      user,
-      comment.reaction.like,
-      comment.reaction.dislike,
-      reaction,
-    );
+    reactionHelper(user, comment.reaction.like, comment.reaction.dislike, reaction);
 
     return await this.commentRepository.save(comment);
   }

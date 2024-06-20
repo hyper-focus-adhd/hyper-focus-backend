@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
 
@@ -37,27 +29,18 @@ export class CommentsController {
     @Param('post') post: string,
     @Param('parentCommentId') parentCommentId: string,
   ): Promise<Comment> {
-    return await this.commentsService.createComment(
-      user,
-      post,
-      parentCommentId,
-      createCommentDto,
-    );
+    return await this.commentsService.createComment(user, post, parentCommentId, createCommentDto);
   }
 
   @ApiOperation({ summary: 'Find all comments by post id' })
   @Get(':post')
-  async findAllCommentsByPostId(
-    @Param('post') post: string,
-  ): Promise<Comment[]> {
+  async findAllCommentsByPostId(@Param('post') post: string): Promise<Comment[]> {
     return await this.commentsService.findAllCommentsByPostId(post);
   }
 
   @ApiOperation({ summary: 'Find all comments by user id' })
   @Get()
-  async findAllCommentsByUserId(
-    @CurrentUserId() user: string,
-  ): Promise<Comment[]> {
+  async findAllCommentsByUserId(@CurrentUserId() user: string): Promise<Comment[]> {
     return await this.commentsService.findAllCommentsByUserId(user);
   }
 
@@ -69,12 +52,7 @@ export class CommentsController {
     @Param('post') post: string,
     @Param('commentId') commentId: string,
   ): Promise<Comment> {
-    return await this.commentsService.updateComment(
-      user,
-      post,
-      commentId,
-      updatePostDto,
-    );
+    return await this.commentsService.updateComment(user, post, commentId, updatePostDto);
   }
 
   @ApiOperation({ summary: 'Delete a comment' })
@@ -105,11 +83,6 @@ export class CommentsController {
     @Param('post') post: string,
     @Param('commentId') commentId: string,
   ): Promise<Comment> {
-    return await this.commentsService.reactionComment(
-      user,
-      post,
-      commentId,
-      reaction,
-    );
+    return await this.commentsService.reactionComment(user, post, commentId, reaction);
   }
 }

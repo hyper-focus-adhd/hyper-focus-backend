@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
 
@@ -33,25 +25,18 @@ export class CommunitiesController {
     @Body() createCommunityDto: CreateCommunityDto,
     @CurrentUserId() user: User,
   ): Promise<Community> {
-    return await this.communitiesService.createCommunity(
-      user,
-      createCommunityDto,
-    );
+    return await this.communitiesService.createCommunity(user, createCommunityDto);
   }
 
   @ApiOperation({ summary: 'Find all communities by user id' })
   @Get()
-  async findAllCommunitiesByUserId(
-    @CurrentUserId() user: string,
-  ): Promise<Community[]> {
+  async findAllCommunitiesByUserId(@CurrentUserId() user: string): Promise<Community[]> {
     return await this.communitiesService.findAllCommunitiesByUserId(user);
   }
 
   @ApiOperation({ summary: 'Find a community by community name' })
   @Get('community/:communityName')
-  async findUserByUsername(
-    @Param('communityName') communityName: string,
-  ): Promise<Community> {
+  async findUserByUsername(@Param('communityName') communityName: string): Promise<Community> {
     return await this.communitiesService.findOneCommunityOrFail({
       where: { name: communityName },
       relations: ['user'],
@@ -61,9 +46,7 @@ export class CommunitiesController {
   @ApiOperation({ summary: 'Find a following community' })
   @ApiSecurity('Access Token')
   @Get('following-communities')
-  async findFollowingCommunities(
-    @CurrentUserId() userId: string,
-  ): Promise<Community[]> {
+  async findFollowingCommunities(@CurrentUserId() userId: string): Promise<Community[]> {
     return await this.communitiesService.findFollowingCommunities(userId);
   }
 
@@ -74,11 +57,7 @@ export class CommunitiesController {
     @CurrentUserId() user: string,
     @Param('communityId') communityId: string,
   ): Promise<Community> {
-    return await this.communitiesService.updateCommunity(
-      user,
-      communityId,
-      updateCommunityDto,
-    );
+    return await this.communitiesService.updateCommunity(user, communityId, updateCommunityDto);
   }
 
   @ApiOperation({ summary: 'Delete a community' })

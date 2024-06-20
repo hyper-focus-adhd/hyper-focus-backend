@@ -20,10 +20,7 @@ interface DateRange {
 export class ValidTimesValidator implements ValidatorConstraintInterface {
   private constraints: number[] = [];
 
-  validate(
-    time: { start: Date; end: Date },
-    args: ValidationArguments,
-  ): boolean {
+  validate(time: { start: Date; end: Date }, args: ValidationArguments): boolean {
     const date = (args.object as DateRange).date;
     const { start, end } = time;
 

@@ -41,12 +41,7 @@ export class PostsController {
     @Param('communityId') communityId: string,
     @UploadedFile() image: Express.Multer.File,
   ): Promise<PostEntity> {
-    return await this.postsService.createPost(
-      user,
-      communityId,
-      createPostDto,
-      image,
-    );
+    return await this.postsService.createPost(user, communityId, createPostDto, image);
   }
 
   @ApiOperation({ summary: 'Find all posts' })
@@ -57,17 +52,13 @@ export class PostsController {
 
   @ApiOperation({ summary: 'Find all following posts by user id' })
   @Get('following-posts')
-  async findAllFollowingPostsByUserId(
-    @CurrentUserId() user: string,
-  ): Promise<PostEntity[]> {
+  async findAllFollowingPostsByUserId(@CurrentUserId() user: string): Promise<PostEntity[]> {
     return await this.postsService.findAllFollowingPostsByUserId(user);
   }
 
   @ApiOperation({ summary: 'Find all posts by an user id' })
   @Get()
-  async findAllPostsByUserId(
-    @CurrentUserId() user: string,
-  ): Promise<PostEntity[]> {
+  async findAllPostsByUserId(@CurrentUserId() user: string): Promise<PostEntity[]> {
     return await this.postsService.findAllPostsByUserId(user);
   }
 
@@ -79,9 +70,7 @@ export class PostsController {
 
   @ApiOperation({ summary: 'Find all posts by an username' })
   @Get('username/:username')
-  async findAllPostsByUserName(
-    @Param('username') username: string,
-  ): Promise<PostEntity[]> {
+  async findAllPostsByUserName(@Param('username') username: string): Promise<PostEntity[]> {
     return await this.postsService.findAllPostsByUserName(username);
   }
 
@@ -102,12 +91,7 @@ export class PostsController {
     @Param('postId') postId: string,
     @UploadedFile() image: Express.Multer.File,
   ): Promise<PostEntity> {
-    return await this.postsService.updatePost(
-      user,
-      postId,
-      updatePostDto,
-      image,
-    );
+    return await this.postsService.updatePost(user, postId, updatePostDto, image);
   }
 
   @ApiOperation({ summary: 'Delete a post' })

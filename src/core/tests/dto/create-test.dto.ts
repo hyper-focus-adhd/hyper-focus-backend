@@ -1,11 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import {
-  ArrayMinSize,
-  IsArray,
-  IsNotEmpty,
-  ValidateNested,
-} from 'class-validator';
+import { ArrayMinSize, IsArray, IsNotEmpty, ValidateNested } from 'class-validator';
 
 import { AnswerEnum } from '../enums/test.enum';
 import { AnswerEntity } from '../helper/test-helper';

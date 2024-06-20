@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
 
@@ -54,12 +46,7 @@ export class NotesController {
     @Param('board') board: string,
     @Param('noteId') noteId: string,
   ): Promise<Note> {
-    return await this.notesService.updateNote(
-      user,
-      board,
-      noteId,
-      updateNoteDto,
-    );
+    return await this.notesService.updateNote(user, board, noteId, updateNoteDto);
   }
 
   @ApiOperation({ summary: 'Delete a note' })

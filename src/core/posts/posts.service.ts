@@ -92,11 +92,9 @@ export class PostsService {
   }
 
   async findAllPostsByCommunityName(communityName: string): Promise<Post[]> {
-    const foundCommunity = await this.communitiesService.findOneCommunityOrFail(
-      {
-        where: { name: communityName },
-      },
-    );
+    const foundCommunity = await this.communitiesService.findOneCommunityOrFail({
+      where: { name: communityName },
+    });
 
     return this.findAllPostsByCommunityId(foundCommunity.id);
   }
@@ -121,8 +119,7 @@ export class PostsService {
       followingPosts.push(...friendPosts);
     }
 
-    const foundFollowingCommunities =
-      await this.communitiesService.findFollowingCommunities(user);
+    const foundFollowingCommunities = await this.communitiesService.findFollowingCommunities(user);
     for (const community of foundFollowingCommunities) {
       const foundPosts = await this.postRepository.find({
         where: { community: { id: community.id } },
@@ -192,11 +189,7 @@ export class PostsService {
     return await this.postRepository.restore(post.id);
   }
 
-  async reactionPost(
-    user: string,
-    postId: string,
-    reaction: Reaction,
-  ): Promise<Post> {
+  async reactionPost(user: string, postId: string, reaction: Reaction): Promise<Post> {
     const post = await this.findOnePostOrFail({
       where: { id: postId },
     });
@@ -206,11 +199,7 @@ export class PostsService {
     return await this.postRepository.save(post);
   }
 
-  async uploadPostImage(
-    user: string,
-    postId: string,
-    image: Express.Multer.File,
-  ): Promise<string> {
+  async uploadPostImage(user: string, postId: string, image: Express.Multer.File): Promise<string> {
     const folderName = `users/${user}/posts/${postId}/post-image`;
 
     return await this.fileStorageService.uploadImage(image, folderName);

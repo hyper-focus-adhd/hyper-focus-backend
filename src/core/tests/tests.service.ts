@@ -12,9 +12,7 @@ import { numberObject, TestData, testData } from './helper/test-helper';
 
 @Injectable()
 export class TestsService {
-  constructor(
-    @InjectRepository(Test) private readonly testRepository: Repository<Test>,
-  ) {}
+  constructor(@InjectRepository(Test) private readonly testRepository: Repository<Test>) {}
 
   async createTest(user: User, createTestDto: CreateTestDto): Promise<Test> {
     const foundTestData = testData(createTestDto);

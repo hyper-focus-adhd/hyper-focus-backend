@@ -18,11 +18,7 @@ export class NotesService {
     private readonly boardsService: BoardsService,
   ) {}
 
-  async createNote(
-    user: User,
-    board: string,
-    createNoteDto: CreateNoteDto,
-  ): Promise<Note> {
+  async createNote(user: User, board: string, createNoteDto: CreateNoteDto): Promise<Note> {
     const boardId = JSON.parse(JSON.stringify(board));
 
     await this.boardsService.findOneBoardOrFail({
@@ -87,11 +83,7 @@ export class NotesService {
     return await this.noteRepository.save(note);
   }
 
-  async removeNote(
-    user: string,
-    board: string,
-    noteId: string,
-  ): Promise<UpdateResult> {
+  async removeNote(user: string, board: string, noteId: string): Promise<UpdateResult> {
     await this.boardsService.findOneBoardOrFail({
       where: { id: board, user: { id: user } },
     });
@@ -103,11 +95,7 @@ export class NotesService {
     return await this.noteRepository.softDelete(note.id);
   }
 
-  async restoreNote(
-    user: string,
-    board: string,
-    noteId: string,
-  ): Promise<UpdateResult> {
+  async restoreNote(user: string, board: string, noteId: string): Promise<UpdateResult> {
     await this.boardsService.findOneBoardOrFail({
       where: { id: board, user: { id: user } },
     });

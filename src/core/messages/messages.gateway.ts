@@ -44,10 +44,7 @@ export class MessagesGateway {
     @CurrentUserId() user: User,
     @MessageBody() createMessageDto: CreateMessageDto,
   ): Promise<Message> {
-    const message = await this.messagesService.createMessage(
-      user,
-      createMessageDto,
-    );
+    const message = await this.messagesService.createMessage(user, createMessageDto);
 
     this.server.to(message.chat_id).emit('message', message);
 
@@ -78,9 +75,6 @@ export class MessagesGateway {
     @CurrentUserId() user: User,
     @MessageBody() secondUserId: string,
   ): Promise<Message[]> {
-    return await this.messagesService.findAllMessagesByChatId(
-      user,
-      secondUserId,
-    );
+    return await this.messagesService.findAllMessagesByChatId(user, secondUserId);
   }
 }

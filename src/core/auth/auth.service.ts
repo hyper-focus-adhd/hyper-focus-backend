@@ -1,8 +1,4 @@
-import {
-  ForbiddenException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as argon2 from 'argon2';
 import * as bcrypt from 'bcryptjs';
@@ -28,24 +24,14 @@ export class AuthService {
     createUserDto: CreateUserDto,
     profile_image: Express.Multer.File,
   ): Promise<CreateUserType> {
-    await this.usersService.verifyExistingUser(
-      createUserDto.username,
-      createUserDto.email,
-    );
+    await this.usersService.verifyExistingUser(createUserDto.username, createUserDto.email);
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(createUserDto.password, salt);
 
-    await this.usersService.createUser(
-      createUserDto,
-      hashedPassword,
-      profile_image,
-    );
+    await this.usersService.createUser(createUserDto, hashedPassword, profile_image);
 
-    return await this.validateUser(
-      createUserDto.username,
-      createUserDto.password,
-    );
+    return await this.validateUser(createUserDto.username, createUserDto.password);
   }
 
   async login(loginDto: LoginDto): Promise<object> {
@@ -112,22 +98,15 @@ export class AuthService {
       throw new ForbiddenException(messagesHelper.ACCESS_DENIED);
     }
 
-    const refreshTokenMatches = await argon2.verify(
-      user.hashed_refresh_token,
-      refreshToken,
-    );
-    if (!refreshTokenMatches)
-      throw new ForbiddenException(messagesHelper.ACCESS_DENIED);
+    const refreshTokenMatches = await argon2.verify(user.hashed_refresh_token, refreshToken);
+    if (!refreshTokenMatches) throw new ForbiddenException(messagesHelper.ACCESS_DENIED);
 
     const tokens = await this.generateToken(user);
 
     return { accessToken: tokens.accessToken };
   }
 
-  async updateRefreshTokenHash(
-    userId: string,
-    refreshToken: string,
-  ): Promise<void> {
+  async updateRefreshTokenHash(userId: string, refreshToken: string): Promise<void> {
     const hashRefreshToken = await argon2.hash(refreshToken);
     await this.usersService.updateUser(userId, {
       hashed_refresh_token: hashRefreshToken,

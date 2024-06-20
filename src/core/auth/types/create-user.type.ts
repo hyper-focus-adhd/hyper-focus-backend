@@ -1,8 +1,4 @@
-import {
-  GenderEnum,
-  LanguageEnum,
-  RoleEnum,
-} from '../../users/enums/user.enum';
+import { GenderEnum, LanguageEnum, RoleEnum } from '../../users/enums/user.enum';
 
 export type CreateUserType = {
   id: string;

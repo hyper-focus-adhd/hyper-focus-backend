@@ -10,12 +10,7 @@ import { PostsController } from './posts.controller';
 import { PostsService } from './posts.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Post]),
-    UsersModule,
-    CommunitiesModule,
-    FileStorageModule,
-  ],
+  imports: [TypeOrmModule.forFeature([Post]), UsersModule, CommunitiesModule, FileStorageModule],
   controllers: [PostsController],
   providers: [PostsService],
   exports: [PostsService],

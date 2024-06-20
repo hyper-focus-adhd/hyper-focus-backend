@@ -65,9 +65,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     example: 'DD-MM-YYYY or MM-DD-YYYY',
   })
   @IsOptional()
-  @Transform(({ value }) =>
-    moment(value, ['DD-MM-YYYY', 'MM-DD-YYYY'], true).toDate(),
-  )
+  @Transform(({ value }) => moment(value, ['DD-MM-YYYY', 'MM-DD-YYYY'], true).toDate())
   @IsDate({ message: messagesHelper.DATE_FORMAT })
   birthdate?: Date;
 

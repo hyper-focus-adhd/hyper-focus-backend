@@ -16,10 +16,7 @@ export class FileStorageService {
     this.storage = new Storage();
   }
 
-  async uploadImage(
-    image: Express.Multer.File,
-    folderName: string,
-  ): Promise<string> {
+  async uploadImage(image: Express.Multer.File, folderName: string): Promise<string> {
     if (!image) {
       throw new BadRequestException(messagesHelper.IMAGE_FILE_EMPTY);
     }
@@ -39,9 +36,7 @@ export class FileStorageService {
     try {
       // Upload the image to Google Cloud Storage
       const bucket = this.storage.bucket(this.bucketName);
-      const fileName = `${folderName}/image_${ulid()}.${image.originalname
-        .split('.')
-        .pop()}`;
+      const fileName = `${folderName}/image_${ulid()}.${image.originalname.split('.').pop()}`;
       const file = bucket.file(fileName);
 
       // Delete all existing files in the specified folder
@@ -56,10 +51,7 @@ export class FileStorageService {
 
       // Upload the image file using the stream
       await new Promise((resolve, reject) => {
-        stream
-          .pipe(file.createWriteStream())
-          .on('error', reject)
-          .on('finish', resolve);
+        stream.pipe(file.createWriteStream()).on('error', reject).on('finish', resolve);
       });
 
       // Generate the public URL for the image

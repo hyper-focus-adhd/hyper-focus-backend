@@ -1,8 +1,4 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
 import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
@@ -21,10 +17,7 @@ export class CommunitiesService {
     private readonly communityRepository: Repository<Community>,
   ) {}
 
-  async createCommunity(
-    user: User,
-    createCommunityDto: CreateCommunityDto,
-  ): Promise<Community> {
+  async createCommunity(user: User, createCommunityDto: CreateCommunityDto): Promise<Community> {
     await this.verifyExistingCommunity(createCommunityDto.name);
 
     const community = this.communityRepository.create({
@@ -53,15 +46,11 @@ export class CommunitiesService {
     return communities;
   }
 
-  async findOneCommunity(
-    options: FindOneOptions<Community>,
-  ): Promise<Community> {
+  async findOneCommunity(options: FindOneOptions<Community>): Promise<Community> {
     return await this.communityRepository.findOne(options);
   }
 
-  async findOneCommunityOrFail(
-    options: FindOneOptions<Community>,
-  ): Promise<Community> {
+  async findOneCommunityOrFail(options: FindOneOptions<Community>): Promise<Community> {
     try {
       return await this.communityRepository.findOneOrFail(options);
     } catch (error: unknown) {
@@ -92,10 +81,7 @@ export class CommunitiesService {
     return await this.communityRepository.save(community);
   }
 
-  async removeCommunity(
-    user: string,
-    communityId: string,
-  ): Promise<UpdateResult> {
+  async removeCommunity(user: string, communityId: string): Promise<UpdateResult> {
     const community = await this.findOneCommunityOrFail({
       where: { id: communityId, user: { id: user } },
     });
@@ -103,10 +89,7 @@ export class CommunitiesService {
     return await this.communityRepository.softDelete(community.id);
   }
 
-  async restoreCommunity(
-    user: string,
-    communityId: string,
-  ): Promise<UpdateResult> {
+  async restoreCommunity(user: string, communityId: string): Promise<UpdateResult> {
     const community = await this.findOneCommunityOrFail({
       where: { id: communityId, user: { id: user } },
       withDeleted: true,

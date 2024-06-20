@@ -15,12 +15,7 @@ import { UsersService } from './users.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      User,
-      UserSummaryByDay,
-      UserSummaryByMonth,
-      UserSummaryByYear,
-    ]),
+    TypeOrmModule.forFeature([User, UserSummaryByDay, UserSummaryByMonth, UserSummaryByYear]),
     JwtModule.register({}),
     FileStorageModule,
     MailerModule,

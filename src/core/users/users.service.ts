@@ -124,10 +124,7 @@ export class UsersService {
     profile_image?: Express.Multer.File,
   ): Promise<User> {
     if (updateUserDto.username || updateUserDto.email) {
-      await this.verifyExistingUser(
-        updateUserDto.username,
-        updateUserDto.email,
-      );
+      await this.verifyExistingUser(updateUserDto.username, updateUserDto.email);
     }
 
     const user = await this.findOneUserOrFail({ where: { id: userId } });
@@ -138,10 +135,7 @@ export class UsersService {
     }
 
     if (profile_image) {
-      user.profile_image = await this.uploadProfileImage(
-        user.id,
-        profile_image,
-      );
+      user.profile_image = await this.uploadProfileImage(user.id, profile_image);
     }
 
     this.userRepository.merge(user, updateUserDto);
@@ -182,10 +176,7 @@ export class UsersService {
     }
   }
 
-  async passwordChange(
-    password: string,
-    passwordRecoveryToken: string,
-  ): Promise<User> {
+  async passwordChange(password: string, passwordRecoveryToken: string): Promise<User> {
     const isValidToken = this.validateAndCheckToken(passwordRecoveryToken);
 
     if (isValidToken === false) {
@@ -268,10 +259,7 @@ export class UsersService {
     );
   }
 
-  async uploadProfileImage(
-    userId: string,
-    image: Express.Multer.File,
-  ): Promise<string> {
+  async uploadProfileImage(userId: string, image: Express.Multer.File): Promise<string> {
     const folderName = `users/${userId}/profile-image`;
 
     return await this.fileStorageService.uploadImage(image, folderName);
@@ -303,10 +291,7 @@ export class UsersService {
     return { user, followed_user: followedUser };
   }
 
-  async followCommunity(
-    userId: string,
-    followCommunityId: string,
-  ): Promise<Community> {
+  async followCommunity(userId: string, followCommunityId: string): Promise<Community> {
     const user = await this.findOneUserOrFail({
       where: { id: userId },
     });
@@ -324,13 +309,9 @@ export class UsersService {
       community.followers.splice(followIndex, 1);
     }
 
-    await this.communitiesService.updateCommunity(
-      community.user.id,
-      community.id,
-      {
-        followers: community.followers,
-      },
-    );
+    await this.communitiesService.updateCommunity(community.user.id, community.id, {
+      followers: community.followers,
+    });
     return community;
   }
 
