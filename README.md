@@ -9,6 +9,12 @@ This repository is designated for storing all backend-related code for the platf
 $ yarn install
 ```
 
+## Running the Docker Container
+
+```bash
+$ docker compose -p hyper-focus up -d --build -V
+```
+
 ## Running the app
 
 ```bash

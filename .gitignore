@@ -1,4 +1,7 @@
-# compiled output
+# Environment variables and secrets
+.env
+
+# Compiled output
 /dist
 /node_modules
 
@@ -34,4 +37,5 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# Keys
 keys/hyper-focus-389222-ceb716a7a3ef.json
