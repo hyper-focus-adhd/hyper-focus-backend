@@ -17,52 +17,52 @@ $ docker compose -p hyper-focus up -d --build -V
 
 ## Running the app
 
+Development mode
 ```bash
-# development mode
 $ yarn run start
 ```
+Watch mode
 ```bash
-# watch mode
 $ yarn run start:dev
 ```
+Production mode
 ```bash
-# production mode
 $ yarn run start:prod
 ```
 
 ## Test
 
-```bash
-# unit tests
+Unit tests
+```bash 
 $ yarn run test
 ```
+E2e tests
 ```bash
-# e2e tests
 $ yarn run test:e2e
 ```
+Test coverage
 ```bash
-# test coverage
 $ yarn run test:cov
 ```
 
 ## Migrations
 
+Generate a migration
 ```bash
-# generates a migration
 $ yarn migration:generate "src/database/migrations/MigrationName"
 ```
+Run a migration
 ```bash
-# runs a migration
 $ yarn migration:run
 ```
+Revert a migration
 ```bash
-# reverts a migration
 $ yarn migration:revert
 ```
 
 ## Swagger API
 
+Access swagger api
 ```bash
-# access swagger api
 $ http://localhost:3000/api
 ```
