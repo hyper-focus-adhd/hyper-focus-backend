@@ -8,16 +8,16 @@ export class AnswerEntity {
   answer: AnswerEnum;
 }
 
-export type QuestionEntity = {
+export interface QuestionEntity {
   question: TestAEnum | TestBEnum;
   answer: AnswerEnum;
   value: number;
-};
+}
 
-export type Score = {
+export interface Score {
   test_a: number;
   test_b: number;
-};
+}
 
 export type TestData = {
   test_a: QuestionEntity[];
