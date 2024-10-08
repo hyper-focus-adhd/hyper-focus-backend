@@ -4,7 +4,7 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default [
-  { ignores: ['.pnp.*'] },
+  { ignores: ['dist/*', '.pnp.*'] },
   { files: ['**/*.{js,mjs,cjs,ts}'] },
   { languageOptions: { globals: globals.browser } },
   pluginJs.configs.recommended,
