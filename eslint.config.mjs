@@ -39,4 +39,12 @@ export default [
       ],
     },
   },
+  {
+    files: ['*.config.js', '*.config.cjs', '*.config.mjs'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
 ];
