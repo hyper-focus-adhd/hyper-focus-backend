@@ -3,7 +3,7 @@
 
 echo '🩺 Starting the checkout'
 
-yarn lint-staged
+#yarn lint-staged
 
 # Check ESLint Standards
 yarn run lint ||
