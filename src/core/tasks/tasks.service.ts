@@ -5,7 +5,6 @@ import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
 import { messagesHelper } from '../../common/helpers/messages-helper';
 import { User } from '../users/entities/user.entity';
-
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './entities/task.entity';
@@ -45,7 +44,9 @@ export class TasksService {
     try {
       return await this.taskRepository.findOneOrFail(options);
     } catch (error: unknown) {
-      throw new NotFoundException(messagesHelper.TASK_NOT_FOUND);
+      if (error instanceof Error) {
+        throw new NotFoundException(messagesHelper.TASK_NOT_FOUND);
+      }
     }
   }
 

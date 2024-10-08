@@ -5,7 +5,6 @@ import { UpdateResult } from 'typeorm';
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
 import { Serialize } from '../../common/interceptors/serialize.interceptor';
 import { User } from '../users/entities/user.entity';
-
 import { BoardsService } from './boards.service';
 import { BoardDto } from './dto/board.dto';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -21,10 +20,7 @@ export class BoardsController {
 
   @ApiOperation({ summary: 'Create a new board' })
   @Post()
-  async createBoard(
-    @Body() createBoardDto: CreateBoardDto,
-    @CurrentUserId() user: User,
-  ): Promise<Board> {
+  async createBoard(@Body() createBoardDto: CreateBoardDto, @CurrentUserId() user: User): Promise<Board> {
     return await this.boardsService.createBoard(user, createBoardDto);
   }
 
@@ -46,19 +42,13 @@ export class BoardsController {
 
   @ApiOperation({ summary: 'Delete a board' })
   @Delete(':boardId')
-  async removeBoard(
-    @CurrentUserId() user: string,
-    @Param('boardId') boardId: string,
-  ): Promise<Board> {
+  async removeBoard(@CurrentUserId() user: string, @Param('boardId') boardId: string): Promise<Board> {
     return await this.boardsService.removeBoard(user, boardId);
   }
 
   @ApiOperation({ summary: 'Restore a deleted board' })
   @Patch('restore/:boardId')
-  async restoreBoard(
-    @CurrentUserId() user: string,
-    @Param('boardId') boardId: string,
-  ): Promise<UpdateResult> {
+  async restoreBoard(@CurrentUserId() user: string, @Param('boardId') boardId: string): Promise<UpdateResult> {
     return await this.boardsService.restoreBoard(user, boardId);
   }
 }

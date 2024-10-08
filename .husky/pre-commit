@@ -3,7 +3,7 @@
 
 echo '🩺 Starting the checkout'
 
-npx --no-install lint-staged
+npx lint-staged
 
 ## Check ESLint Standards
 #yarn run lint ||

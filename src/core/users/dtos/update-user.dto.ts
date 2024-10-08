@@ -17,7 +17,6 @@ import * as moment from 'moment/moment';
 import { messagesHelper } from '../../../common/helpers/messages-helper';
 import { passwordHelper } from '../../../common/helpers/password-helper';
 import { GenderEnum, LanguageEnum, RoleEnum } from '../enums/user.enum';
-
 import { CreateUserDto } from './create-user.dto';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {

@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  HttpCode,
-  HttpStatus,
-  Post,
-  UploadedFile,
-  UseGuards,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 
@@ -18,7 +9,6 @@ import { RefreshTokenGuard } from '../../common/guards/refresh-token.guard';
 import { Serialize } from '../../common/interceptors/serialize.interceptor';
 import { CreateUserDto } from '../users/dtos/create-user.dto';
 import { UserDto } from '../users/dtos/user.dto';
-
 import { AuthService } from './auth.service';
 import { LoginDto } from './dtos/login.dto';
 import { CreateUserType } from './types/create-user.type';

@@ -1,15 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-  Put,
-  UploadedFile,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
@@ -18,7 +7,6 @@ import { CurrentUserId } from '../../common/decorators/current-user-id.decorator
 import { PublicRoute } from '../../common/decorators/public.decorator';
 import { Serialize } from '../../common/interceptors/serialize.interceptor';
 import { Community } from '../communities/entities/community.entity';
-
 import { GenericUserSummaryDto } from './dtos/generic-user-summary.dto';
 import { RecoverUserCredentialsDto } from './dtos/recover-user-credential.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
@@ -127,9 +115,7 @@ export class UsersController {
   @Post('recover-username')
   @PublicRoute()
   @Serialize(UserDto)
-  async recoverUsername(
-    @Body() recoverUserCredentialsDto: RecoverUserCredentialsDto,
-  ): Promise<void> {
+  async recoverUsername(@Body() recoverUserCredentialsDto: RecoverUserCredentialsDto): Promise<void> {
     return await this.usersService.mailUsername(recoverUserCredentialsDto.email);
   }
 
@@ -137,9 +123,7 @@ export class UsersController {
   @Post('mail-password-link')
   @PublicRoute()
   @Serialize(UserDto)
-  async mailPasswordLink(
-    @Body() recoverUserCredentialsDto: RecoverUserCredentialsDto,
-  ): Promise<void> {
+  async mailPasswordLink(@Body() recoverUserCredentialsDto: RecoverUserCredentialsDto): Promise<void> {
     return await this.usersService.mailPasswordLink(recoverUserCredentialsDto.email);
   }
 

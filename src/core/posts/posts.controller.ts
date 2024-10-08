@@ -1,14 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-  UploadedFile,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiParam, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { UpdateResult } from 'typeorm';
@@ -17,7 +7,6 @@ import { CurrentUserId } from '../../common/decorators/current-user-id.decorator
 import { Serialize } from '../../common/interceptors/serialize.interceptor';
 import { Reaction } from '../../common/types';
 import { User } from '../users/entities/user.entity';
-
 import { CreatePostDto } from './dto/create-post.dto';
 import { PostDto } from './dto/post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -76,9 +65,7 @@ export class PostsController {
 
   @ApiOperation({ summary: 'Find all posts by a communityName' })
   @Get('community-name/:communityName')
-  async findAllPostsByCommunityName(
-    @Param('communityName') communityName: string,
-  ): Promise<PostEntity[]> {
+  async findAllPostsByCommunityName(@Param('communityName') communityName: string): Promise<PostEntity[]> {
     return await this.postsService.findAllPostsByCommunityName(communityName);
   }
 
@@ -96,19 +83,13 @@ export class PostsController {
 
   @ApiOperation({ summary: 'Delete a post' })
   @Delete(':postId')
-  async removePost(
-    @CurrentUserId() user: string,
-    @Param('postId') postId: string,
-  ): Promise<PostEntity> {
+  async removePost(@CurrentUserId() user: string, @Param('postId') postId: string): Promise<PostEntity> {
     return await this.postsService.removePost(user, postId);
   }
 
   @ApiOperation({ summary: 'Restore a deleted post' })
   @Patch('restore/:postId')
-  async restorePost(
-    @CurrentUserId() user: string,
-    @Param('postId') postId: string,
-  ): Promise<UpdateResult> {
+  async restorePost(@CurrentUserId() user: string, @Param('postId') postId: string): Promise<UpdateResult> {
     return await this.postsService.restorePost(user, postId);
   }
 

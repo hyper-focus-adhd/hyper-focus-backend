@@ -7,7 +7,6 @@ import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 import { messagesHelper } from '../../common/helpers/messages-helper';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
-
 import { CreateMessageDto } from './dto/create-message.dto';
 import { Message } from './entities/message.entity';
 
@@ -40,7 +39,9 @@ export class MessagesService {
     try {
       return await this.messageRepository.findOneOrFail(options);
     } catch (error: unknown) {
-      throw new NotFoundException(messagesHelper.MESSAGE_NOT_FOUND);
+      if (error instanceof Error) {
+        throw new NotFoundException(messagesHelper.MESSAGE_NOT_FOUND);
+      }
     }
   }
 

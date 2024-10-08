@@ -5,7 +5,6 @@ import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
 import { messagesHelper } from '../../common/helpers/messages-helper';
 import { User } from '../users/entities/user.entity';
-
 import { CreateCommunityDto } from './dto/create-community.dto';
 import { UpdateCommunityDto } from './dto/update-community.dto';
 import { Community } from './entities/community.entity';
@@ -54,7 +53,9 @@ export class CommunitiesService {
     try {
       return await this.communityRepository.findOneOrFail(options);
     } catch (error: unknown) {
-      throw new NotFoundException(messagesHelper.COMMUNITY_NOT_FOUND);
+      if (error instanceof Error) {
+        throw new NotFoundException(messagesHelper.COMMUNITY_NOT_FOUND);
+      }
     }
   }
 
@@ -66,11 +67,7 @@ export class CommunitiesService {
       .getMany();
   }
 
-  async updateCommunity(
-    user: string,
-    communityId: string,
-    updateCommunityDto: UpdateCommunityDto,
-  ): Promise<Community> {
+  async updateCommunity(user: string, communityId: string, updateCommunityDto: UpdateCommunityDto): Promise<Community> {
     const community = await this.findOneCommunityOrFail({
       where: { id: communityId, user: { id: user } },
       relations: ['user'],

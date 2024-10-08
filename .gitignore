@@ -39,3 +39,12 @@ lerna-debug.log*
 
 # Keys
 keys/hyper-focus-389222-ceb716a7a3ef.json
+
+# Ignore Yarn install file
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

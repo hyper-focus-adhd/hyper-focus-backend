@@ -5,7 +5,6 @@ import { UpdateResult } from 'typeorm';
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
 import { Serialize } from '../../common/interceptors/serialize.interceptor';
 import { User } from '../users/entities/user.entity';
-
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskDto } from './dto/task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -21,10 +20,7 @@ export class TasksController {
 
   @ApiOperation({ summary: 'Create a new task' })
   @Post()
-  async createTask(
-    @Body() createTaskDto: CreateTaskDto,
-    @CurrentUserId() user: User,
-  ): Promise<Task> {
+  async createTask(@Body() createTaskDto: CreateTaskDto, @CurrentUserId() user: User): Promise<Task> {
     return await this.tasksService.createTask(user, createTaskDto);
   }
 
@@ -46,19 +42,13 @@ export class TasksController {
 
   @ApiOperation({ summary: 'Delete a task' })
   @Delete(':taskId')
-  async removeTask(
-    @CurrentUserId() user: string,
-    @Param('taskId') taskId: string,
-  ): Promise<UpdateResult> {
+  async removeTask(@CurrentUserId() user: string, @Param('taskId') taskId: string): Promise<UpdateResult> {
     return await this.tasksService.removeTask(user, taskId);
   }
 
   @ApiOperation({ summary: 'Restore a deleted task' })
   @Patch('restore/:taskId')
-  async restoreTask(
-    @CurrentUserId() user: string,
-    @Param('taskId') taskId: string,
-  ): Promise<UpdateResult> {
+  async restoreTask(@CurrentUserId() user: string, @Param('taskId') taskId: string): Promise<UpdateResult> {
     return await this.tasksService.restoreTask(user, taskId);
   }
 }

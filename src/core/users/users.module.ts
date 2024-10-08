@@ -5,7 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { FileStorageModule } from '../../integration/file-storage/file-storage.module';
 import { MailerModule } from '../../integration/mailer/mailer.module';
 import { CommunitiesModule } from '../communities/communities.module';
-
 import { UserSummaryByDay } from './entities/user-summary-by-day.entity';
 import { UserSummaryByMonth } from './entities/user-summary-by-month.entity';
 import { UserSummaryByYear } from './entities/user-summary-by-year.entity';

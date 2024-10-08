@@ -1,15 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import {
-  IsArray,
-  IsDate,
-  IsEmail,
-  IsEnum,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  Matches,
-} from 'class-validator';
+import { IsArray, IsDate, IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, Matches } from 'class-validator';
 import * as moment from 'moment';
 
 import { messagesHelper } from '../../../common/helpers/messages-helper';
@@ -88,11 +79,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: 'The people the user is following',
-    example: [
-      'TGH6C5APTWQFKN46BPFFCNJ345',
-      'HJU6C5APTWQFKN46BPFFCNJ555',
-      'LOP6C5APTWQFKN46BPFFCNJ342',
-    ],
+    example: ['TGH6C5APTWQFKN46BPFFCNJ345', 'HJU6C5APTWQFKN46BPFFCNJ555', 'LOP6C5APTWQFKN46BPFFCNJ342'],
   })
   @IsArray()
   @IsOptional()
@@ -101,11 +88,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: 'The followers of the user',
-    example: [
-      'TGH6C5APTWQFKN46BPFFCNJ342',
-      'HJU6C5APTWQFKN46BPFFCNJ535',
-      'LOP6C5APTWQFKN46BPFFCNJ328',
-    ],
+    example: ['TGH6C5APTWQFKN46BPFFCNJ342', 'HJU6C5APTWQFKN46BPFFCNJ535', 'LOP6C5APTWQFKN46BPFFCNJ328'],
   })
   @IsArray()
   @IsOptional()

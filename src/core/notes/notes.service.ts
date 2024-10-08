@@ -6,7 +6,6 @@ import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 import { messagesHelper } from '../../common/helpers/messages-helper';
 import { BoardsService } from '../boards/boards.service';
 import { User } from '../users/entities/user.entity';
-
 import { CreateNoteDto } from './dtos/create-note.dto';
 import { UpdateNoteDto } from './dtos/update-note.dto';
 import { Note } from './entities/note.entity';
@@ -59,16 +58,13 @@ export class NotesService {
     try {
       return await this.noteRepository.findOneOrFail(options);
     } catch (error: unknown) {
-      throw new NotFoundException(messagesHelper.NOTE_NOT_FOUND);
+      if (error instanceof Error) {
+        throw new NotFoundException(messagesHelper.NOTE_NOT_FOUND);
+      }
     }
   }
 
-  async updateNote(
-    user: string,
-    board: string,
-    noteId: string,
-    updateNoteDto: UpdateNoteDto,
-  ): Promise<Note> {
+  async updateNote(user: string, board: string, noteId: string, updateNoteDto: UpdateNoteDto): Promise<Note> {
     await this.boardsService.findOneBoardOrFail({
       where: { id: board, user: { id: user } },
     });

@@ -5,7 +5,6 @@ import { UpdateResult } from 'typeorm';
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
 import { Serialize } from '../../common/interceptors/serialize.interceptor';
 import { User } from '../users/entities/user.entity';
-
 import { CreateTestDto } from './dto/create-test.dto';
 import { TestDto } from './dto/test.dto';
 import { Test } from './entities/test.entity';
@@ -20,10 +19,7 @@ export class TestsController {
 
   @ApiOperation({ summary: 'Create a new test' })
   @Post()
-  async createTest(
-    @Body() createTestDto: CreateTestDto,
-    @CurrentUserId() user: User,
-  ): Promise<Test> {
+  async createTest(@Body() createTestDto: CreateTestDto, @CurrentUserId() user: User): Promise<Test> {
     return await this.testsService.createTest(user, createTestDto);
   }
 
@@ -35,19 +31,13 @@ export class TestsController {
 
   @ApiOperation({ summary: 'Delete a test' })
   @Delete(':testId')
-  async removeTest(
-    @CurrentUserId() user: string,
-    @Param('testId') testId: string,
-  ): Promise<UpdateResult> {
+  async removeTest(@CurrentUserId() user: string, @Param('testId') testId: string): Promise<UpdateResult> {
     return await this.testsService.removeTest(user, testId);
   }
 
   @ApiOperation({ summary: 'Restore a deleted test' })
   @Patch('restore/:testId')
-  async restoreTest(
-    @CurrentUserId() user: string,
-    @Param('testId') testId: string,
-  ): Promise<UpdateResult> {
+  async restoreTest(@CurrentUserId() user: string, @Param('testId') testId: string): Promise<UpdateResult> {
     return await this.testsService.restoreTest(user, testId);
   }
 }

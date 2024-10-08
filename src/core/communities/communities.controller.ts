@@ -5,7 +5,6 @@ import { UpdateResult } from 'typeorm';
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
 import { Serialize } from '../../common/interceptors/serialize.interceptor';
 import { User } from '../users/entities/user.entity';
-
 import { CommunitiesService } from './communities.service';
 import { CommunityDto } from './dto/community.dto';
 import { CreateCommunityDto } from './dto/create-community.dto';

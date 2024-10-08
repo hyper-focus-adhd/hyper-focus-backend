@@ -6,12 +6,9 @@ export const messagesHelper = {
   COMMUNITY_EXISTS: 'Community name already exists.',
   COMMUNITY_NOT_FOUND: 'Community not found.',
   CREDENTIALS_INVALID: 'Invalid credentials.',
-  DATE_FORMAT:
-    'Invalid date format. Please provide a valid date in DD-MM-YYYY or MM-DD-YYYY format.',
-  DATE_FORMAT_END:
-    'Invalid end date format. Please provide a valid date in DD-MM-YYYY or MM-DD-YYYY format.',
-  DATE_FORMAT_START:
-    'Invalid start date format. Please provide a valid date in DD-MM-YYYY or MM-DD-YYYY format.',
+  DATE_FORMAT: 'Invalid date format. Please provide a valid date in DD-MM-YYYY or MM-DD-YYYY format.',
+  DATE_FORMAT_END: 'Invalid end date format. Please provide a valid date in DD-MM-YYYY or MM-DD-YYYY format.',
+  DATE_FORMAT_START: 'Invalid start date format. Please provide a valid date in DD-MM-YYYY or MM-DD-YYYY format.',
   DATE_INVALID: 'Invalid date parameter. Allowed values: day, month, year.',
   DATE_RANGE: 'Invalid date range format. Start date must be before or equal the end date.',
   EMAIL_EXISTS: 'Email already exists.',
@@ -29,10 +26,8 @@ export const messagesHelper = {
   SUBJECT_USERNAME_RECOVERY: 'Username recovery.',
   TASK_NOT_FOUND: 'Task not found.',
   TEST_NOT_FOUND: 'Test not found.',
-  TIME_FORMAT_END:
-    'Invalid end time format. Please provide a valid time in HH:mm:ss or hh:mm:ss a format.',
-  TIME_FORMAT_START:
-    'Invalid start time format. Please provide a valid time in HH:mm:ss or hh:mm:ss a format.',
+  TIME_FORMAT_END: 'Invalid end time format. Please provide a valid time in HH:mm:ss or hh:mm:ss a format.',
+  TIME_FORMAT_START: 'Invalid start time format. Please provide a valid time in HH:mm:ss or hh:mm:ss a format.',
   TIME_RANGE: 'Invalid time range format. Start time must be before or equal the end time.',
   TOKEN_INVALID: 'Invalid token.',
   USER_EXISTS: 'Username already exists.',

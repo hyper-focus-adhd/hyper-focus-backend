@@ -5,7 +5,6 @@ import { UpdateResult } from 'typeorm';
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
 import { Serialize } from '../../common/interceptors/serialize.interceptor';
 import { User } from '../users/entities/user.entity';
-
 import { CreateNoteDto } from './dtos/create-note.dto';
 import { NoteDto } from './dtos/note.dto';
 import { UpdateNoteDto } from './dtos/update-note.dto';
@@ -31,10 +30,7 @@ export class NotesController {
 
   @ApiOperation({ summary: 'Find all notes by board id' })
   @Get(':board')
-  async findAllNotesByBoardId(
-    @CurrentUserId() user: string,
-    @Param('board') board: string,
-  ): Promise<Note[]> {
+  async findAllNotesByBoardId(@CurrentUserId() user: string, @Param('board') board: string): Promise<Note[]> {
     return await this.notesService.findAllNotesByBoardId(user, board);
   }
 

@@ -47,11 +47,7 @@ export class CreateCommunityDto {
 
   @ApiProperty({
     description: 'The moderators of the community',
-    example: [
-      'TGH6C5APTWQFKN46BPFFCNJ345',
-      'HJU6C5APTWQFKN46BPFFCNJ555',
-      'LOP6C5APTWQFKN46BPFFCNJ342',
-    ],
+    example: ['TGH6C5APTWQFKN46BPFFCNJ345', 'HJU6C5APTWQFKN46BPFFCNJ555', 'LOP6C5APTWQFKN46BPFFCNJ342'],
   })
   @IsArray()
   @IsNotEmpty()
@@ -61,11 +57,7 @@ export class CreateCommunityDto {
 
   @ApiProperty({
     description: 'The followers of the community',
-    example: [
-      'TGH6C5APTWQFKN46BPFFCNJ345',
-      'HJU6C5APTWQFKN46BPFFCNJ555',
-      'LOP6C5APTWQFKN46BPFFCNJ342',
-    ],
+    example: ['TGH6C5APTWQFKN46BPFFCNJ345', 'HJU6C5APTWQFKN46BPFFCNJ555', 'LOP6C5APTWQFKN46BPFFCNJ342'],
   })
   @IsArray()
   @IsNotEmpty()
@@ -75,11 +67,7 @@ export class CreateCommunityDto {
 
   @ApiProperty({
     description: 'The banned users of the community',
-    example: [
-      'TGH6C5APTWQFKN46BPFFCNJ133',
-      'HJU6C5APTWQFKN46BPFFCNJ122',
-      'LOP6C5APTWQFKN46BPFFCNJ111',
-    ],
+    example: ['TGH6C5APTWQFKN46BPFFCNJ133', 'HJU6C5APTWQFKN46BPFFCNJ122', 'LOP6C5APTWQFKN46BPFFCNJ111'],
   })
   @IsArray()
   @IsNotEmpty()

@@ -7,7 +7,6 @@ import { Serialize } from '../../common/interceptors/serialize.interceptor';
 import { Reaction } from '../../common/types';
 import { UpdatePostDto } from '../posts/dto/update-post.dto';
 import { User } from '../users/entities/user.entity';
-
 import { CommentsService } from './comments.service';
 import { CommentDto } from './dto/comment.dto';
 import { CreateCommentDto } from './dto/create-comment.dto';

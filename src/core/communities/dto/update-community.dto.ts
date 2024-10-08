@@ -50,11 +50,7 @@ export class UpdateCommunityDto extends PartialType(CreateCommunityDto) {
   //TODO VERIFY NOT EMPTY
   @ApiProperty({
     description: 'The updated moderators of the community',
-    example: [
-      'TGH6C5APTWQFKN46BPFFCNJ346',
-      'HJU6C5APTWQFKN46BPFFCNJ556',
-      'LOP6C5APTWQFKN46BPFFCNJ346',
-    ],
+    example: ['TGH6C5APTWQFKN46BPFFCNJ346', 'HJU6C5APTWQFKN46BPFFCNJ556', 'LOP6C5APTWQFKN46BPFFCNJ346'],
   })
   @IsArray()
   @IsOptional()
@@ -63,11 +59,7 @@ export class UpdateCommunityDto extends PartialType(CreateCommunityDto) {
 
   @ApiProperty({
     description: 'The updated followers of the community',
-    example: [
-      'TGH6C5APTWQFKN46BPFFCNJ342',
-      'HJU6C5APTWQFKN46BPFFCNJ551',
-      'LOP6C5APTWQFKN46BPFFCNJ345',
-    ],
+    example: ['TGH6C5APTWQFKN46BPFFCNJ342', 'HJU6C5APTWQFKN46BPFFCNJ551', 'LOP6C5APTWQFKN46BPFFCNJ345'],
   })
   @IsArray()
   @IsOptional()
@@ -76,11 +68,7 @@ export class UpdateCommunityDto extends PartialType(CreateCommunityDto) {
 
   @ApiProperty({
     description: 'The updated banned users of the community',
-    example: [
-      'TGH6C5APTWQFKN46BPFFCNJ125',
-      'HJU6C5APTWQFKN46BPFFCNJ673',
-      'LOP6C5APTWQFKN46BPFFCNJ987',
-    ],
+    example: ['TGH6C5APTWQFKN46BPFFCNJ125', 'HJU6C5APTWQFKN46BPFFCNJ673', 'LOP6C5APTWQFKN46BPFFCNJ987'],
   })
   @IsArray()
   @IsOptional()

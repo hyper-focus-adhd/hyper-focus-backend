@@ -5,7 +5,6 @@ import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
 import { messagesHelper } from '../../common/helpers/messages-helper';
 import { User } from '../users/entities/user.entity';
-
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
 import { Board } from './entities/board.entity';
@@ -48,7 +47,9 @@ export class BoardsService {
     try {
       return await this.boardRepository.findOneOrFail(options);
     } catch (error: unknown) {
-      throw new NotFoundException(messagesHelper.BOARD_NOT_FOUND);
+      if (error instanceof Error) {
+        throw new NotFoundException(messagesHelper.BOARD_NOT_FOUND);
+      }
     }
   }
 

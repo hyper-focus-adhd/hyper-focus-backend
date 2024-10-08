@@ -1,8 +1,7 @@
-import * as process from 'process';
-
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as process from 'process';
 
 import { AppModule } from './app.module';
 import { corsConfig } from './config/cors.config';

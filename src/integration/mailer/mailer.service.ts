@@ -9,13 +9,7 @@ export class MailerService {
     sendgridMail.setApiKey(sendgridConfig.sendgridAccessKey);
   }
 
-  async sendgridMail(
-    to: string,
-    templateId: string,
-    subject: string,
-    username?: string,
-    link?: string,
-  ): Promise<void> {
+  async sendgridMail(to: string, templateId: string, subject: string, username?: string, link?: string): Promise<void> {
     await sendgridMail.send({
       from: sendgridConfig.sendgridFrom,
       to,

@@ -10,7 +10,6 @@ import { FileStorageService } from '../../integration/file-storage/file-storage.
 import { CommunitiesService } from '../communities/communities.service';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
-
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Post } from './entities/post.entity';
@@ -144,7 +143,9 @@ export class PostsService {
     try {
       return await this.postRepository.findOneOrFail(options);
     } catch (error: unknown) {
-      throw new NotFoundException(messagesHelper.POST_NOT_FOUND);
+      if (error instanceof Error) {
+        throw new NotFoundException(messagesHelper.POST_NOT_FOUND);
+      }
     }
   }
 

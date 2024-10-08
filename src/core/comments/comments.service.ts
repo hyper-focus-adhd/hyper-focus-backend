@@ -8,7 +8,6 @@ import { reactionHelper } from '../../common/helpers/reaction-helper';
 import { Reaction } from '../../common/types';
 import { PostsService } from '../posts/posts.service';
 import { User } from '../users/entities/user.entity';
-
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { Comment } from './entities/comment.entity';
@@ -81,7 +80,9 @@ export class CommentsService {
     try {
       return await this.commentRepository.findOneOrFail(options);
     } catch (error: unknown) {
-      throw new NotFoundException(messagesHelper.COMMENT_NOT_FOUND);
+      if (error instanceof Error) {
+        throw new NotFoundException(messagesHelper.COMMENT_NOT_FOUND);
+      }
     }
   }
 
@@ -129,12 +130,7 @@ export class CommentsService {
     return await this.commentRepository.restore(comment.id);
   }
 
-  async reactionComment(
-    user: string,
-    post: string,
-    commentId: string,
-    reaction: Reaction,
-  ): Promise<Comment> {
+  async reactionComment(user: string, post: string, commentId: string, reaction: Reaction): Promise<Comment> {
     await this.postsService.findOnePostOrFail({
       where: { id: post },
     });

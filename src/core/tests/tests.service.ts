@@ -5,7 +5,6 @@ import { FindOneOptions } from 'typeorm/find-options/FindOneOptions';
 
 import { messagesHelper } from '../../common/helpers/messages-helper';
 import { User } from '../users/entities/user.entity';
-
 import { CreateTestDto } from './dto/create-test.dto';
 import { Test } from './entities/test.entity';
 import { numberObject, TestData, testData } from './helper/test-helper';
@@ -60,7 +59,9 @@ export class TestsService {
     try {
       return await this.testRepository.findOneOrFail(options);
     } catch (error: unknown) {
-      throw new NotFoundException(messagesHelper.TEST_NOT_FOUND);
+      if (error instanceof Error) {
+        throw new NotFoundException(messagesHelper.TEST_NOT_FOUND);
+      }
     }
   }
 

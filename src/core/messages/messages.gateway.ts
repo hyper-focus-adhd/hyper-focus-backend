@@ -1,12 +1,6 @@
 import { Logger } from '@nestjs/common';
 import { ApiOperation, ApiSecurity, ApiTags } from '@nestjs/swagger';
-import {
-  ConnectedSocket,
-  MessageBody,
-  SubscribeMessage,
-  WebSocketGateway,
-  WebSocketServer,
-} from '@nestjs/websockets';
+import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
 import { CurrentUserId } from '../../common/decorators/current-user-id.decorator';
@@ -14,7 +8,6 @@ import { Serialize } from '../../common/interceptors/serialize.interceptor';
 import { corsConfig } from '../../config/cors.config';
 import { SocketAuthMiddleware } from '../auth/middlewares/ws-auth.mw';
 import { User } from '../users/entities/user.entity';
-
 import { CreateMessageDto } from './dto/create-message.dto';
 import { MessageDto } from './dto/message.dto';
 import { Message } from './entities/message.entity';
@@ -71,10 +64,7 @@ export class MessagesGateway {
 
   @ApiOperation({ summary: 'Find all messages by chat id' })
   @SubscribeMessage('findAllMessagesByChatId')
-  async findAllMessagesByChatId(
-    @CurrentUserId() user: User,
-    @MessageBody() secondUserId: string,
-  ): Promise<Message[]> {
+  async findAllMessagesByChatId(@CurrentUserId() user: User, @MessageBody() secondUserId: string): Promise<Message[]> {
     return await this.messagesService.findAllMessagesByChatId(user, secondUserId);
   }
 }

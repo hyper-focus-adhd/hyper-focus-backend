@@ -19,7 +19,6 @@ import { MailerService } from '../../integration/mailer/mailer.service';
 import { JwtPayload } from '../auth/types';
 import { CommunitiesService } from '../communities/communities.service';
 import { Community } from '../communities/entities/community.entity';
-
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UserSummaryByDay } from './entities/user-summary-by-day.entity';
@@ -43,11 +42,7 @@ export class UsersService {
     private readonly communitiesService: CommunitiesService,
   ) {}
 
-  async createUser(
-    createUserDto: CreateUserDto,
-    hashedPassword: string,
-    image: Express.Multer.File,
-  ): Promise<User> {
+  async createUser(createUserDto: CreateUserDto, hashedPassword: string, image: Express.Multer.File): Promise<User> {
     const user = this.userRepository.create({
       ...createUserDto,
       password: hashedPassword,
@@ -78,7 +73,9 @@ export class UsersService {
     try {
       return await this.userRepository.findOneOrFail(options);
     } catch (error: unknown) {
-      throw new NotFoundException(messagesHelper.USER_NOT_FOUND);
+      if (error instanceof Error) {
+        throw new NotFoundException(messagesHelper.USER_NOT_FOUND);
+      }
     }
   }
 
@@ -118,11 +115,7 @@ export class UsersService {
     return followedUsers;
   }
 
-  async updateUser(
-    userId: string,
-    updateUserDto: UpdateUserDto,
-    profile_image?: Express.Multer.File,
-  ): Promise<User> {
+  async updateUser(userId: string, updateUserDto: UpdateUserDto, profile_image?: Express.Multer.File): Promise<User> {
     if (updateUserDto.username || updateUserDto.email) {
       await this.verifyExistingUser(updateUserDto.username, updateUserDto.email);
     }
@@ -213,6 +206,9 @@ export class UsersService {
       // Token is valid and not expired
       return true;
     } catch (error) {
+      if (error instanceof Error) {
+        console.log(error);
+      }
       // Token verification failed
       return false;
     }
@@ -265,10 +261,7 @@ export class UsersService {
     return await this.fileStorageService.uploadImage(image, folderName);
   }
 
-  async followUser(
-    userId: string,
-    followUserId: string,
-  ): Promise<{ user: User; followed_user: User }> {
+  async followUser(userId: string, followUserId: string): Promise<{ user: User; followed_user: User }> {
     const user = await this.findOneUserOrFail({ where: { id: userId } });
 
     const followedUser = await this.findOneUserOrFail({
