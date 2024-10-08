@@ -3,7 +3,7 @@ echo '🩺 Starting the checkout'
 #yarn lint-staged
 
 # Check ESLint Standards
-yarn run lint ||
+yarn run eslint ||
 (
   echo '⚙️❌ ESLint Check Failed. Make the required changes listed above, add changes and try to commit again.'
   false;
