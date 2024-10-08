@@ -3,12 +3,6 @@
 
 echo '📝 Checking the commit message'
 
-yarn commitlint --edit "$1"
-status=$?
-
-if [ $status -ne 0 ]; then
-  echo '📃❌ Write using a Conventional Commit message to proceed!'
-  exit $status
-fi
+yarn commitlint --edit
 
 echo '✅✅ Very good! Committing your changes now'
