@@ -1,20 +1,17 @@
-echo '🩺 Starting the checkout'
+echo '🩺 Starting pre-commit checks'
 
-#yarn lint-staged
-
-# Check ESLint Standards
+# Run ESLint on staged files
 yarn run eslint ||
 (
-  echo '⚙️❌ ESLint Check Failed. Make the required changes listed above, add changes and try to commit again.'
-  false;
+  echo '⚙️❌ ESLint Check Failed. Make the required changes listed above, add changes, and try to commit again.'
+  exit 1
 )
 
-# Check tsconfig standards
+# Run Prettier to format files
 yarn run prettier ||
 (
-  echo '🤡❌ Failed Type check. Make the changes required above.'
-  false;
+  echo '🎨❌ Prettier Formatting Failed. Make the changes required above.'
+  exit 1
 )
 
-# If everything passes... Now we can commit
-echo '✅ Every test passed!'
+echo '✅ All pre-commit checks passed!'

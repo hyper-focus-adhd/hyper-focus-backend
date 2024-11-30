@@ -1,5 +1,9 @@
 echo '📝 Checking the commit message'
 
-yarn commitlint --edit
+# Run commitlint to validate the commit message
+yarn commitlint --edit || {
+  echo '❌ Commit message check failed. Please follow the commit message guidelines and try again.'
+  exit 1
+}
 
-echo '✅✅ Very good! Committing your changes now'
+echo '✅ Commit message is valid! Committing your changes now.'
